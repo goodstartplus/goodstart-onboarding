@@ -60,29 +60,21 @@
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 7. Você está em boas mãos -->
-    <section id="trust-screen" class="screen hidden">
-        <h2>Você está em boas mãos!</h2>
-        <img src="assets/images/trust-graphic.png" alt="Recursos da plataforma">
-        <button onclick="nextScreen('conversation-goal-screen')">Continuar</button>
+    <!-- 7. Vídeos Personalizados -->
+    <section id="personalized-videos-screen" class="screen hidden">
+        <h2>Dicas Personalizadas para Você</h2>
+        <div id="videos-container"></div>
+        <button onclick="nextScreen('summary-screen')">Continuar</button>
     </section>
 
-    <!-- 8. Objetivo de Prática de Conversação -->
-    <section id="conversation-goal-screen" class="screen hidden">
-        <h2>Qual é o seu objetivo na prática de conversação?</h2>
-        <button onclick="saveAnswer('conversation-goal', '30 minutos por dia')">30 minutos por dia</button>
-        <button onclick="saveAnswer('conversation-goal', '15 minutos por dia')">15 minutos por dia</button>
-        <button onclick="saveAnswer('conversation-goal', '5 minutos por dia')">5 minutos por dia</button>
-    </section>
-
-    <!-- 9. Resumo Personalizado -->
+    <!-- 8. Resumo Personalizado -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <p id="summary-content"></p>
         <button onclick="nextScreen('expectation-screen')">Continuar</button>
     </section>
 
-    <!-- 10. O que você pode esperar -->
+    <!-- 9. O que você pode esperar -->
     <section id="expectation-screen" class="screen hidden">
         <h2>O que você pode esperar</h2>
         <ul>
@@ -91,17 +83,10 @@
             <li>Semana 12: 1080 minutos de fala</li>
             <li>Mês 12: Fale com confiança!</li>
         </ul>
-        <button onclick="nextScreen('personalized-videos-screen')">Continuar</button>
-    </section>
-
-    <!-- 11. Vídeos Personalizados -->
-    <section id="personalized-videos-screen" class="screen hidden">
-        <h2>Dicas Personalizadas para Você</h2>
-        <div id="videos-container"></div>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 12. 🎉 Vídeo de Celebração -->
+    <!-- 10. 🎉 Vídeo de Celebração -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
