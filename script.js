@@ -76,6 +76,14 @@ function loadPersonalizedVideos() {
     nextScreen('personalized-videos-screen');
 }
 
+// Salva a resposta do objetivo de prática e avança
+function saveConversationGoal(goal) {
+    userResponses['Objetivo de prática'] = goal;
+    nextScreen('summary-screen');
+    showSummary();
+}
+
+
 // Mostra o resumo personalizado
 function showSummary() {
     const summaryText = `
