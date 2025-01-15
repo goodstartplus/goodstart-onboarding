@@ -1,101 +1,82 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
 
-// Função para iniciar o onboarding
+// Função para iniciar o onboarding com o vídeo de introdução
 function startOnboarding() {
-    document.getElementById('welcome-screen').classList.add('hidden');
     document.getElementById('intro-video-screen').classList.remove('hidden');
 }
 
-// Função para ir para a próxima tela
-function goToNextScreen(currentScreenId, nextScreenId) {
-    document.getElementById(currentScreenId).classList.add('hidden');
-    document.getElementById(nextScreenId).classList.remove('hidden');
+// Continuar após o vídeo de introdução
+function continueAfterIntro() {
+    document.getElementById('intro-video-screen').classList.add('hidden');
+    document.getElementById('name-screen').classList.remove('hidden');
 }
 
-// Função para salvar respostas
-function saveAnswer(question, answer) {
-    userResponses[question] = answer;
-}
-
-// Função para salvar múltiplas respostas (checkboxes)
-function saveMultipleAnswers(question) {
-    let selectedOptions = [];
-    document.querySelectorAll(`#${question}-screen input[type='checkbox']:checked`).forEach((checkbox) => {
-        selectedOptions.push(checkbox.value);
-    });
-    userResponses[question] = selectedOptions;
-}
-
-// Função para carregar os stories personalizados com base nas respostas
-function loadPersonalizedStories() {
-    document.getElementById('challenges-screen').classList.add('hidden');
-    document.getElementById('stories-screen').classList.remove('hidden');
-
-    const selectedChallenges = userResponses['challenges'] || [];
-    let storyIndex = 0;
-
-    const videos = {
-        "Falta de prática": "assets/videos/practice.mp4",
-        "Medo de falar": "assets/videos/fear.mp4",
-        "Pronúncia": "assets/videos/pronunciation.mp4",
-        "Vocabulário": "assets/videos/vocabulary.mp4"
-    };
-
-    function loadVideo(index) {
-        if (index >= selectedChallenges.length) {
-            continueOnboarding();
-            return;
-        }
-
-        const challenge = selectedChallenges[index];
-        const videoSrc = videos[challenge];
-        const storiesContainer = document.getElementById('stories-container');
-
-        storiesContainer.innerHTML = `
-            <video id="current-video" src="${videoSrc}" controls autoplay></video>
-            <button onclick="nextVideo()">Próximo</button>
-        `;
-
-        const videoElement = document.getElementById('current-video');
-
-        videoElement.onended = function () {
-            storyIndex++;
-            loadVideo(storyIndex);
-        };
+// Salvar nome e avançar
+function saveName() {
+    const name = document.getElementById('user-name').value;
+    if (name.trim() !== "") {
+        userResponses['Nome'] = name;
+        document.getElementById('name-screen').classList.add('hidden');
+        document.getElementById('age-screen').classList.remove('hidden');
+    } else {
+        alert("Por favor, insira seu nome.");
     }
-
-    window.nextVideo = function () {
-        const videoElement = document.getElementById('current-video');
-        if (videoElement) {
-            videoElement.pause();
-        }
-        storyIndex++;
-        loadVideo(storyIndex);
-    };
-
-    loadVideo(storyIndex);
 }
 
-// Função para exibir o resumo final personalizado
-function showSummary() {
-    const summaryContainer = document.getElementById('summary-container');
-    summaryContainer.innerHTML = `
-        <h3>${userResponses['name']}, vamos construir seu plano de aprendizagem com base nas suas respostas:</h3>
-        <p><strong>Nível:</strong> ${userResponses['level']}</p>
-        <p><strong>Tempo de estudo diário:</strong> ${userResponses['practice-time']} minutos</p>
-        <p><strong>Motivações:</strong> ${userResponses['reasons'].join(', ')}</p>
-        <p><strong>Principais desafios:</strong> ${userResponses['challenges'].join(', ')}</p>
-    `;
+// Salvar idade e avançar
+function saveAge(age) {
+    userResponses['Idade'] = age;
+    document.getElementById('age-screen').classList.add('hidden');
+    document.getElementById('study-method-screen').classList.remove('hidden');
 }
 
-// Função para continuar o onboarding após os stories
-function continueOnboarding() {
-    goToNextScreen('stories-screen', 'finish-screen');
+// Salvar métodos de estudo e avançar
+function saveStudyMethod() {
+    const checkboxes = document.querySelectorAll('#study-method-screen input[type="checkbox"]:checked');
+    const methods = Array.from(checkboxes).map(cb => cb.value);
+    userResponses['Como estudou inglês'] = methods;
+    document.getElementById('study-method-screen').classList.add('hidden');
+    document.getElementById('reason-screen').classList.remove('hidden');
+}
+
+// Salvar motivos e avançar
+function saveReason() {
+    const checkboxes = document.querySelectorAll('#reason-screen input[type="checkbox"]:checked');
+    const reasons = Array.from(checkboxes).map(cb => cb.value);
+    userResponses['Motivo para aprender'] = reasons;
+    document.getElementById('reason-screen').classList.add('hidden');
+    document.getElementById('features-screen').classList.remove('hidden');
+}
+
+// Avançar após mostrar recursos
+function continueAfterFeatures() {
+    document.getElementById('features-screen').classList.add('hidden');
+    document.getElementById('practice-goal-screen').classList.remove('hidden');
+}
+
+// Salvar objetivo de prática e avançar
+function savePracticeGoal(goal) {
+    userResponses['Objetivo de prática'] = goal;
+    document.getElementById('practice-goal-screen').classList.add('hidden');
     showSummary();
 }
 
-// Função para finalizar o onboarding
+// Mostrar resumo personalizado
+function showSummary() {
+    const summaryText = `
+        ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
+        - Idade: ${userResponses['Idade']}
+        - Como estudou inglês: ${userResponses['Como estudou inglês'].join(', ')}
+        - Motivo: ${userResponses['Motivo para aprender'].join(', ')}
+        - Objetivo de prática: ${userResponses['Objetivo de prática']}
+    `;
+    document.getElementById('summary-text').innerText = summaryText;
+
+    document.getElementById('summary-screen').classList.remove('hidden');
+}
+
+// Finalizar e redirecionar
 function finishOnboarding() {
     window.location.href = "https://goodstart.com.br";
 }
