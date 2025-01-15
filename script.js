@@ -1,41 +1,39 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
-let selectedChallenges = [];
-let storyIndex = 0;
 
 // Função para iniciar o onboarding
 function startOnboarding() {
     document.getElementById('welcome-screen').classList.add('hidden');
-    document.getElementById('english-level-screen').classList.remove('hidden');
+    document.getElementById('intro-video-screen').classList.remove('hidden');
 }
 
-// Função para salvar respostas e avançar
+// Função para ir para a próxima tela
+function goToNextScreen(currentScreenId, nextScreenId) {
+    document.getElementById(currentScreenId).classList.add('hidden');
+    document.getElementById(nextScreenId).classList.remove('hidden');
+}
+
+// Função para salvar respostas
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
-
-    if (question === 'level') {
-        document.getElementById('english-level-screen').classList.add('hidden');
-        document.getElementById('challenges-screen').classList.remove('hidden');
-    }
 }
 
-// Função para capturar desafios selecionados
-function saveChallenges() {
-    const checkboxes = document.querySelectorAll('#challenges-screen input[type="checkbox"]:checked');
-    selectedChallenges = Array.from(checkboxes).map(cb => cb.value);
-
-    if (selectedChallenges.length === 0) {
-        alert('Por favor, selecione pelo menos um desafio.');
-        return;
-    }
-
-    loadPersonalizedStories();
+// Função para salvar múltiplas respostas (checkboxes)
+function saveMultipleAnswers(question) {
+    let selectedOptions = [];
+    document.querySelectorAll(`#${question}-screen input[type='checkbox']:checked`).forEach((checkbox) => {
+        selectedOptions.push(checkbox.value);
+    });
+    userResponses[question] = selectedOptions;
 }
 
 // Função para carregar os stories personalizados com base nas respostas
 function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
+
+    const selectedChallenges = userResponses['challenges'] || [];
+    let storyIndex = 0;
 
     const videos = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -56,10 +54,11 @@ function loadPersonalizedStories() {
 
         storiesContainer.innerHTML = `
             <video id="current-video" src="${videoSrc}" controls autoplay></video>
-            <button id="next-button" onclick="nextVideo()">Próximo</button>
+            <button onclick="nextVideo()">Próximo</button>
         `;
 
         const videoElement = document.getElementById('current-video');
+
         videoElement.onended = function () {
             storyIndex++;
             loadVideo(storyIndex);
@@ -69,7 +68,7 @@ function loadPersonalizedStories() {
     window.nextVideo = function () {
         const videoElement = document.getElementById('current-video');
         if (videoElement) {
-            videoElement.pause();  // Para o vídeo atual
+            videoElement.pause();
         }
         storyIndex++;
         loadVideo(storyIndex);
@@ -78,13 +77,25 @@ function loadPersonalizedStories() {
     loadVideo(storyIndex);
 }
 
+// Função para exibir o resumo final personalizado
+function showSummary() {
+    const summaryContainer = document.getElementById('summary-container');
+    summaryContainer.innerHTML = `
+        <h3>${userResponses['name']}, vamos construir seu plano de aprendizagem com base nas suas respostas:</h3>
+        <p><strong>Nível:</strong> ${userResponses['level']}</p>
+        <p><strong>Tempo de estudo diário:</strong> ${userResponses['practice-time']} minutos</p>
+        <p><strong>Motivações:</strong> ${userResponses['reasons'].join(', ')}</p>
+        <p><strong>Principais desafios:</strong> ${userResponses['challenges'].join(', ')}</p>
+    `;
+}
+
 // Função para continuar o onboarding após os stories
 function continueOnboarding() {
-    document.getElementById('stories-screen').classList.add('hidden');
-    document.getElementById('finish-screen').classList.remove('hidden');
+    goToNextScreen('stories-screen', 'finish-screen');
+    showSummary();
 }
 
 // Função para finalizar o onboarding
 function finishOnboarding() {
-    window.location.href = "https://goodstart.com.br"; // Redireciona para a plataforma
+    window.location.href = "https://goodstart.com.br";
 }
