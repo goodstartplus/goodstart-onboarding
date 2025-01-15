@@ -1,7 +1,5 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
-let selectedChallenges = [];
-let storyIndex = 0;
 
 // Função para iniciar o onboarding com o vídeo de introdução
 function startOnboarding() {
@@ -10,7 +8,10 @@ function startOnboarding() {
 
 // Função para avançar para a próxima tela
 function nextScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+    const currentScreen = document.querySelector('.screen:not(.hidden)');
+    if (currentScreen) {
+        currentScreen.classList.add('hidden');
+    }
     document.getElementById(screenId).classList.remove('hidden');
 }
 
@@ -28,65 +29,27 @@ function saveName() {
 // Salvar idade e avançar
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
+
     if (question === 'age') {
         nextScreen('study-method-screen');
     } else if (question === 'conversation-goal') {
-        nextScreen('challenges-screen');
+        nextScreen('summary-screen');
+        showSummary();
     }
 }
 
 // Salvar métodos de estudo e avançar
 function saveCheckboxes(question) {
     const checkboxes = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    const values = Array.from(checkboxes).map(cb => cb.value);
-    userResponses[question] = values;
+    const selectedValues = Array.from(checkboxes).map(cb => cb.value);
+
+    userResponses[question] = selectedValues;
 
     if (question === 'study-method') {
         nextScreen('reason-screen');
     } else if (question === 'reason') {
         nextScreen('trust-screen');
-    } else if (question === 'challenges') {
-        selectedChallenges = values;
-        loadPersonalizedVideos();
     }
-}
-
-// Função para carregar vídeos personalizados
-function loadPersonalizedVideos() {
-    nextScreen('stories-screen');
-    storyIndex = 0;
-
-    const videos = {
-        "Falta de prática": "assets/videos/practice.mp4",
-        "Medo de falar": "assets/videos/fear.mp4",
-        "Pronúncia": "assets/videos/pronunciation.mp4",
-        "Vocabulário": "assets/videos/vocabulary.mp4"
-    };
-
-    function loadVideo(index) {
-        if (index >= selectedChallenges.length) {
-            nextScreen('summary-screen');
-            return;
-        }
-
-        const challenge = selectedChallenges[index];
-        const videoSrc = videos[challenge];
-        const storiesContainer = document.getElementById('stories-container');
-
-        storiesContainer.innerHTML = `
-            <video id="current-video" src="${videoSrc}" controls autoplay></video>
-            <button onclick="nextVideo()">Próximo</button>
-        `;
-    }
-
-    window.nextVideo = function () {
-        const videoElement = document.getElementById('current-video');
-        if (videoElement) videoElement.pause();
-        storyIndex++;
-        loadVideo(storyIndex);
-    };
-
-    loadVideo(storyIndex);
 }
 
 // Mostrar resumo personalizado
@@ -94,11 +57,37 @@ function showSummary() {
     const summaryText = `
         ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
         - Idade: ${userResponses['age']}
-        - Como estudou inglês: ${userResponses['study-method'].join(', ')}
-        - Motivo: ${userResponses['reason'].join(', ')}
+        - Como estudou inglês: ${userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado'}
+        - Motivo: ${userResponses['reason'] ? userResponses['reason'].join(', ') : 'Não informado'}
         - Objetivo de prática: ${userResponses['conversation-goal']}
     `;
     document.getElementById('summary-content').innerText = summaryText;
+}
+
+// Carregar vídeos personalizados com base nos desafios selecionados
+function loadPersonalizedVideos() {
+    const challenges = userResponses['reason'] || [];
+    const videos = {
+        "Férias no exterior": "assets/videos/travel.mp4",
+        "Trabalho": "assets/videos/work.mp4",
+        "Morar no exterior": "assets/videos/live_abroad.mp4"
+    };
+
+    const videosContainer = document.getElementById('videos-container');
+    videosContainer.innerHTML = '';
+
+    challenges.forEach(challenge => {
+        if (videos[challenge]) {
+            const videoElement = document.createElement('video');
+            videoElement.src = videos[challenge];
+            videoElement.controls = true;
+            videoElement.autoplay = false;
+            videoElement.classList.add('personalized-video');
+            videosContainer.appendChild(videoElement);
+        }
+    });
+
+    nextScreen('personalized-videos-screen');
 }
 
 // Finalizar e redirecionar
