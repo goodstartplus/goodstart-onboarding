@@ -1,86 +1,95 @@
-<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Goodstart+</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- Tela de Vídeo Inicial -->
+    <section id="intro-video-screen" class="screen">
+        <video src="assets/videos/intro.mp4" controls autoplay></video>
+        <button onclick="nextScreen('name-screen')">Continuar</button>
+    </section>
 
-<!-- Tela de Vídeo Inicial -->
-<section id="intro-video-screen" class="screen">
-    <video src="assets/videos/intro.mp4" controls autoplay></video>
-    <button onclick="nextScreen('name-screen')">Continuar</button>
-</section>
+    <!-- Qual é o seu nome? -->
+    <section id="name-screen" class="screen hidden">
+        <h2>Qual é o seu nome?</h2>
+        <input type="text" id="user-name" placeholder="Digite seu nome">
+        <button onclick="saveName()">Continuar</button>
+    </section>
 
-<!-- Qual é o seu nome? -->
-<section id="name-screen" class="screen hidden">
-    <h2>Qual é o seu nome?</h2>
-    <input type="text" id="user-name" placeholder="Digite seu nome">
-    <button onclick="saveName()">Continuar</button>
-</section>
+    <!-- Quantos anos você tem? -->
+    <section id="age-screen" class="screen hidden">
+        <h2>Quantos anos você tem?</h2>
+        <button onclick="saveAnswer('age', '<18')">Menos de 18</button>
+        <button onclick="saveAnswer('age', '18-25')">18-25</button>
+        <button onclick="saveAnswer('age', '26-35')">26-35</button>
+        <button onclick="saveAnswer('age', '36+')">36+</button>
+    </section>
 
-<!-- Quantos anos você tem? -->
-<section id="age-screen" class="screen hidden">
-    <h2>Quantos anos você tem?</h2>
-    <button onclick="saveAnswer('age', '<18')">Menos de 18</button>
-    <button onclick="saveAnswer('age', '18-25')">18-25</button>
-    <button onclick="saveAnswer('age', '26-35')">26-35</button>
-    <button onclick="saveAnswer('age', '36+')">36+</button>
-</section>
+    <!-- Como você estudou inglês? -->
+    <section id="study-method-screen" class="screen hidden">
+        <h2>Como você estudou inglês?</h2>
+        <label><input type="checkbox" value="Ensino Fundamental/Médio"> Ensino Fundamental/Médio</label><br>
+        <label><input type="checkbox" value="Escola de Idiomas"> Escola de Idiomas</label><br>
+        <label><input type="checkbox" value="Professor Particular"> Professor Particular</label><br>
+        <label><input type="checkbox" value="Aplicativos"> Aplicativos</label><br>
+        <label><input type="checkbox" value="Intercâmbio"> Intercâmbio</label><br>
+        <button onclick="saveCheckboxes('study-method')">Continuar</button>
+    </section>
 
-<!-- Como você estudou inglês? -->
-<section id="study-method-screen" class="screen hidden">
-    <h2>Como você estudou inglês?</h2>
-    <label><input type="checkbox" value="Ensino Fundamental/Médio"> Ensino Fundamental/Médio</label><br>
-    <label><input type="checkbox" value="Escola de Idiomas"> Escola de Idiomas</label><br>
-    <label><input type="checkbox" value="Professor Particular"> Professor Particular</label><br>
-    <label><input type="checkbox" value="Aplicativos"> Aplicativos</label><br>
-    <label><input type="checkbox" value="Intercâmbio"> Intercâmbio</label><br>
-    <button onclick="saveCheckboxes('study-method')">Continuar</button>
-</section>
+    <!-- Por que você quer aprender inglês? -->
+    <section id="reason-screen" class="screen hidden">
+        <h2>Por que você quer aprender inglês?</h2>
+        <label><input type="checkbox" value="Férias no exterior"> Férias no exterior</label><br>
+        <label><input type="checkbox" value="Trabalho"> Trabalho</label><br>
+        <label><input type="checkbox" value="Morar no exterior"> Morar no exterior</label><br>
+        <button onclick="saveCheckboxes('reason')">Continuar</button>
+    </section>
 
-<!-- Por que você quer aprender inglês? -->
-<section id="reason-screen" class="screen hidden">
-    <h2>Por que você quer aprender inglês?</h2>
-    <label><input type="checkbox" value="Férias no exterior"> Férias no exterior</label><br>
-    <label><input type="checkbox" value="Trabalho"> Trabalho</label><br>
-    <label><input type="checkbox" value="Morar no exterior"> Morar no exterior</label><br>
-    <button onclick="saveCheckboxes('reason')">Continuar</button>
-</section>
+    <!-- Você está em boas mãos -->
+    <section id="trust-screen" class="screen hidden">
+        <h2>Você está em boas mãos!</h2>
+        <img src="assets/images/trust-graphic.png" alt="Recursos da plataforma">
+        <button onclick="nextScreen('conversation-goal-screen')">Continuar</button>
+    </section>
 
-<!-- Você está em boas mãos -->
-<section id="trust-screen" class="screen hidden">
-    <h2>Você está em boas mãos!</h2>
-    <img src="assets/images/trust-graphic.png" alt="Recursos da plataforma">
-    <button onclick="nextScreen('conversation-goal-screen')">Continuar</button>
-</section>
+    <!-- Qual o seu objetivo na prática de conversação? -->
+    <section id="conversation-goal-screen" class="screen hidden">
+        <h2>Qual é o seu objetivo na prática de conversação?</h2>
+        <button onclick="saveAnswer('conversation-goal', '30 minutos por dia')">30 minutos por dia</button>
+        <button onclick="saveAnswer('conversation-goal', '15 minutos por dia')">15 minutos por dia</button>
+        <button onclick="saveAnswer('conversation-goal', '5 minutos por dia')">5 minutos por dia</button>
+    </section>
 
-<!-- Qual o seu objetivo na prática de conversação? -->
-<section id="conversation-goal-screen" class="screen hidden">
-    <h2>Qual é o seu objetivo na prática de conversação?</h2>
-    <button onclick="saveAnswer('conversation-goal', '30 minutos por dia')">30 minutos por dia</button>
-    <button onclick="saveAnswer('conversation-goal', '15 minutos por dia')">15 minutos por dia</button>
-    <button onclick="saveAnswer('conversation-goal', '5 minutos por dia')">5 minutos por dia</button>
-</section>
+    <!-- Resumo Personalizado -->
+    <section id="summary-screen" class="screen hidden">
+        <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
+        <p id="summary-content"></p>
+        <button onclick="nextScreen('expectation-screen')">Continuar</button>
+    </section>
 
-<!-- Resumo Personalizado -->
-<section id="summary-screen" class="screen hidden">
-    <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
-    <p id="summary-content"></p>
-    <button onclick="nextScreen('expectation-screen')">Continuar</button>
-</section>
+    <!-- O que você pode esperar -->
+    <section id="expectation-screen" class="screen hidden">
+        <h2>O que você pode esperar</h2>
+        <ul>
+            <li>Semana 1: 105 novas palavras</li>
+            <li>Semana 4: 144 novas frases</li>
+            <li>Semana 12: 1080 minutos de fala</li>
+            <li>Mês 12: Fale com confiança!</li>
+        </ul>
+        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+    </section>
 
-<!-- O que você pode esperar -->
-<section id="expectation-screen" class="screen hidden">
-    <h2>O que você pode esperar</h2>
-    <ul>
-        <li>Semana 1: 105 novas palavras</li>
-        <li>Semana 4: 144 novas frases</li>
-        <li>Semana 12: 1080 minutos de fala</li>
-        <li>Mês 12: Fale com confiança!</li>
-    </ul>
-    <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
-</section>
+    <!-- Vídeo de Celebração -->
+    <section id="celebration-video-screen" class="screen hidden">
+        <video src="assets/videos/celebration.mp4" controls autoplay></video>
+        <button onclick="finishOnboarding()">Acessar Plataforma</button>
+    </section>
 
-<!-- Vídeo de Celebração -->
-<section id="celebration-video-screen" class="screen hidden">
-    <video src="assets/videos/celebration.mp4" controls autoplay></video>
-    <button onclick="finishOnboarding()">Acessar Plataforma</button>
-</section>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
