@@ -17,39 +17,51 @@ function saveAnswer(question, answer) {
     }
 }
 
-// Função para capturar as dificuldades selecionadas e avançar
+// Função para salvar desafios selecionados e carregar vídeos
 function saveChallenges() {
-    let selectedChallenges = [];
-    document.querySelectorAll('input[name="challenges"]:checked').forEach((checkbox) => {
-        selectedChallenges.push(checkbox.value);
-    });
+    const selectedChallenges = Array.from(document.querySelectorAll('#challenges-screen input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+    
+    userResponses['challenges'] = selectedChallenges;
 
-    if (selectedChallenges.length > 0) {
-        userResponses['challenges'] = selectedChallenges;
-        loadPersonalizedStories();  // Avança para os stories personalizados
-    } else {
-        alert("Por favor, selecione pelo menos uma dificuldade.");
-    }
+    loadPersonalizedVideos();
 }
 
-// Função para carregar os stories personalizados com base nas respostas
-function loadPersonalizedStories() {
+// Função para carregar vídeos personalizados com base nas respostas
+function loadPersonalizedVideos() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
 
     const storiesContainer = document.getElementById('stories-container');
-    storiesContainer.innerHTML = "";  // Limpa o conteúdo anterior
+    storiesContainer.innerHTML = '';  // Limpa o conteúdo anterior
 
-    // Exemplo de carregamento de stories personalizados
     userResponses['challenges'].forEach(challenge => {
-        let storyDiv = document.createElement('div');
-        storyDiv.classList.add('story-item');
-        storyDiv.innerText = `Dica personalizada para: ${challenge}`;
-        storiesContainer.appendChild(storyDiv);
+        let videoFile = '';
+
+        switch (challenge) {
+            case 'Falta de prática':
+                videoFile = 'practice.mp4';
+                break;
+            case 'Medo de falar':
+                videoFile = 'fear.mp4';
+                break;
+            case 'Pronúncia':
+                videoFile = 'pronunciation.mp4';
+                break;
+            case 'Vocabulário':
+                videoFile = 'vocabulary.mp4';
+                break;
+        }
+
+        const videoElement = document.createElement('video');
+        videoElement.src = `assets/videos/${videoFile}`;
+        videoElement.controls = true;
+        videoElement.width = 400;
+        storiesContainer.appendChild(videoElement);
     });
 }
 
-// Função para continuar o onboarding após os stories
+// Função para continuar o onboarding após os vídeos
 function continueOnboarding() {
     document.getElementById('stories-screen').classList.add('hidden');
     document.getElementById('finish-screen').classList.remove('hidden');
@@ -57,5 +69,5 @@ function continueOnboarding() {
 
 // Função para finalizar o onboarding
 function finishOnboarding() {
-    window.location.href = "https://goodstart.com.br"; // Redireciona para a plataforma
+    window.location.href = "https://goodstart.com.br";
 }
