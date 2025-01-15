@@ -1,5 +1,7 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
+let selectedChallenges = [];
+let storyIndex = 0;
 
 // Função para iniciar o onboarding
 function startOnboarding() {
@@ -7,25 +9,33 @@ function startOnboarding() {
     document.getElementById('english-level-screen').classList.remove('hidden');
 }
 
-// Função para salvar as respostas e avançar para a próxima tela
+// Função para salvar respostas e avançar
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
     if (question === 'level') {
         document.getElementById('english-level-screen').classList.add('hidden');
         document.getElementById('challenges-screen').classList.remove('hidden');
-    } else if (question === 'challenges') {
-        loadPersonalizedStories();
     }
+}
+
+// Função para capturar desafios selecionados
+function saveChallenges() {
+    const checkboxes = document.querySelectorAll('#challenges-screen input[type="checkbox"]:checked');
+    selectedChallenges = Array.from(checkboxes).map(cb => cb.value);
+
+    if (selectedChallenges.length === 0) {
+        alert('Por favor, selecione pelo menos um desafio.');
+        return;
+    }
+
+    loadPersonalizedStories();
 }
 
 // Função para carregar os stories personalizados com base nas respostas
 function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
-
-    const selectedChallenges = Object.keys(userResponses).filter(key => userResponses[key] === true);
-    let storyIndex = 0;
 
     const videos = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -50,7 +60,6 @@ function loadPersonalizedStories() {
         `;
 
         const videoElement = document.getElementById('current-video');
-
         videoElement.onended = function () {
             storyIndex++;
             loadVideo(storyIndex);
