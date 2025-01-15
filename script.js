@@ -1,13 +1,13 @@
 let userResponses = {};
 
-// Helper: Hide all screens and show the target screen
+// ✅ Helper: Hide all screens and show the target screen
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
-    window.scrollTo(0, 0); // Scroll to top for smooth UX
+    window.scrollTo(0, 0); // Scroll to top for a better user experience
 }
 
-// Validate and save the user's name
+// ✅ Validate and save the user's name
 function saveName() {
     const nameInput = document.getElementById('user-name');
     const name = nameInput.value.trim();
@@ -21,7 +21,7 @@ function saveName() {
     }
 }
 
-// Generic function to save single-choice answers
+// ✅ Generic function to save single-choice answers (e.g., age, conversation goal)
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
@@ -37,7 +37,7 @@ function saveAnswer(question, answer) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// Save multiple-choice (checkbox) answers
+// ✅ Save multiple-choice (checkbox) answers and navigate accordingly
 function saveCheckboxes(question) {
     const checked = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
     const values = Array.from(checked).map(cb => cb.value);
@@ -54,7 +54,7 @@ function saveCheckboxes(question) {
         'reason': 'challenges-screen',
         'challenges': () => {
             loadPersonalizedVideos();
-            return 'trust-screen';
+            return 'personalized-videos-screen';
         }
     };
 
@@ -62,7 +62,7 @@ function saveCheckboxes(question) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// Show personalized summary
+// ✅ Show a personalized summary based on the user's answers
 function showSummary() {
     const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
 
@@ -79,7 +79,7 @@ function showSummary() {
     document.getElementById('summary-name').innerText = Nome;
 }
 
-// Load videos based on user challenges
+// ✅ Load personalized videos based on selected challenges
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -96,14 +96,14 @@ function loadPersonalizedVideos() {
             const videoElement = document.createElement('video');
             videoElement.src = videoMap[challenge];
             videoElement.controls = true;
-            videoElement.autoplay = false;  // Avoid autoplay overload
+            videoElement.autoplay = false;  // Prevent autoplay overload
             videoElement.classList.add('personalized-video');
             container.appendChild(videoElement);
         }
     });
 }
 
-// End onboarding and redirect
+// ✅ Finalize onboarding and redirect to the platform
 function finishOnboarding() {
     alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
