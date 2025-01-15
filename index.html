@@ -66,23 +66,37 @@
     </section>
 
     <!-- Resumo Personalizado -->
-    <section id="summary-screen" class="screen hidden">
-        <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
-        <p id="summary-content"></p>
-        <button onclick="nextScreen('expectation-screen')">Continuar</button>
-    </section>
+<section id="summary-screen" class="screen hidden">
+    <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
+    <p id="summary-content"></p>
+    <button onclick="nextScreen('expectation-screen')">Continuar</button>
+</section>
 
-    <!-- O que você pode esperar -->
-    <section id="expectation-screen" class="screen hidden">
-        <h2>O que você pode esperar</h2>
-        <ul>
-            <li>Semana 1: 105 novas palavras</li>
-            <li>Semana 4: 144 novas frases</li>
-            <li>Semana 12: 1080 minutos de fala</li>
-            <li>Mês 12: Fale com confiança!</li>
-        </ul>
-        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
-    </section>
+<!-- O que você pode esperar -->
+<section id="expectation-screen" class="screen hidden">
+    <h2>O que você pode esperar</h2>
+    <ul>
+        <li>Semana 1: 105 novas palavras</li>
+        <li>Semana 4: 144 novas frases</li>
+        <li>Semana 12: 1080 minutos de fala</li>
+        <li>Mês 12: Fale com confiança!</li>
+    </ul>
+    <button onclick="nextScreen('personalized-videos-screen')">Continuar</button>
+</section>
+
+<!-- Vídeos Personalizados -->
+<section id="personalized-videos-screen" class="screen hidden">
+    <h2>Dicas Personalizadas para Você</h2>
+    <div id="videos-container"></div>
+    <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+</section>
+
+<!-- Vídeo de Celebração -->
+<section id="celebration-video-screen" class="screen hidden">
+    <video src="assets/videos/celebration.mp4" controls autoplay></video>
+    <button onclick="finishOnboarding()">Acessar Plataforma</button>
+</section>
+
 
     <!-- Vídeo de Celebração -->
     <section id="celebration-video-screen" class="screen hidden">
