@@ -1,17 +1,17 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
+let selectedChallenges = [];
+let storyIndex = 0;
 
-// Função para exibir a próxima tela
-function nextScreen(nextScreenId) {
-    const screens = document.querySelectorAll('.screen');
-    screens.forEach(screen => screen.classList.add('hidden'));
-
-    document.getElementById(nextScreenId).classList.remove('hidden');
-}
-
-// Iniciar o onboarding com o vídeo de introdução
+// Função para iniciar o onboarding com o vídeo de introdução
 function startOnboarding() {
     nextScreen('intro-video-screen');
+}
+
+// Função para avançar para a próxima tela
+function nextScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
 }
 
 // Salvar nome e avançar
@@ -25,33 +25,71 @@ function saveName() {
     }
 }
 
-// Salvar resposta de idade e avançar
+// Salvar idade e avançar
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
-
     if (question === 'age') {
         nextScreen('study-method-screen');
     } else if (question === 'conversation-goal') {
-        showSummary();
-        nextScreen('summary-screen');
+        nextScreen('challenges-screen');
     }
 }
 
-// Salvar checkboxes (para estudo e motivo)
-function saveCheckboxes(type) {
-    const checkboxes = document.querySelectorAll(`#${type}-screen input[type="checkbox"]:checked`);
-    const selections = Array.from(checkboxes).map(cb => cb.value);
+// Salvar métodos de estudo e avançar
+function saveCheckboxes(question) {
+    const checkboxes = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+    const values = Array.from(checkboxes).map(cb => cb.value);
+    userResponses[question] = values;
 
-    userResponses[type] = selections;
-
-    if (type === 'study-method') {
+    if (question === 'study-method') {
         nextScreen('reason-screen');
-    } else if (type === 'reason') {
+    } else if (question === 'reason') {
         nextScreen('trust-screen');
+    } else if (question === 'challenges') {
+        selectedChallenges = values;
+        loadPersonalizedVideos();
     }
 }
 
-// Exibir o resumo personalizado
+// Função para carregar vídeos personalizados
+function loadPersonalizedVideos() {
+    nextScreen('stories-screen');
+    storyIndex = 0;
+
+    const videos = {
+        "Falta de prática": "assets/videos/practice.mp4",
+        "Medo de falar": "assets/videos/fear.mp4",
+        "Pronúncia": "assets/videos/pronunciation.mp4",
+        "Vocabulário": "assets/videos/vocabulary.mp4"
+    };
+
+    function loadVideo(index) {
+        if (index >= selectedChallenges.length) {
+            nextScreen('summary-screen');
+            return;
+        }
+
+        const challenge = selectedChallenges[index];
+        const videoSrc = videos[challenge];
+        const storiesContainer = document.getElementById('stories-container');
+
+        storiesContainer.innerHTML = `
+            <video id="current-video" src="${videoSrc}" controls autoplay></video>
+            <button onclick="nextVideo()">Próximo</button>
+        `;
+    }
+
+    window.nextVideo = function () {
+        const videoElement = document.getElementById('current-video');
+        if (videoElement) videoElement.pause();
+        storyIndex++;
+        loadVideo(storyIndex);
+    };
+
+    loadVideo(storyIndex);
+}
+
+// Mostrar resumo personalizado
 function showSummary() {
     const summaryText = `
         ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
@@ -63,7 +101,7 @@ function showSummary() {
     document.getElementById('summary-content').innerText = summaryText;
 }
 
-// Finalizar o onboarding
+// Finalizar e redirecionar
 function finishOnboarding() {
     window.location.href = "https://goodstart.com.br";
 }
