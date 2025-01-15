@@ -14,8 +14,21 @@ function saveAnswer(question, answer) {
     if (question === 'level') {
         document.getElementById('english-level-screen').classList.add('hidden');
         document.getElementById('challenges-screen').classList.remove('hidden');
-    } else if (question === 'challenges') {
-        loadPersonalizedStories();
+    }
+}
+
+// Nova função para capturar as dificuldades e avançar
+function saveChallenges() {
+    let selectedChallenges = [];
+    document.querySelectorAll('input[name="challenges"]:checked').forEach((checkbox) => {
+        selectedChallenges.push(checkbox.value);
+    });
+
+    if (selectedChallenges.length > 0) {
+        userResponses['challenges'] = selectedChallenges;
+        loadPersonalizedStories();  // Avança para os stories personalizados
+    } else {
+        alert("Por favor, selecione pelo menos uma dificuldade.");
     }
 }
 
@@ -24,18 +37,18 @@ function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
 
-    // Exemplo de carregamento de stories
-    const storiesContainer = document.getElementById('stories-container');
-    storiesContainer.innerHTML = `<p>Carregando stories personalizados para: ${userResponses['challenges']}</p>`;
-}
+    let storiesContainer = document.getElementById('stories-container');
+    storiesContainer.innerHTML = "";  // Limpa o conteúdo anterior
 
-// Função para continuar o onboarding após os stories
-function continueOnboarding() {
-    document.getElementById('stories-screen').classList.add('hidden');
-    document.getElementById('finish-screen').classList.remove('hidden');
+    userResponses['challenges'].forEach(challenge => {
+        let storyDiv = document.createElement('div');
+        storyDiv.innerText = `Dica personalizada para: ${challenge}`;
+        storiesContainer.appendChild(storyDiv);
+    });
 }
 
 // Função para finalizar o onboarding
 function finishOnboarding() {
-    window.location.href = "https://goodstart.com.br"; // Redireciona para a plataforma
+    document.getElementById('stories-screen').classList.add('hidden');
+    document.getElementById('finish-screen').classList.remove('hidden');
 }
