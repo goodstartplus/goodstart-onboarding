@@ -8,20 +8,20 @@
 </head>
 <body>
 
-    <!-- Tela de Vídeo Inicial -->
+    <!-- 🎬 Tela Inicial - Vídeo de Introdução -->
     <section id="intro-video-screen" class="screen">
         <video src="assets/videos/intro.mp4" controls autoplay></video>
         <button onclick="nextScreen('name-screen')">Continuar</button>
     </section>
 
-    <!-- Qual é o seu nome? -->
+    <!-- 📝 Qual é o seu nome? -->
     <section id="name-screen" class="screen hidden">
         <h2>Qual é o seu nome?</h2>
         <input type="text" id="user-name" placeholder="Digite seu nome">
         <button onclick="saveName()">Continuar</button>
     </section>
 
-    <!-- Quantos anos você tem? -->
+    <!-- 📊 Quantos anos você tem? -->
     <section id="age-screen" class="screen hidden">
         <h2>Quantos anos você tem?</h2>
         <button onclick="saveAnswer('age', '<18')">Menos de 18</button>
@@ -30,7 +30,7 @@
         <button onclick="saveAnswer('age', '36+')">36+</button>
     </section>
 
-    <!-- Como você estudou inglês? -->
+    <!-- 📚 Como você estudou inglês? -->
     <section id="study-method-screen" class="screen hidden">
         <h2>Como você estudou inglês?</h2>
         <label><input type="checkbox" value="Ensino Fundamental/Médio"> Ensino Fundamental/Médio</label><br>
@@ -41,7 +41,7 @@
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- Por que você quer aprender inglês? -->
+    <!-- 🎯 Por que você quer aprender inglês? -->
     <section id="reason-screen" class="screen hidden">
         <h2>Por que você quer aprender inglês?</h2>
         <label><input type="checkbox" value="Férias no exterior"> Férias no exterior</label><br>
@@ -50,56 +50,43 @@
         <button onclick="saveCheckboxes('reason')">Continuar</button>
     </section>
 
-    <!-- Você está em boas mãos -->
-    <section id="trust-screen" class="screen hidden">
-        <h2>Você está em boas mãos!</h2>
-        <img src="assets/images/trust-graphic.png" alt="Recursos da plataforma">
-        <button onclick="nextScreen('conversation-goal-screen')">Continuar</button>
+    <!-- 💬 Quais são suas maiores dificuldades? -->
+    <section id="challenges-screen" class="screen hidden">
+        <h2>Quais são suas maiores dificuldades?</h2>
+        <label><input type="checkbox" value="Falta de prática"> Falta de prática</label><br>
+        <label><input type="checkbox" value="Medo de falar"> Medo de falar</label><br>
+        <label><input type="checkbox" value="Pronúncia"> Pronúncia</label><br>
+        <label><input type="checkbox" value="Vocabulário"> Vocabulário</label><br>
+        <button onclick="loadPersonalizedVideos()">Continuar</button>
     </section>
 
-    <!-- Qual o seu objetivo na prática de conversação? -->
-    <section id="conversation-goal-screen" class="screen hidden">
-        <h2>Qual é o seu objetivo na prática de conversação?</h2>
-        <button onclick="saveAnswer('conversation-goal', '30 minutos por dia')">30 minutos por dia</button>
-        <button onclick="saveAnswer('conversation-goal', '15 minutos por dia')">15 minutos por dia</button>
-        <button onclick="saveAnswer('conversation-goal', '5 minutos por dia')">5 minutos por dia</button>
+    <!-- 🎥 Vídeos Personalizados -->
+    <section id="personalized-videos-screen" class="screen hidden">
+        <h2>Dicas Personalizadas para Você</h2>
+        <div id="videos-container"></div>
+        <button onclick="nextScreen('summary-screen')">Continuar</button>
     </section>
 
-    <!-- Resumo Personalizado -->
-<section id="summary-screen" class="screen hidden">
-    <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
-    <p id="summary-content"></p>
-    <button onclick="continueToPersonalizedVideos()">Continuar</button>
+    <!-- 📈 Resumo Personalizado -->
+    <section id="summary-screen" class="screen hidden">
+        <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
+        <p id="summary-content"></p>
+        <button onclick="nextScreen('expectation-screen')">Continuar</button>
+    </section>
 
-</section>
+    <!-- 🔮 O que você pode esperar -->
+    <section id="expectation-screen" class="screen hidden">
+        <h2>O que você pode esperar</h2>
+        <ul>
+            <li>Semana 1: 105 novas palavras</li>
+            <li>Semana 4: 144 novas frases</li>
+            <li>Semana 12: 1080 minutos de fala</li>
+            <li>Mês 12: Fale com confiança!</li>
+        </ul>
+        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+    </section>
 
-<!-- O que você pode esperar -->
-<section id="expectation-screen" class="screen hidden">
-    <h2>O que você pode esperar</h2>
-    <ul>
-        <li>Semana 1: 105 novas palavras</li>
-        <li>Semana 4: 144 novas frases</li>
-        <li>Semana 12: 1080 minutos de fala</li>
-        <li>Mês 12: Fale com confiança!</li>
-    </ul>
-    <button onclick="nextScreen('personalized-videos-screen')">Continuar</button>
-</section>
-
-<!-- Vídeos Personalizados -->
-<section id="personalized-videos-screen" class="screen hidden">
-    <h2>Dicas Personalizadas para Você</h2>
-    <div id="videos-container"></div>
-    <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
-</section>
-
-<!-- Vídeo de Celebração -->
-<section id="celebration-video-screen" class="screen hidden">
-    <video src="assets/videos/celebration.mp4" controls autoplay></video>
-    <button onclick="finishOnboarding()">Acessar Plataforma</button>
-</section>
-
-
-    <!-- Vídeo de Celebração -->
+    <!-- 🎉 Vídeo de Celebração -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
