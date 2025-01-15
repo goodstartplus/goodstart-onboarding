@@ -33,8 +33,8 @@ function saveAnswer(question, answer) {
     if (question === 'age') {
         nextScreen('study-method-screen');
     } else if (question === 'conversation-goal') {
-        nextScreen('summary-screen');
         showSummary();
+        nextScreen('summary-screen');
     }
 }
 
@@ -64,7 +64,7 @@ function showSummary() {
     document.getElementById('summary-content').innerText = summaryText;
 }
 
-// Carregar vídeos personalizados com base nos desafios selecionados
+// 🔥 Carregar vídeos personalizados com base nos desafios selecionados
 function loadPersonalizedVideos() {
     const challenges = userResponses['reason'] || [];
     const videos = {
@@ -88,6 +88,11 @@ function loadPersonalizedVideos() {
     });
 
     nextScreen('personalized-videos-screen');
+}
+
+// ✅ Chamar a função ao avançar para vídeos personalizados
+function continueToPersonalizedVideos() {
+    loadPersonalizedVideos();
 }
 
 // Finalizar e redirecionar
