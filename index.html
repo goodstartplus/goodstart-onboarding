@@ -25,11 +25,12 @@
         <!-- Pergunta: Quais são suas maiores dificuldades? -->
         <section id="challenges-screen" class="screen hidden">
             <h2>Quais são suas maiores dificuldades?</h2>
-            <label><input type="checkbox" value="Falta de prática"> Falta de prática</label><br>
-            <label><input type="checkbox" value="Medo de falar"> Medo de falar</label><br>
-            <label><input type="checkbox" value="Pronúncia"> Pronúncia</label><br>
-            <label><input type="checkbox" value="Vocabulário"> Vocabulário</label><br>
-            <button onclick="showStories()">Continuar</button>
+            <label><input type="checkbox" name="challenges" value="Falta de prática"> Falta de prática</label><br>
+            <label><input type="checkbox" name="challenges" value="Medo de falar"> Medo de falar</label><br>
+            <label><input type="checkbox" name="challenges" value="Pronúncia"> Pronúncia</label><br>
+            <label><input type="checkbox" name="challenges" value="Vocabulário"> Vocabulário</label><br>
+            <!-- Botão corrigido -->
+            <button onclick="saveChallenges()">Continuar</button>
         </section>
 
         <!-- Área para os stories personalizados -->
