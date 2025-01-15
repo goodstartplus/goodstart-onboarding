@@ -17,25 +17,24 @@ function saveAnswer(question, answer) {
     }
 }
 
-// Função para salvar desafios selecionados e carregar vídeos
+// Função para salvar os desafios e carregar os vídeos
 function saveChallenges() {
-    const selectedChallenges = Array.from(document.querySelectorAll('#challenges-screen input[type="checkbox"]:checked'))
-        .map(checkbox => checkbox.value);
-    
+    const checkboxes = document.querySelectorAll('#challenges-screen input[type="checkbox"]:checked');
+    const selectedChallenges = Array.from(checkboxes).map(cb => cb.value);
     userResponses['challenges'] = selectedChallenges;
 
-    loadPersonalizedVideos();
+    if (selectedChallenges.length > 0) {
+        loadPersonalizedStories(selectedChallenges);
+    } else {
+        alert("Selecione pelo menos uma dificuldade para continuar.");
+    }
 }
 
-// Função para carregar os vídeos personalizados com navegação de stories
-function loadPersonalizedStories() {
+// Função para carregar os vídeos personalizados com base nas respostas
+function loadPersonalizedStories(selectedChallenges) {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
 
-    const storiesContainer = document.getElementById('stories-container');
-    storiesContainer.innerHTML = ''; // Limpar conteúdo anterior
-
-    const selectedChallenges = userResponses['challenges'];
     let storyIndex = 0;
 
     const videos = {
@@ -54,34 +53,27 @@ function loadPersonalizedStories() {
         const challenge = selectedChallenges[index];
         const videoSrc = videos[challenge];
 
+        const storiesContainer = document.getElementById('stories-container');
+        storiesContainer.innerHTML = ""; // Limpa o vídeo anterior
+
         const videoElement = document.createElement('video');
         videoElement.src = videoSrc;
         videoElement.autoplay = true;
         videoElement.muted = false;
-        videoElement.controls = false;
+        videoElement.controls = true;
         videoElement.className = 'story-video';
 
         videoElement.onended = function () {
-            storyIndex++;
-            loadVideo(storyIndex);
+            loadVideo(index + 1);
         };
 
-        // Progresso visual
-        const progress = document.getElementById('progress');
-        progress.style.width = '0%';
-        setTimeout(() => {
-            progress.style.width = '100%';
-        }, 50);
-
-        storiesContainer.innerHTML = '';
         storiesContainer.appendChild(videoElement);
     }
 
     loadVideo(storyIndex);
 }
 
-
-// Função para continuar o onboarding após os vídeos
+// Função para continuar após os vídeos
 function continueOnboarding() {
     document.getElementById('stories-screen').classList.add('hidden');
     document.getElementById('finish-screen').classList.remove('hidden');
