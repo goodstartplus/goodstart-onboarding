@@ -1,1 +1,112 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
 
+/* Fundo geral */
+body {
+    background-color: #f2f4f8;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container principal */
+#app {
+    width: 90%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Títulos */
+h1, h2 {
+    margin-bottom: 20px;
+    color: #2d3748;
+}
+
+/* Botões padrão */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    margin: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Checkbox customizado */
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Seções ocultas */
+.hidden {
+    display: none;
+}
+
+/* Container dos stories */
+#stories-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.story-card {
+    width: 120px;
+    height: 180px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.story-card:hover {
+    transform: scale(1.05);
+    background-color: #cbd5e0;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    #app {
+        padding: 20px;
+    }
+
+    button {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .story-card {
+        width: 100px;
+        height: 150px;
+    }
+}
