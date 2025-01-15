@@ -1,79 +1,68 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
 
-// Função para iniciar o onboarding com o vídeo de introdução
+// Função genérica para navegar entre as telas
+function nextScreen(nextScreenId) {
+    // Oculta todas as telas
+    const screens = document.querySelectorAll('.screen');
+    screens.forEach(screen => screen.classList.add('hidden'));
+
+    // Exibe a próxima tela
+    document.getElementById(nextScreenId).classList.remove('hidden');
+}
+
+// Inicia o onboarding com o vídeo de introdução
 function startOnboarding() {
-    document.getElementById('intro-video-screen').classList.remove('hidden');
+    nextScreen('intro-video-screen');
 }
 
-// Continuar após o vídeo de introdução
-function continueAfterIntro() {
-    document.getElementById('intro-video-screen').classList.add('hidden');
-    document.getElementById('name-screen').classList.remove('hidden');
-}
-
-// Salvar nome e avançar
+// Salvar o nome e avançar
 function saveName() {
     const name = document.getElementById('user-name').value;
     if (name.trim() !== "") {
         userResponses['Nome'] = name;
-        document.getElementById('name-screen').classList.add('hidden');
-        document.getElementById('age-screen').classList.remove('hidden');
+        nextScreen('age-screen');
     } else {
         alert("Por favor, insira seu nome.");
     }
 }
 
-// Salvar idade e avançar
-function saveAge(age) {
-    userResponses['Idade'] = age;
-    document.getElementById('age-screen').classList.add('hidden');
-    document.getElementById('study-method-screen').classList.remove('hidden');
+// Salvar a idade e avançar
+function saveAnswer(question, answer) {
+    userResponses[question] = answer;
+
+    if (question === 'age') {
+        nextScreen('study-method-screen');
+    } else if (question === 'conversation-goal') {
+        showSummary();
+        nextScreen('summary-screen');
+    }
 }
 
-// Salvar métodos de estudo e avançar
-function saveStudyMethod() {
-    const checkboxes = document.querySelectorAll('#study-method-screen input[type="checkbox"]:checked');
-    const methods = Array.from(checkboxes).map(cb => cb.value);
-    userResponses['Como estudou inglês'] = methods;
-    document.getElementById('study-method-screen').classList.add('hidden');
-    document.getElementById('reason-screen').classList.remove('hidden');
-}
+// Salvar checkbox (métodos de estudo e motivos)
+function saveCheckboxes(type) {
+    const checkboxes = document.querySelectorAll(`#${type}-screen input[type="checkbox"]:checked`);
+    const selections = Array.from(checkboxes).map(cb => cb.value);
 
-// Salvar motivos e avançar
-function saveReason() {
-    const checkboxes = document.querySelectorAll('#reason-screen input[type="checkbox"]:checked');
-    const reasons = Array.from(checkboxes).map(cb => cb.value);
-    userResponses['Motivo para aprender'] = reasons;
-    document.getElementById('reason-screen').classList.add('hidden');
-    document.getElementById('features-screen').classList.remove('hidden');
-}
+    userResponses[type] = selections;
 
-// Avançar após mostrar recursos
-function continueAfterFeatures() {
-    document.getElementById('features-screen').classList.add('hidden');
-    document.getElementById('practice-goal-screen').classList.remove('hidden');
-}
-
-// Salvar objetivo de prática e avançar
-function savePracticeGoal(goal) {
-    userResponses['Objetivo de prática'] = goal;
-    document.getElementById('practice-goal-screen').classList.add('hidden');
-    showSummary();
+    if (type === 'study-method') {
+        nextScreen('reason-screen');
+    } else if (type === 'reason') {
+        nextScreen('trust-screen');
+    }
 }
 
 // Mostrar resumo personalizado
 function showSummary() {
     const summaryText = `
         ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
-        - Idade: ${userResponses['Idade']}
-        - Como estudou inglês: ${userResponses['Como estudou inglês'].join(', ')}
-        - Motivo: ${userResponses['Motivo para aprender'].join(', ')}
-        - Objetivo de prática: ${userResponses['Objetivo de prática']}
+        - Idade: ${userResponses['age']}
+        - Como estudou inglês: ${userResponses['study-method'].join(', ')}
+        - Motivo: ${userResponses['reason'].join(', ')}
+        - Objetivo de prática: ${userResponses['conversation-goal']}
     `;
-    document.getElementById('summary-text').innerText = summaryText;
-
-    document.getElementById('summary-screen').classList.remove('hidden');
+    document.getElementById('summary-content').innerText = summaryText;
 }
 
 // Finalizar e redirecionar
