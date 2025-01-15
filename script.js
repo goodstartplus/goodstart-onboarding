@@ -17,7 +17,7 @@ function saveAnswer(question, answer) {
     }
 }
 
-// Nova função para capturar as dificuldades e avançar
+// Função para capturar as dificuldades selecionadas e avançar
 function saveChallenges() {
     let selectedChallenges = [];
     document.querySelectorAll('input[name="challenges"]:checked').forEach((checkbox) => {
@@ -37,18 +37,25 @@ function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
 
-    let storiesContainer = document.getElementById('stories-container');
+    const storiesContainer = document.getElementById('stories-container');
     storiesContainer.innerHTML = "";  // Limpa o conteúdo anterior
 
+    // Exemplo de carregamento de stories personalizados
     userResponses['challenges'].forEach(challenge => {
         let storyDiv = document.createElement('div');
+        storyDiv.classList.add('story-item');
         storyDiv.innerText = `Dica personalizada para: ${challenge}`;
         storiesContainer.appendChild(storyDiv);
     });
 }
 
-// Função para finalizar o onboarding
-function finishOnboarding() {
+// Função para continuar o onboarding após os stories
+function continueOnboarding() {
     document.getElementById('stories-screen').classList.add('hidden');
     document.getElementById('finish-screen').classList.remove('hidden');
+}
+
+// Função para finalizar o onboarding
+function finishOnboarding() {
+    window.location.href = "https://goodstart.com.br"; // Redireciona para a plataforma
 }
