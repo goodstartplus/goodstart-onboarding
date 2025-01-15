@@ -1,65 +1,87 @@
 let userResponses = {};
 
-// Avança para a próxima tela
+// Helper: Hide all screens and show the target screen
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
+    window.scrollTo(0, 0); // Scroll to top for smooth UX
 }
 
-// Salva o nome e avança
+// Validate and save the user's name
 function saveName() {
-    const name = document.getElementById('user-name').value.trim();
-    if (name !== "") {
+    const nameInput = document.getElementById('user-name');
+    const name = nameInput.value.trim();
+
+    if (name.length >= 2) {
         userResponses['Nome'] = name;
         nextScreen('age-screen');
     } else {
-        alert("Por favor, insira seu nome.");
+        alert("Por favor, insira um nome válido com pelo menos 2 caracteres.");
+        nameInput.focus();
     }
 }
 
-// Salva respostas únicas (idade, objetivo de conversação)
+// Generic function to save single-choice answers
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
-    if (question === 'age') {
-        nextScreen('study-method-screen');
-    } else if (question === 'conversation-goal') {
-        nextScreen('summary-screen');
-        showSummary();
-    }
+    const flow = {
+        'age': 'study-method-screen',
+        'conversation-goal': () => {
+            showSummary();
+            return 'summary-screen';
+        }
+    };
+
+    const next = flow[question];
+    nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// Salva respostas múltiplas (checkboxes)
+// Save multiple-choice (checkbox) answers
 function saveCheckboxes(question) {
-    const checkboxes = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    const values = Array.from(checkboxes).map(cb => cb.value);
+    const checked = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+    const values = Array.from(checked).map(cb => cb.value);
+
+    if (values.length === 0) {
+        alert("Por favor, selecione pelo menos uma opção.");
+        return;
+    }
+
     userResponses[question] = values;
 
-    if (question === 'study-method') {
-        nextScreen('reason-screen');
-    } else if (question === 'reason') {
-        nextScreen('challenges-screen');
-    } else if (question === 'challenges') {
-        nextScreen('trust-screen');
-    }
+    const flow = {
+        'study-method': 'reason-screen',
+        'reason': 'challenges-screen',
+        'challenges': () => {
+            loadPersonalizedVideos();
+            return 'trust-screen';
+        }
+    };
+
+    const next = flow[question];
+    nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// Mostra o resumo personalizado
+// Show personalized summary
 function showSummary() {
+    const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
+
     const summaryText = `
-        ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
-        - Idade: ${userResponses['age']}
-        - Como estudou inglês: ${userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado'}
-        - Motivo: ${userResponses['reason'] ? userResponses['reason'].join(', ') : 'Não informado'}
-        - Desafios: ${userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'}
-        - Objetivo de prática: ${userResponses['conversation-goal']}
+        ${Nome}, vamos construir seu plano com base nas suas respostas:
+        - Idade: ${age}
+        - Como estudou inglês: ${study ? study.join(', ') : 'Não informado'}
+        - Motivo: ${reason ? reason.join(', ') : 'Não informado'}
+        - Desafios: ${challenges ? challenges.join(', ') : 'Não informado'}
+        - Objetivo de prática: ${goal}
     `;
+
     document.getElementById('summary-content').innerText = summaryText;
+    document.getElementById('summary-name').innerText = Nome;
 }
 
-// Carrega os vídeos personalizados com base nos desafios
+// Load videos based on user challenges
 function loadPersonalizedVideos() {
-    const videos = {
+    const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
         "Medo de falar": "assets/videos/fear.mp4",
         "Pronúncia": "assets/videos/pronunciation.mp4",
@@ -67,25 +89,22 @@ function loadPersonalizedVideos() {
     };
 
     const container = document.getElementById('videos-container');
-    container.innerHTML = "";
+    container.innerHTML = "";  // Clear previous content
 
-    const challenges = userResponses['challenges'] || [];
-
-    challenges.forEach(challenge => {
-        if (videos[challenge]) {
+    (userResponses['challenges'] || []).forEach(challenge => {
+        if (videoMap[challenge]) {
             const videoElement = document.createElement('video');
-            videoElement.src = videos[challenge];
+            videoElement.src = videoMap[challenge];
             videoElement.controls = true;
-            videoElement.autoplay = true;
+            videoElement.autoplay = false;  // Avoid autoplay overload
             videoElement.classList.add('personalized-video');
             container.appendChild(videoElement);
         }
     });
-
-    nextScreen('personalized-videos-screen');
 }
 
-// Finaliza o onboarding
+// End onboarding and redirect
 function finishOnboarding() {
+    alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
 }
