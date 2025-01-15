@@ -6,10 +6,10 @@ function nextScreen(screenId) {
     document.getElementById(screenId).classList.remove('hidden');
 }
 
-// Salva o nome
+// Salva o nome e avança
 function saveName() {
-    const name = document.getElementById('user-name').value;
-    if (name.trim() !== "") {
+    const name = document.getElementById('user-name').value.trim();
+    if (name !== "") {
         userResponses['Nome'] = name;
         nextScreen('age-screen');
     } else {
@@ -17,7 +17,7 @@ function saveName() {
     }
 }
 
-// Salva respostas únicas
+// Salva respostas únicas (idade, objetivo de conversação)
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
@@ -29,28 +29,35 @@ function saveAnswer(question, answer) {
     }
 }
 
-// Função corrigida para salvar checkboxes e avançar
+// Salva respostas múltiplas (checkboxes)
 function saveCheckboxes(question) {
     const checkboxes = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    const selectedValues = Array.from(checkboxes).map(cb => cb.value);
-
-    if (selectedValues.length === 0) {
-        alert("Por favor, selecione pelo menos uma opção.");
-        return;
-    }
-
-    userResponses[question] = selectedValues;
+    const values = Array.from(checkboxes).map(cb => cb.value);
+    userResponses[question] = values;
 
     if (question === 'study-method') {
         nextScreen('reason-screen');
     } else if (question === 'reason') {
         nextScreen('challenges-screen');
     } else if (question === 'challenges') {
-        loadPersonalizedVideos();
+        nextScreen('trust-screen');
     }
 }
 
-// Carrega vídeos personalizados
+// Mostra o resumo personalizado
+function showSummary() {
+    const summaryText = `
+        ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
+        - Idade: ${userResponses['age']}
+        - Como estudou inglês: ${userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado'}
+        - Motivo: ${userResponses['reason'] ? userResponses['reason'].join(', ') : 'Não informado'}
+        - Desafios: ${userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'}
+        - Objetivo de prática: ${userResponses['conversation-goal']}
+    `;
+    document.getElementById('summary-content').innerText = summaryText;
+}
+
+// Carrega os vídeos personalizados com base nos desafios
 function loadPersonalizedVideos() {
     const videos = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -62,38 +69,20 @@ function loadPersonalizedVideos() {
     const container = document.getElementById('videos-container');
     container.innerHTML = "";
 
-    (userResponses['challenges'] || []).forEach(challenge => {
+    const challenges = userResponses['challenges'] || [];
+
+    challenges.forEach(challenge => {
         if (videos[challenge]) {
-            const video = document.createElement('video');
-            video.src = videos[challenge];
-            video.controls = true;
-            video.autoplay = false;
-            video.classList.add('personalized-video');
-            container.appendChild(video);
+            const videoElement = document.createElement('video');
+            videoElement.src = videos[challenge];
+            videoElement.controls = true;
+            videoElement.autoplay = true;
+            videoElement.classList.add('personalized-video');
+            container.appendChild(videoElement);
         }
     });
 
     nextScreen('personalized-videos-screen');
-}
-
-// Salva a resposta do objetivo de prática e avança
-function saveConversationGoal(goal) {
-    userResponses['Objetivo de prática'] = goal;
-    nextScreen('summary-screen');
-    showSummary();
-}
-
-
-// Mostra o resumo personalizado
-function showSummary() {
-    const summaryText = `
-        ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
-        - Idade: ${userResponses['age']}
-        - Como estudou inglês: ${userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado'}
-        - Motivo: ${userResponses['reason'] ? userResponses['reason'].join(', ') : 'Não informado'}
-        - Objetivo de prática: ${userResponses['conversation-goal']}
-    `;
-    document.getElementById('summary-content').innerText = summaryText;
 }
 
 // Finaliza o onboarding
