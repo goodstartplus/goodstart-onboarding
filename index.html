@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Goodstart+</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Tela de Boas-vindas -->
+        <section id="welcome-screen" class="screen">
+            <h1>Bem-vindo ao Goodstart+</h1>
+            <button onclick="startOnboarding()">Começar</button>
+        </section>
 
+        <!-- Pergunta: Qual é o seu nível de inglês? -->
+        <section id="english-level-screen" class="screen hidden">
+            <h2>Qual é o seu nível de inglês?</h2>
+            <button onclick="saveAnswer('level', 'Iniciante')">Iniciante</button>
+            <button onclick="saveAnswer('level', 'Intermediário')">Intermediário</button>
+            <button onclick="saveAnswer('level', 'Avançado')">Avançado</button>
+        </section>
+
+        <!-- Pergunta: Quais são suas maiores dificuldades? -->
+        <section id="challenges-screen" class="screen hidden">
+            <h2>Quais são suas maiores dificuldades?</h2>
+            <label><input type="checkbox" value="Falta de prática"> Falta de prática</label><br>
+            <label><input type="checkbox" value="Medo de falar"> Medo de falar</label><br>
+            <label><input type="checkbox" value="Pronúncia"> Pronúncia</label><br>
+            <label><input type="checkbox" value="Vocabulário"> Vocabulário</label><br>
+            <button onclick="showStories()">Continuar</button>
+        </section>
+
+        <!-- Área para os stories personalizados -->
+        <section id="stories-screen" class="screen hidden">
+            <h2>Vamos começar com algumas dicas!</h2>
+            <div id="stories-container">
+                <!-- Os stories serão carregados dinamicamente aqui -->
+            </div>
+            <button onclick="continueOnboarding()">Continuar</button>
+        </section>
+
+        <!-- Finalização -->
+        <section id="finish-screen" class="screen hidden">
+            <h2>Seu plano está pronto!</h2>
+            <p>Agora você pode explorar todos os recursos do Goodstart+.</p>
+            <button onclick="finishOnboarding()">Acessar Plataforma</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
