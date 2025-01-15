@@ -33,13 +33,16 @@
 </section>
 
         <!-- Área para os stories personalizados -->
-        <section id="stories-screen" class="screen hidden">
-            <h2>Vamos começar com algumas dicas!</h2>
-            <div id="stories-container">
-                <!-- Os stories serão carregados dinamicamente aqui -->
-            </div>
-            <button onclick="continueOnboarding()">Continuar</button>
-        </section>
+<section id="stories-screen" class="screen hidden">
+    <div class="progress-bar">
+        <div id="progress"></div>
+    </div>
+    <div id="stories-container">
+        <!-- Vídeos carregados dinamicamente -->
+    </div>
+    <button onclick="continueOnboarding()">Próximo</button>
+</section>
+
 
         <!-- Finalização -->
         <section id="finish-screen" class="screen hidden">
