@@ -27,39 +27,59 @@ function saveChallenges() {
     loadPersonalizedVideos();
 }
 
-// Função para carregar vídeos personalizados com base nas respostas
-function loadPersonalizedVideos() {
+// Função para carregar os vídeos personalizados com navegação de stories
+function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
 
     const storiesContainer = document.getElementById('stories-container');
-    storiesContainer.innerHTML = '';  // Limpa o conteúdo anterior
+    storiesContainer.innerHTML = ''; // Limpar conteúdo anterior
 
-    userResponses['challenges'].forEach(challenge => {
-        let videoFile = '';
+    const selectedChallenges = userResponses['challenges'];
+    let storyIndex = 0;
 
-        switch (challenge) {
-            case 'Falta de prática':
-                videoFile = 'practice.mp4';
-                break;
-            case 'Medo de falar':
-                videoFile = 'fear.mp4';
-                break;
-            case 'Pronúncia':
-                videoFile = 'pronunciation.mp4';
-                break;
-            case 'Vocabulário':
-                videoFile = 'vocabulary.mp4';
-                break;
+    const videos = {
+        "Falta de prática": "assets/videos/practice.mp4",
+        "Medo de falar": "assets/videos/fear.mp4",
+        "Pronúncia": "assets/videos/pronunciation.mp4",
+        "Vocabulário": "assets/videos/vocabulary.mp4"
+    };
+
+    function loadVideo(index) {
+        if (index >= selectedChallenges.length) {
+            continueOnboarding();
+            return;
         }
 
+        const challenge = selectedChallenges[index];
+        const videoSrc = videos[challenge];
+
         const videoElement = document.createElement('video');
-        videoElement.src = `assets/videos/${videoFile}`;
-        videoElement.controls = true;
-        videoElement.width = 400;
+        videoElement.src = videoSrc;
+        videoElement.autoplay = true;
+        videoElement.muted = false;
+        videoElement.controls = false;
+        videoElement.className = 'story-video';
+
+        videoElement.onended = function () {
+            storyIndex++;
+            loadVideo(storyIndex);
+        };
+
+        // Progresso visual
+        const progress = document.getElementById('progress');
+        progress.style.width = '0%';
+        setTimeout(() => {
+            progress.style.width = '100%';
+        }, 50);
+
+        storiesContainer.innerHTML = '';
         storiesContainer.appendChild(videoElement);
-    });
+    }
+
+    loadVideo(storyIndex);
 }
+
 
 // Função para continuar o onboarding após os vídeos
 function continueOnboarding() {
