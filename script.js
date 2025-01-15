@@ -24,52 +24,18 @@ function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
 
-    const selectedChallenges = userResponses['challenges'] || [];
+    // Exemplo de carregamento de stories
     const storiesContainer = document.getElementById('stories-container');
-    storiesContainer.innerHTML = '';
-
-    selectedChallenges.forEach(challenge => {
-        let storyFile = '';
-        switch (challenge) {
-            case 'Falta de prática':
-                storyFile = 'stories/practice.html';
-                break;
-            case 'Medo de falar':
-                storyFile = 'stories/fear.html';
-                break;
-            case 'Pronúncia':
-                storyFile = 'stories/pronunciation.html';
-                break;
-            case 'Vocabulário':
-                storyFile = 'stories/vocabulary.html';
-                break;
-        }
-        if (storyFile) {
-            const iframe = document.createElement('iframe');
-            iframe.src = storyFile;
-            iframe.classList.add('story-frame');
-            storiesContainer.appendChild(iframe);
-        }
-    });
+    storiesContainer.innerHTML = `<p>Carregando stories personalizados para: ${userResponses['challenges']}</p>`;
 }
 
-// Função para selecionar múltiplos desafios
-function toggleChallenge(challenge) {
-    if (!userResponses['challenges']) {
-        userResponses['challenges'] = [];
-    }
-
-    const index = userResponses['challenges'].indexOf(challenge);
-    if (index > -1) {
-        userResponses['challenges'].splice(index, 1);
-    } else {
-        userResponses['challenges'].push(challenge);
-    }
+// Função para continuar o onboarding após os stories
+function continueOnboarding() {
+    document.getElementById('stories-screen').classList.add('hidden');
+    document.getElementById('finish-screen').classList.remove('hidden');
 }
 
 // Função para finalizar o onboarding
 function finishOnboarding() {
-    document.getElementById('stories-screen').classList.add('hidden');
-    document.getElementById('final-screen').classList.remove('hidden');
-    console.log('Respostas do usuário:', userResponses);
+    window.location.href = "https://goodstart.com.br"; // Redireciona para a plataforma
 }
