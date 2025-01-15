@@ -1,5 +1,7 @@
 // Variável para armazenar as respostas do usuário
 let userResponses = {};
+let selectedChallenges = [];
+let storyIndex = 0;
 
 // Função para iniciar o onboarding
 function startOnboarding() {
@@ -17,25 +19,31 @@ function saveAnswer(question, answer) {
     }
 }
 
-// Função para salvar os desafios e carregar os vídeos
+// Função para salvar desafios selecionados
 function saveChallenges() {
+    selectedChallenges = [];
     const checkboxes = document.querySelectorAll('#challenges-screen input[type="checkbox"]:checked');
-    const selectedChallenges = Array.from(checkboxes).map(cb => cb.value);
-    userResponses['challenges'] = selectedChallenges;
+    checkboxes.forEach(checkbox => selectedChallenges.push(checkbox.value));
 
     if (selectedChallenges.length > 0) {
-        loadPersonalizedStories(selectedChallenges);
-    } else {
-        alert("Selecione pelo menos uma dificuldade para continuar.");
+        loadPersonalizedStories();
     }
 }
 
-// Função para carregar os vídeos personalizados com base nas respostas
-function loadPersonalizedStories(selectedChallenges) {
+// Função para carregar os stories personalizados com base nas respostas
+function loadPersonalizedStories() {
     document.getElementById('challenges-screen').classList.add('hidden');
     document.getElementById('stories-screen').classList.remove('hidden');
+    storyIndex = 0;
+    loadVideo(storyIndex);
+}
 
-    let storyIndex = 0;
+// Função para carregar os vídeos de acordo com os desafios selecionados
+function loadVideo(index) {
+    if (index >= selectedChallenges.length) {
+        continueOnboarding();
+        return;
+    }
 
     const videos = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -44,42 +52,45 @@ function loadPersonalizedStories(selectedChallenges) {
         "Vocabulário": "assets/videos/vocabulary.mp4"
     };
 
-    function loadVideo(index) {
-        if (index >= selectedChallenges.length) {
-            continueOnboarding();
-            return;
-        }
+    const challenge = selectedChallenges[index];
+    const videoSrc = videos[challenge];
 
-        const challenge = selectedChallenges[index];
-        const videoSrc = videos[challenge];
+    const storiesContainer = document.getElementById('stories-container');
+    storiesContainer.innerHTML = "";  // Limpa o vídeo anterior
 
-        const storiesContainer = document.getElementById('stories-container');
-        storiesContainer.innerHTML = ""; // Limpa o vídeo anterior
+    const videoElement = document.createElement('video');
+    videoElement.src = videoSrc;
+    videoElement.autoplay = true;
+    videoElement.muted = false;
+    videoElement.controls = true;
+    videoElement.className = 'story-video';
 
-        const videoElement = document.createElement('video');
-        videoElement.src = videoSrc;
-        videoElement.autoplay = true;
-        videoElement.muted = false;
-        videoElement.controls = true;
-        videoElement.className = 'story-video';
+    // Carrega o próximo vídeo após o término
+    videoElement.onended = function () {
+        storyIndex++;
+        loadVideo(storyIndex);
+    };
 
-        videoElement.onended = function () {
-            loadVideo(index + 1);
-        };
-
-        storiesContainer.appendChild(videoElement);
-    }
-
-    loadVideo(storyIndex);
+    storiesContainer.appendChild(videoElement);
 }
 
 // Função para continuar após os vídeos
 function continueOnboarding() {
+    stopCurrentVideo();
     document.getElementById('stories-screen').classList.add('hidden');
     document.getElementById('finish-screen').classList.remove('hidden');
 }
 
+// Função para parar o vídeo atual
+function stopCurrentVideo() {
+    const videoElement = document.querySelector('#stories-container video');
+    if (videoElement) {
+        videoElement.pause();
+        videoElement.currentTime = 0;
+    }
+}
+
 // Função para finalizar o onboarding
 function finishOnboarding() {
-    window.location.href = "https://goodstart.com.br";
+    window.location.href = "https://goodstart.com.br"; // Redireciona para a plataforma
 }
