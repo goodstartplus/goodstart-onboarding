@@ -9,8 +9,12 @@ function nextScreen(screenId) {
 // Salva o nome
 function saveName() {
     const name = document.getElementById('user-name').value;
-    userResponses['Nome'] = name;
-    nextScreen('age-screen');
+    if (name.trim() !== "") {
+        userResponses['Nome'] = name;
+        nextScreen('age-screen');
+    } else {
+        alert("Por favor, insira seu nome.");
+    }
 }
 
 // Salva respostas únicas
@@ -21,16 +25,27 @@ function saveAnswer(question, answer) {
         nextScreen('study-method-screen');
     } else if (question === 'conversation-goal') {
         nextScreen('summary-screen');
+        showSummary();
     }
 }
 
-// Salva respostas múltiplas (checkboxes)
+// Função corrigida para salvar checkboxes e avançar
 function saveCheckboxes(question) {
     const checkboxes = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    const values = Array.from(checkboxes).map(cb => cb.value);
-    userResponses[question] = values;
+    const selectedValues = Array.from(checkboxes).map(cb => cb.value);
 
-    if (question === 'challenges') {
+    if (selectedValues.length === 0) {
+        alert("Por favor, selecione pelo menos uma opção.");
+        return;
+    }
+
+    userResponses[question] = selectedValues;
+
+    if (question === 'study-method') {
+        nextScreen('reason-screen');
+    } else if (question === 'reason') {
+        nextScreen('challenges-screen');
+    } else if (question === 'challenges') {
         loadPersonalizedVideos();
     }
 }
@@ -47,14 +62,30 @@ function loadPersonalizedVideos() {
     const container = document.getElementById('videos-container');
     container.innerHTML = "";
 
-    userResponses['challenges'].forEach(challenge => {
-        const video = document.createElement('video');
-        video.src = videos[challenge];
-        video.controls = true;
-        container.appendChild(video);
+    (userResponses['challenges'] || []).forEach(challenge => {
+        if (videos[challenge]) {
+            const video = document.createElement('video');
+            video.src = videos[challenge];
+            video.controls = true;
+            video.autoplay = false;
+            video.classList.add('personalized-video');
+            container.appendChild(video);
+        }
     });
 
     nextScreen('personalized-videos-screen');
+}
+
+// Mostra o resumo personalizado
+function showSummary() {
+    const summaryText = `
+        ${userResponses['Nome']}, vamos construir seu plano com base nas suas respostas:
+        - Idade: ${userResponses['age']}
+        - Como estudou inglês: ${userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado'}
+        - Motivo: ${userResponses['reason'] ? userResponses['reason'].join(', ') : 'Não informado'}
+        - Objetivo de prática: ${userResponses['conversation-goal']}
+    `;
+    document.getElementById('summary-content').innerText = summaryText;
 }
 
 // Finaliza o onboarding
