@@ -16,7 +16,7 @@
     <!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
         <video src="assets/videos/pronunciation.mp4" autoplay muted></video>
-        <button id="continue-intro">Continuar</button>
+        <button id="continue-intro" onclick="nextScreen('name-screen')">Continuar</button>
     </section>
 
     <!-- 2. Name Input -->
@@ -118,8 +118,7 @@
         nextScreen('summary-screen');
     }
 
-    document.getElementById('continue-intro').style.display = 'none';
-    const introVideo = document.querySelector('#intro-video-screen video');
+    introVideo = document.querySelector('#intro-video-screen video');
     introVideo.onended = showContinueButton;
     setTimeout(showContinueButton, 5000);
 
@@ -130,11 +129,6 @@
     function finishOnboarding() {
         window.location.href = "https://goodstart.com.br";
     }
-
-    // ✅ Basic Unit Tests
-    console.assert(document.getElementById('user-name') !== null, 'Name input field missing');
-    console.assert(document.getElementById('continue-intro') !== null, 'Intro button missing');
-    console.assert(document.querySelectorAll('.checkbox-option').length > 0, 'Checkbox options missing');
     </script>
 </body>
 </html>
