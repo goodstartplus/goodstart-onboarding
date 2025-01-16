@@ -209,4 +209,35 @@
   }
   </script>
 </body>
+    /* 🟥 Story-like Progress Bar */
+#video-progress-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.progress-bar-segment {
+    flex: 1;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    transition: background-color 0.4s;
+}
+
+.progress-bar-segment.completed {
+    background-color: #E50914;
+}
+
+/* 📱 Full-Screen Video Styling */
+#video-container video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    cursor: pointer;
+}
+</style>
+
 </html>
