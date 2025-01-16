@@ -1,71 +1,105 @@
 /* 🌙 Global Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #121212; /* Dark background */
-    color: #FFFFFF; /* White text */
+    background-color: #121212;
+    color: #FFFFFF;
     margin: 0;
     padding: 0;
 }
 
+/* 📝 Headings */
 h2, p {
     color: #FFFFFF;
     text-align: center;
+    margin-bottom: 20px;
 }
 
+/* 🔘 Buttons */
 button {
-    background-color: #E50914; /* Red accent */
+    background-color: #E50914;
     color: #FFFFFF;
-    padding: 12px 24px;
+    padding: 15px 25px;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 80%;
+    max-width: 300px;
+    margin-top: 20px;
 }
 
 button:hover {
-    background-color: #B20710; /* Darker red on hover */
+    background-color: #B20710;
 }
 
+/* 🔲 Input Fields */
 input[type="text"] {
     width: 80%;
-    padding: 12px;
-    margin-top: 10px;
-    border-radius: 25px;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 30px;
     border: 1px solid #333;
     background-color: #1F1F1F;
     color: #FFFFFF;
     font-size: 16px;
-}
-
-input[type="checkbox"] {
-    accent-color: #E50914;
-    margin-right: 8px;
-    transform: scale(1.2);
-}
-
-label {
-    font-size: 16px;
-    display: block;
-    margin: 10px 0;
-}
-
-/* 📱 Section Screens */
-.screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
     text-align: center;
-    background-color: #121212;
-    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.hidden {
+/* 🎯 Progress Bar */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #E50914;
+    transition: width 0.4s ease;
+}
+
+/* 🟦 Checkbox Cards */
+.checkbox-option {
+    background-color: #1F1F1F;
+    border: 2px solid #333;
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    width: 80%;
+    max-width: 350px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkbox-option:hover {
+    border-color: #E50914;
+    background-color: #292929;
+}
+
+.checkbox-option input[type="checkbox"] {
     display: none;
+}
+
+.checkbox-option .icon {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.checkbox-option.checked {
+    border-color: #E50914;
+    background-color: #292929;
+}
+
+.checkbox-option.checked .icon {
+    color: #E50914;
 }
 
 /* 🎥 Video Styling */
@@ -77,45 +111,6 @@ video {
     margin-bottom: 20px;
 }
 
-/* 📝 Input and Checkbox Sections */
-input[type="text"]:focus {
-    outline: none;
-    border: 1px solid #E50914;
-}
-
-label input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-label:hover {
-    color: #E50914;
-    cursor: pointer;
-}
-
-/* 🛑 Disabled Button */
-button:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-}
-
-/* 🎯 Progress Bar (Optional) */
-.progress-bar {
-    width: 100%;
-    height: 6px;
-    background-color: #333;
-    margin-top: 20px;
-    position: relative;
-}
-
-.progress-bar::before {
-    content: '';
-    display: block;
-    width: 0%;
-    height: 100%;
-    background-color: #E50914;
-    transition: width 0.4s ease;
-}
-
 /* 🗂️ Card-style Containers */
 .card {
     background-color: #1F1F1F;
@@ -125,26 +120,4 @@ button:disabled {
     margin-bottom: 20px;
     width: 90%;
     max-width: 600px;
-}
-
-/* 🎉 Celebration Section */
-#celebration-video-screen button {
-    margin-top: 20px;
-    background-color: #FFD700;
-    color: #121212;
-}
-
-#celebration-video-screen button:hover {
-    background-color: #FFC107;
-}
-
-/* 🔍 Responsive Design */
-@media (max-width: 600px) {
-    button {
-        width: 80%;
-    }
-
-    input[type="text"] {
-        width: 90%;
-    }
 }
