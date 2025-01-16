@@ -13,20 +13,20 @@
         <div class="progress-bar"></div>
     </div>
 
-    <!-- 1. Vídeo Inicial -->
+    <!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
         <video src="assets/videos/pronunciation.mp4" controls autoplay></video>
         <button id="continue-intro">Continuar</button>
     </section>
 
-    <!-- 2. Qual é o seu nome? -->
+    <!-- 2. Name Input -->
     <section id="name-screen" class="screen hidden">
         <h2>Qual é o seu nome?</h2>
-        <input type="text" id="user-name" placeholder="Digite seu nome" aria-label="Digite seu nome">
+        <input type="text" id="user-name" placeholder="Digite seu nome">
         <button onclick="saveName()">Continuar</button>
     </section>
 
-    <!-- 3. Quantos anos você tem? -->
+    <!-- 3. Age Selection -->
     <section id="age-screen" class="screen hidden">
         <h2>Quantos anos você tem?</h2>
         <button onclick="saveAnswer('idade', '<18')">Menos de 18</button>
@@ -35,7 +35,7 @@
         <button onclick="saveAnswer('idade', '36+')">36+</button>
     </section>
 
-    <!-- 4. Como você estudou inglês? -->
+    <!-- 4. Study Method -->
     <section id="study-method-screen" class="screen hidden">
         <h2>Como você estudou inglês?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
@@ -51,7 +51,7 @@
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 5. Quais são suas maiores dificuldades? -->
+    <!-- 5. Challenges -->
     <section id="challenges-screen" class="screen hidden">
         <h2>Quais são suas maiores dificuldades?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
@@ -67,20 +67,20 @@
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 6. Vídeos Personalizados -->
+    <!-- 6. Personalized Videos -->
     <section id="personalized-videos-screen" class="screen hidden">
-        <h2>Dicas Personalizadas</h2>
-        <div id="videos-container"></div>
+        <div id="video-progress-container"></div>
+        <video id="story-video"></video>
     </section>
 
-    <!-- 7. Resumo Personalizado -->
+    <!-- 7. Summary -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <p id="summary-content"></p>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 8. 🎉 Vídeo de Celebração -->
+    <!-- 8. Celebration Video -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
