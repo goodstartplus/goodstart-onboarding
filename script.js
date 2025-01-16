@@ -1,8 +1,8 @@
 let userResponses = {};
 let currentStep = 0;
-const totalSteps = 9;
+const totalSteps = 9; // Total steps
 
-// ✅ Navigate to the next screen and update progress
+// ✅ Navigate to the next screen and update progress bar
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
@@ -17,21 +17,19 @@ function updateProgress() {
     currentStep++;
 }
 
-// ✅ Show "Continuar" button after intro video ends
+// ✅ Show "Continuar" button after video ends
 document.addEventListener('DOMContentLoaded', () => {
     const introVideo = document.querySelector('#intro-video-screen video');
     const continueButton = document.querySelector('#intro-video-screen button');
 
-    if (introVideo && continueButton) {
-        continueButton.style.display = 'none';  // Hide the button initially
-
+    if (introVideo) {
         introVideo.onended = () => {
-            continueButton.style.display = 'block';  // Show when the video ends
+            continueButton.style.display = 'block'; // Show the button after the video finishes
         };
     }
 });
 
-// ✅ Save the user's name and move to the next screen
+// ✅ Validate and save the user's name
 function saveName() {
     const nameInput = document.getElementById('user-name').value.trim();
     if (nameInput.length >= 2) {
@@ -58,14 +56,13 @@ function saveAnswer(question, answer) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Toggle checkbox selection
+// ✅ Toggle checkbox state
 function toggleCheckbox(option) {
     option.classList.toggle('checked');
-    const checkbox = option.querySelector('input');
-    checkbox.checked = !checkbox.checked;
+    option.querySelector('input').checked = !option.querySelector('input').checked;
 }
 
-// ✅ Save checkbox responses and navigate
+// ✅ Save multiple-choice (checkbox) answers
 function saveCheckboxes(question) {
     const selectedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option.checked input`);
     const values = Array.from(selectedOptions).map(cb => cb.value);
@@ -77,6 +74,7 @@ function saveCheckboxes(question) {
 
     userResponses[question] = values;
 
+    // Flow control for checkboxes
     const flow = {
         'study-method': 'reason-screen',
         'reason': 'challenges-screen',
@@ -90,9 +88,9 @@ function saveCheckboxes(question) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Show personalized summary
+// ✅ Show a personalized summary
 function showSummary() {
-    const { Nome, age, 'study-method': study, reason, challenges } = userResponses;
+    const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
 
     const summaryText = `
         ${Nome}, vamos construir seu plano com base nas suas respostas:
@@ -100,13 +98,39 @@ function showSummary() {
         - Como estudou inglês: ${study ? study.join(', ') : 'Não informado'}
         - Motivo: ${reason ? reason.join(', ') : 'Não informado'}
         - Desafios: ${challenges ? challenges.join(', ') : 'Não informado'}
+        - Objetivo de prática: ${goal}
     `;
 
     document.getElementById('summary-content').innerText = summaryText;
     document.getElementById('summary-name').innerText = Nome;
 }
 
-// ✅ Finish onboarding and redirect
+// ✅ Load personalized videos based on selected challenges
+function loadPersonalizedVideos() {
+    const videoMap = {
+        "Falta de prática": "assets/videos/practice.mp4",
+        "Medo de falar": "assets/videos/fear.mp4",
+        "Pronúncia": "assets/videos/pronunciation.mp4",
+        "Vocabulário": "assets/videos/vocabulary.mp4"
+    };
+
+    const container = document.getElementById('videos-container');
+    container.innerHTML = "";
+
+    (userResponses['challenges'] || []).forEach(challenge => {
+        if (videoMap[challenge]) {
+            const videoElement = document.createElement('video');
+            videoElement.src = videoMap[challenge];
+            videoElement.controls = true;
+            videoElement.classList.add('personalized-video');
+            container.appendChild(videoElement);
+        }
+    });
+
+    nextScreen('personalized-videos-screen');
+}
+
+// ✅ Finalize onboarding and redirect
 function finishOnboarding() {
     alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
