@@ -1,8 +1,8 @@
 let userResponses = {};
 let currentStep = 0;
-const totalSteps = 7; // Adjust based on the number of screens
+const totalSteps = 9; // Total steps including all screens
 
-// ✅ Navigate to the next screen and update the progress bar
+// ✅ Navigate to the next screen and update progress bar
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
@@ -12,9 +12,9 @@ function nextScreen(screenId) {
 
 // ✅ Update the progress bar
 function updateProgress() {
-    currentStep++;
-    const progress = (currentStep / totalSteps) * 100;
+    const progress = ((currentStep + 1) / totalSteps) * 100;
     document.querySelector('.progress-bar').style.width = `${progress}%`;
+    currentStep++;
 }
 
 // ✅ Validate and save the user's name
@@ -54,7 +54,7 @@ function toggleCheckbox(option) {
     checkbox.checked = !checkbox.checked;
 }
 
-// ✅ Save checkbox answers (multi-choice)
+// ✅ Save multiple-choice (checkbox) answers
 function saveCheckboxes(question) {
     const selectedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option.checked input`);
     const values = Array.from(selectedOptions).map(cb => cb.value);
@@ -66,14 +66,21 @@ function saveCheckboxes(question) {
 
     userResponses[question] = values;
 
-    if (question === 'challenges') {
-        loadPersonalizedVideos();
-    } else {
-        nextScreen('reason-screen');
-    }
+    // Flow control for checkboxes
+    const flow = {
+        'study-method': 'reason-screen',
+        'reason': 'challenges-screen',
+        'challenges': () => {
+            loadPersonalizedVideos();
+            return 'personalized-videos-screen';
+        }
+    };
+
+    const next = flow[question];
+    nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Display a personalized summary
+// ✅ Show a personalized summary
 function showSummary() {
     const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
 
@@ -115,15 +122,8 @@ function loadPersonalizedVideos() {
     nextScreen('personalized-videos-screen');
 }
 
-// ✅ Finalize onboarding and redirect
+// ✅ Finalize onboarding and redirect to the platform
 function finishOnboarding() {
     alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
-}
-
-// ✅ Navigate to the next screen and hide others
-function nextScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-    window.scrollTo(0, 0); // Scroll to the top for better UX
 }
