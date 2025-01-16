@@ -70,14 +70,20 @@
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 6. Personalized Summary -->
+    <!-- 6. Personalized Videos (Web Stories) -->
+    <section id="video-stories-screen" class="screen hidden">
+        <video id="story-video" autoplay muted></video>
+        <div id="video-progress-container"></div>
+    </section>
+
+    <!-- 7. Personalized Summary -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <div id="summary-content"></div>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 7. Celebration -->
+    <!-- 8. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
@@ -86,7 +92,7 @@
     <script>
     let userResponses = {};
     let currentStep = 0;
-    const totalSteps = 7;
+    const totalSteps = 8;
 
     function nextScreen(screenId) {
         document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
@@ -101,28 +107,6 @@
         currentStep++;
     }
 
-    function saveName() {
-        const nameInput = document.getElementById('user-name').value.trim();
-        if (nameInput.length >= 2) {
-            userResponses['nome'] = nameInput;
-            nextScreen('age-screen');
-        } else {
-            alert("Por favor, insira um nome válido.");
-        }
-    }
-
-    function saveAnswer(question, answer) {
-        userResponses[question] = answer;
-        nextScreen('study-method-screen');
-    }
-
-    function toggleCheckbox(option) {
-        const checkbox = option.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
-        option.classList.toggle('checked', checkbox.checked);
-        option.offsetHeight;  // Force reflow for immediate visual feedback
-    }
-
     function saveCheckboxes(question) {
         const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
         if (checkedOptions.length === 0) {
@@ -130,16 +114,43 @@
             return;
         }
         userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
-        const next = (question === 'study-method') ? 'challenges-screen' : 'summary-screen';
-        nextScreen(next);
+        if (question === 'challenges') {
+            loadVideoStories();
+            nextScreen('video-stories-screen');
+        } else {
+            nextScreen('challenges-screen');
+        }
     }
 
-    introVideo = document.querySelector('#intro-video-screen video');
-    introVideo.onended = showContinueButton;
-    setTimeout(showContinueButton, 5000);
+    function loadVideoStories() {
+        const videoMap = {
+            "Falta de prática": "assets/videos/practice.mp4",
+            "Medo de falar": "assets/videos/fear.mp4",
+            "Pronúncia": "assets/videos/pronunciation.mp4",
+            "Ouvir e entender": "assets/videos/listening.mp4",
+            "Vocabulário": "assets/videos/vocabulary.mp4"
+        };
 
-    function showContinueButton() {
-        document.getElementById('continue-intro').style.display = 'block';
+        const selectedVideos = userResponses['challenges'].map(challenge => videoMap[challenge]);
+        let currentVideoIndex = 0;
+        const videoElement = document.getElementById('story-video');
+
+        function playVideo(index) {
+            if (index >= selectedVideos.length) {
+                nextScreen('summary-screen');
+                return;
+            }
+
+            videoElement.src = selectedVideos[index];
+            videoElement.play();
+            videoElement.onclick = (e) => {
+                currentVideoIndex += (e.offsetX > videoElement.clientWidth / 2) ? 1 : -1;
+                currentVideoIndex = Math.max(0, currentVideoIndex);
+                playVideo(currentVideoIndex);
+            };
+            videoElement.onended = () => playVideo(++currentVideoIndex);
+        }
+        playVideo(currentVideoIndex);
     }
 
     function finishOnboarding() {
