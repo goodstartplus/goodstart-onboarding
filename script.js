@@ -105,7 +105,7 @@ function showSummary() {
     document.getElementById('summary-name').innerText = Nome;
 }
 
-// ✅ Load videos in Web Stories style
+// ✅ Load videos in Web Stories style with sound and navigation
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -146,6 +146,7 @@ function loadPersonalizedVideos() {
         }
 
         videoElement.src = selectedVideos[index];
+        videoElement.muted = false; // ✅ Enable sound by default
         videoElement.play();
 
         // Reset progress bars
@@ -166,17 +167,27 @@ function loadPersonalizedVideos() {
         playVideo(currentVideoIndex);
     };
 
-    // ✅ Tap to skip to the next video
-    videoElement.onclick = () => {
-        videoElement.pause();
-        currentVideoIndex++;
-        playVideo(currentVideoIndex);
+    // ✅ Tap right to skip, left to go back
+    videoElement.onclick = (event) => {
+        const clickX = event.clientX;
+        const screenWidth = window.innerWidth;
+
+        if (clickX > screenWidth / 2) {
+            // 👉 Tap on the right to skip
+            currentVideoIndex++;
+            playVideo(currentVideoIndex);
+        } else {
+            // 👈 Tap on the left to go back
+            currentVideoIndex = currentVideoIndex > 0 ? currentVideoIndex - 1 : 0;
+            playVideo(currentVideoIndex);
+        }
     };
 
     // ✅ Start the video sequence
     nextScreen('personalized-videos-screen');
     playVideo(currentVideoIndex);
 }
+
 
 
 // ✅ Finalize onboarding and redirect
