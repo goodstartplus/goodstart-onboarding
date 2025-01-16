@@ -70,14 +70,20 @@
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 6. Personalized Summary -->
+    <!-- 6. Personalized Videos with Web Stories Effect -->
+<section id="personalized-videos-screen" class="screen hidden">
+    <div id="video-progress-container"></div>
+    <div id="video-container" onclick="handleVideoTap(event)"></div>
+</section>
+
+    <!-- 7. Personalized Summary -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <div id="summary-content"></div>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 7. Celebration -->
+    <!-- 8. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
