@@ -5,11 +5,23 @@ const totalSteps = 9;
 
 // ✅ Navigate to the next screen and update progress bar
 function nextScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
+    // Hide all screens
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.add('hidden');
+    });
+
+    // Show the desired screen
+    const nextScreen = document.getElementById(screenId);
+    if (nextScreen) {
+        nextScreen.classList.remove('hidden');
+    } else {
+        console.error(`Screen with ID "${screenId}" not found.`);
+    }
+
     window.scrollTo(0, 0);
     updateProgress();
 }
+
 
 // ✅ Update the progress bar
 function updateProgress() {
