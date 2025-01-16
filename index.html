@@ -22,17 +22,18 @@
     <!-- 2. Qual é o seu nome? -->
     <section id="name-screen" class="screen hidden">
         <h2>Qual é o seu nome?</h2>
-        <input type="text" id="user-name" placeholder="Digite seu nome">
+        <label for="user-name" class="visually-hidden">Digite seu nome</label>
+        <input type="text" id="user-name" placeholder="Digite seu nome" aria-label="Digite seu nome">
         <button onclick="saveName()">Continuar</button>
     </section>
 
     <!-- 3. Quantos anos você tem? -->
     <section id="age-screen" class="screen hidden">
         <h2>Quantos anos você tem?</h2>
-        <button onclick="saveAnswer('age', '<18')">Menos de 18</button>
-        <button onclick="saveAnswer('age', '18-25')">18-25</button>
-        <button onclick="saveAnswer('age', '26-35')">26-35</button>
-        <button onclick="saveAnswer('age', '36+')">36+</button>
+        <button onclick="saveAnswer('idade', '<18')">Menos de 18</button>
+        <button onclick="saveAnswer('idade', '18-25')">18-25</button>
+        <button onclick="saveAnswer('idade', '26-35')">26-35</button>
+        <button onclick="saveAnswer('idade', '36+')">36+</button>
     </section>
 
     <!-- 4. Como você estudou inglês? -->
@@ -48,43 +49,24 @@
             <label>Escola de Idiomas</label>
             <input type="checkbox" value="Escola de Idiomas">
         </div>
-        <button onclick="saveCheckboxes('study-method')">Continuar</button>
+        <button onclick="saveCheckboxes('metodo-estudo')">Continuar</button>
     </section>
 
-    <!-- 5. Quais são suas maiores dificuldades? -->
+    <!-- 5. Por que você quer aprender inglês? -->
     <section id="reason-screen" class="screen hidden">
-        <h2>Quais são suas maiores dificuldades?</h2>
+        <h2>Por que você quer aprender inglês?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🗣️</span>
-            <label>Falta de prática</label>
-            <input type="checkbox" value="Falta de prática">
+            <span class="icon">✈️</span>
+            <label>Férias no exterior</label>
+            <input type="checkbox" value="Férias no exterior">
         </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">😰</span>
-            <label>Medo de falar</label>
-            <input type="checkbox" value="Medo de falar">
-        </div>
-        <button onclick="saveCheckboxes('reason')">Continuar</button>
+        <button onclick="saveCheckboxes('motivo')">Continuar</button>
     </section>
 
-    <!-- 6. Web Stories-like Video Player -->
-    <section id="personalized-videos-screen" class="screen hidden">
-        <div id="video-wrapper">
-            <div id="video-progress-container"></div>
-            <video id="story-video" playsinline></video>
-        </div>
-    </section>
-
-    <!-- 7. Resumo Personalizado -->
+    <!-- 6. Resumo Personalizado -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <p id="summary-content"></p>
-        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
-    </section>
-
-    <!-- 8. 🎉 Vídeo de Celebração -->
-    <section id="celebration-video-screen" class="screen hidden">
-        <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
     </section>
 
