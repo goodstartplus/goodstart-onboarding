@@ -33,17 +33,24 @@ function updateProgress() {
     currentStep++;
 }
 
-// ✅ Show "Continuar" button after intro video ends
+// ✅ Show "Continuar" button after 5 seconds (intro video)
 document.addEventListener('DOMContentLoaded', () => {
     const introVideo = document.querySelector('#intro-video-screen video');
     const continueButton = document.querySelector('#intro-video-screen button');
 
+    // ✅ Show the button after 5 seconds, no matter what
+    setTimeout(() => {
+        continueButton.style.display = 'block';
+    }, 5000);
+
+    // ✅ Also show the button when the video ends
     if (introVideo) {
         introVideo.onended = () => {
             continueButton.style.display = 'block';
         };
     }
 });
+
 
 // ✅ Validate and save the user's name
 function saveName() {
