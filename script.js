@@ -15,9 +15,16 @@ function nextScreen(screenId) {
         console.error(`Screen with ID "${screenId}" not found.`);
     }
 
+    // ✅ Reset video player state when moving to another screen
+    if (screenId !== 'personalized-videos-screen') {
+        document.getElementById('video-wrapper').style.display = 'none';
+        document.getElementById('video-progress-container').style.display = 'none';
+    }
+
     window.scrollTo(0, 0);
     updateProgress();
 }
+
 
 // ✅ Update the progress bar
 function updateProgress() {
