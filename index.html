@@ -1,4 +1,19 @@
-<!-- 1. Intro Video -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Goodstart+</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 🚀 Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
         <video src="assets/videos/pronunciation.mp4" autoplay muted></video>
         <button id="continue-intro" onclick="nextScreen('name-screen')">Continuar</button>
@@ -17,9 +32,7 @@
         <button onclick="saveAnswer('idade', '<18')">Menos de 18</button>
         <button onclick="saveAnswer('idade', '18-25')">18-25</button>
         <button onclick="saveAnswer('idade', '26-35')">26-35</button>
-        <button onclick="saveAnswer('idade', '36-45')">36-45</button>
-        <button onclick="saveAnswer('idade', '46-60')">46-60</button>
-        <button onclick="saveAnswer('idade', '60+')">60+</button>
+        <button onclick="saveAnswer('idade', '36+')">36+</button>
     </section>
 
     <!-- 4. Study Method -->
@@ -33,69 +46,103 @@
             <input type="checkbox" value="Escola de Idiomas">
             🎓 Escola de Idiomas
         </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Professor Particular">
-            👨‍🏫 Professor Particular
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Aplicativos">
-            📱 Aplicativos
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Intercâmbio">
-            🌍 Intercâmbio
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Autodidata">
-            📖 Autodidata
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Nunca estudou antes">
-            ❌ Nunca estudou antes
-        </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 5. Challenges -->
-    <section id="challenges-screen" class="screen hidden">
-        <h2>Quais são suas maiores dificuldades?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
-        </div>
-        <button onclick="saveCheckboxes('challenges')">Continuar</button>
-    </section>
+    <!-- 4.5. Você está em boas mãos -->
+<section id="trust-screen" class="screen hidden">
+    <img src="assets/images/trust-banner.jpg" alt="Você está em boas mãos" style="width:100vw; height:100vh; object-fit:cover;">
+    <button onclick="nextScreen('challenges-screen')" style="position:absolute; bottom:10%; left:50%; transform:translateX(-50%); padding:15px 30px; background-color:#E50914; color:#fff; border:none; border-radius:25px; font-size:16px; font-weight:bold; cursor:pointer;">Continuar</button>
+</section>
 
-    <!-- 6. Personalized Videos -->
-    <section id="personalized-videos-screen" class="screen hidden">
-        <div id="video-progress-container"></div>
-        <div id="video-container"></div>
-    </section>
+<!-- 5. Challenges -->
+<section id="challenges-screen" class="screen hidden">
+    <h2>Quais são suas maiores dificuldades?</h2>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
+    </div>
+    <button onclick="saveCheckboxes('challenges')">Continuar</button>
+</section>
 
-    <!-- 7. Summary -->
-    <section id="summary-screen" class="screen hidden">
-        <h2 id="summary-heading"></h2>
-        <div id="summary-content"></div>
-        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
-    </section>
 
-    <!-- 8. Celebration Video -->
+    <!-- 6. Personalized Videos with Web Stories Effect -->
+<section id="personalized-videos-screen" class="screen hidden">
+    <div id="video-progress-container"></div>
+    <div id="video-container" onclick="handleVideoTap(event)"></div>
+</section>
+
+    <!-- 7. Personalized Summary -->
+<section id="summary-screen" class="screen hidden">
+    <h2 id="summary-heading"></h2>
+    <div id="summary-content"></div>
+    <button onclick="nextScreen('expectation-screen')">Continuar</button>
+</section>
+
+<!-- 7. Personalized Summary -->
+<section id="summary-screen" class="screen hidden">
+    <h2 id="summary-heading"></h2>
+    <div id="summary-content"></div>
+    <button onclick="nextScreen('expectation-screen')">Continuar</button>
+</section>
+
+<!-- 8. O que você pode esperar -->
+<section id="expectation-screen" class="screen hidden">
+    <h2>O que você pode esperar</h2>
+    <div class="carousel">
+        <div class="carousel-slide active">
+            <h3>Semana 1</h3>
+            <p><strong>105</strong> novas palavras</p>
+            <img src="assets/images/week1.png" alt="Semana 1">
+            <p><em>Aprenda a conhecer novas pessoas</em></p>
+        </div>
+        <div class="carousel-slide">
+            <h3>Semana 4</h3>
+            <p><strong>144</strong> novas frases</p>
+            <img src="assets/images/week1.png" alt="Semana 4">
+            <p><em>Aprenda a pedir em um restaurante</em></p>
+        </div>
+        <div class="carousel-slide">
+            <h3>Semana 12</h3>
+            <p><strong>1080</strong> minutos de fala</p>
+            <img src="assets/images/week1.png" alt="Semana 12">
+            <p><em>Aprenda a falar com um amigo</em></p>
+        </div>
+        <div class="carousel-slide">
+            <h3>Mês 12</h3>
+            <p><strong>Fale com confiança</strong></p>
+            <img src="assets/images/week1.png" alt="Mês 12">
+            <p><em>Fale em diferentes situações</em></p>
+        </div>
+    </div>
+    <div class="carousel-indicators">
+        <span class="dot active" onclick="moveCarousel(0)"></span>
+        <span class="dot" onclick="moveCarousel(1)"></span>
+        <span class="dot" onclick="moveCarousel(2)"></span>
+        <span class="dot" onclick="moveCarousel(3)"></span>
+    </div>
+    <button id="carousel-button" onclick="nextCarouselSlide()">Próximo</button>
+</section>
+
+    <!-- 8. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
     </section>
 
-    <script src="script.js"></script>
+
 </body>
+
+
 </html>
