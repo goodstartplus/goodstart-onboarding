@@ -18,7 +18,7 @@ function updateProgress() {
     currentStep++;
 }
 
-// ✅ Show "Continuar" button after the intro video ends
+// ✅ Show "Continuar" button after intro video ends
 document.addEventListener('DOMContentLoaded', () => {
     const introVideo = document.querySelector('#intro-video-screen video');
     const continueButton = document.querySelector('#intro-video-screen button');
@@ -41,7 +41,7 @@ function saveName() {
     }
 }
 
-// ✅ Save single-choice answers (like age)
+// ✅ Save single-choice answers (e.g., age)
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
@@ -64,7 +64,7 @@ function toggleCheckbox(option) {
     checkbox.checked = !checkbox.checked;
 }
 
-// ✅ Save checkbox selections
+// ✅ Save checkbox selections and navigate correctly
 function saveCheckboxes(question) {
     const selectedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option.checked input`);
     const values = Array.from(selectedOptions).map(cb => cb.value);
@@ -86,7 +86,11 @@ function saveCheckboxes(question) {
     };
 
     const next = flow[question];
-    nextScreen(typeof next === 'function' ? next() : next);
+    if (typeof next === 'function') {
+        nextScreen(next());
+    } else {
+        nextScreen(next);
+    }
 }
 
 // ✅ Show a personalized summary
