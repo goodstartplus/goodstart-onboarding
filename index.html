@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <!-- 🚀 Progress Bar -->
     <div class="progress-container">
         <div class="progress-bar"></div>
@@ -39,12 +38,10 @@
     <section id="study-method-screen" class="screen hidden">
         <h2>Como você estudou inglês?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Ensino Fundamental/Médio">
-            🎒 Ensino Fundamental/Médio
+            <input type="checkbox" value="Ensino Fundamental/Médio"> 🎒 Ensino Fundamental/Médio
         </div>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Escola de Idiomas">
-            🎓 Escola de Idiomas
+            <input type="checkbox" value="Escola de Idiomas"> 🎓 Escola de Idiomas
         </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
@@ -65,19 +62,24 @@
             <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
         </div>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
+            <input type="checkbox" value="Falta de vocabulário"> 📚 Falta de vocabulário
         </div>
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 6. Personalized Summary -->
+    <!-- 6. Personalized Videos -->
+    <section id="personalized-videos-screen" class="screen hidden">
+        <div id="video-container"></div>
+    </section>
+
+    <!-- 7. Personalized Summary -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <div id="summary-content"></div>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 7. Celebration -->
+    <!-- 8. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
@@ -85,43 +87,8 @@
 
     <script>
     let userResponses = {};
-    let currentStep = 0;
-    const totalSteps = 7;
-
-    function nextScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-        document.getElementById(screenId).classList.remove('hidden');
-        updateProgress();
-        window.scrollTo(0, 0);
-    }
-
-    function updateProgress() {
-        const progress = ((currentStep + 1) / totalSteps) * 100;
-        document.querySelector('.progress-bar').style.width = `${progress}%`;
-        currentStep++;
-    }
-
-    function saveName() {
-        const nameInput = document.getElementById('user-name').value.trim();
-        if (nameInput.length >= 2) {
-            userResponses['nome'] = nameInput;
-            nextScreen('age-screen');
-        } else {
-            alert("Por favor, insira um nome válido.");
-        }
-    }
-
-    function saveAnswer(question, answer) {
-        userResponses[question] = answer;
-        nextScreen('study-method-screen');
-    }
-
-    function toggleCheckbox(option) {
-        const checkbox = option.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
-        option.classList.toggle('checked', checkbox.checked);
-        option.offsetHeight;  // Force reflow for immediate visual feedback
-    }
+    let videoIndex = 0;
+    let selectedVideos = [];
 
     function saveCheckboxes(question) {
         const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
@@ -130,16 +97,59 @@
             return;
         }
         userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
-        const next = (question === 'study-method') ? 'challenges-screen' : 'summary-screen';
-        nextScreen(next);
+        if (question === 'challenges') {
+            loadPersonalizedVideos();
+            nextScreen('personalized-videos-screen');
+        } else {
+            nextScreen('challenges-screen');
+        }
     }
 
-    introVideo = document.querySelector('#intro-video-screen video');
-    introVideo.onended = showContinueButton;
-    setTimeout(showContinueButton, 5000);
+    function loadPersonalizedVideos() {
+        const videoMap = {
+            'Falta de prática': 'practice.mp4',
+            'Medo de falar': 'fear.mp4',
+            'Pronúncia': 'pronunciation.mp4',
+            'Ouvir e entender': 'listening.mp4',
+            'Falta de vocabulário': 'vocabulary.mp4'
+        };
+        selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
+        playVideo(videoIndex);
+    }
+
+    function playVideo(index) {
+        if (index >= selectedVideos.length) {
+            nextScreen('summary-screen');
+            return;
+        }
+        const videoContainer = document.getElementById('video-container');
+        videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay></video>`;
+        const video = document.getElementById('story-video');
+        video.onended = () => playVideo(++videoIndex);
+        videoContainer.onclick = (e) => {
+            if (e.clientX > window.innerWidth / 2) {
+                playVideo(++videoIndex);
+            } else if (videoIndex > 0) {
+                playVideo(--videoIndex);
+            }
+        };
+    }
+
+    window.onload = function() {
+        const introVideo = document.querySelector('#intro-video-screen video');
+        introVideo.onended = showContinueButton;
+        setTimeout(showContinueButton, 5000);
+    };
 
     function showContinueButton() {
-        document.getElementById('continue-intro').style.display = 'block';
+        const continueButton = document.getElementById('continue-intro');
+        continueButton.style.display = 'block';
+        continueButton.style.zIndex = '10';
+    }
+
+    function nextScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+        document.getElementById(screenId).classList.remove('hidden');
     }
 
     function finishOnboarding() {
