@@ -98,6 +98,7 @@ function saveCheckboxes(question) {
 }
 
 // ✅ Load personalized videos in Web Stories style
+// ✅ Load personalized videos in Web Stories style
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -120,7 +121,10 @@ function loadPersonalizedVideos() {
     const videoElement = document.getElementById('story-video');
     const progressContainer = document.getElementById('video-progress-container');
 
+    // ✅ Clear previous progress bars
     progressContainer.innerHTML = "";
+
+    // ✅ Create progress bars for each video
     selectedVideos.forEach(() => {
         const bar = document.createElement('div');
         bar.classList.add('progress-bar');
@@ -130,6 +134,7 @@ function loadPersonalizedVideos() {
         progressContainer.appendChild(bar);
     });
 
+    // ✅ Play video with progress animation
     function playVideo(index) {
         if (index >= selectedVideos.length) {
             stopVideo();
@@ -138,10 +143,14 @@ function loadPersonalizedVideos() {
         }
 
         videoElement.src = selectedVideos[index];
+        videoElement.load();  // ✅ Force reload
         videoElement.muted = false;
         videoElement.currentTime = 0;
-        videoElement.play();
+        videoElement.play().catch(error => {
+            console.error("Erro ao carregar o vídeo:", error);
+        });
 
+        // ✅ Animate progress bar
         const allProgressBars = document.querySelectorAll('.progress-bar-fill');
         allProgressBars.forEach((bar, i) => {
             bar.style.width = i < index ? '100%' : '0%';
@@ -152,11 +161,13 @@ function loadPersonalizedVideos() {
         currentBar.style.width = '100%';
     }
 
+    // ✅ Move to the next video when one ends
     videoElement.onended = () => {
         currentVideoIndex++;
         playVideo(currentVideoIndex);
     };
 
+    // ✅ Tap to skip or go back
     videoElement.onclick = (event) => {
         const clickX = event.clientX;
         const screenWidth = window.innerWidth;
@@ -170,12 +181,14 @@ function loadPersonalizedVideos() {
         }
     };
 
+    // ✅ Stop video playback
     function stopVideo() {
         videoElement.pause();
         videoElement.currentTime = 0;
         videoElement.src = "";
     }
 
+    // ✅ Stop video when switching tabs
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             stopVideo();
@@ -185,6 +198,7 @@ function loadPersonalizedVideos() {
     nextScreen('personalized-videos-screen');
     playVideo(currentVideoIndex);
 }
+
 
 // ✅ Finalize onboarding and redirect
 function finishOnboarding() {
