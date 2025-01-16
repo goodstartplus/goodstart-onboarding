@@ -107,18 +107,16 @@
         currentStep++;
     }
 
-    function saveCheckboxes(question) {
-        const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-        if (checkedOptions.length === 0) {
-            alert("Por favor, selecione pelo menos uma opção.");
-            return;
-        }
-        userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
-        if (question === 'challenges') {
-            loadVideoStories();
-            nextScreen('video-stories-screen');
-        } else {
-            nextScreen('challenges-screen');
+    // ✅ Show the "Continuar" Button after 5s or when the video ends
+    window.onload = function() {
+        const introVideo = document.getElementById('intro-video');
+        const continueButton = document.getElementById('continue-intro');
+
+        introVideo.onended = showContinueButton;
+        setTimeout(showContinueButton, 5000);
+
+        function showContinueButton() {
+            continueButton.style.display = 'block';
         }
     }
 
@@ -140,6 +138,7 @@
                 nextScreen('summary-screen');
                 return;
             }
+
             videoElement.src = selectedVideos[index];
             videoElement.play();
             videoElement.onclick = (e) => {
