@@ -141,6 +141,11 @@ input[type="text"] {
     transform: scale(1.02);
 }
 
+/* ✅ Hide default checkbox */
+.checkbox-option input[type="checkbox"] {
+    display: none;
+}
+
 /* 🖼️ Icon inside Checkbox */
 .checkbox-option .icon {
     margin-right: 15px;
