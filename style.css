@@ -1,45 +1,81 @@
 /* 🌙 Global Styles */
-body {
+body, html {
+    margin: 0;
+    padding: 0;
     font-family: 'Poppins', sans-serif;
     background-color: #121212;
     color: #FFFFFF;
-    margin: 0;
-    padding: 0;
+    overflow-x: hidden;
 }
 
-/* 📝 Headings */
-h2, p {
+/* 🔒 Hide inactive screens */
+.hidden {
+    display: none !important;
+}
+
+/* 🎥 Full-Screen Video for Intro */
+#intro-video-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#intro-video-screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ⏯️ Button Over Video (Hidden by Default) */
+#intro-video-screen button {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background-color: rgba(229, 9, 20, 0.9);
     color: #FFFFFF;
-    text-align: center;
-    margin-bottom: 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none; /* Hidden until video ends */
+    transition: background-color 0.3s ease;
 }
 
-/* 🔘 Buttons */
+#intro-video-screen button:hover {
+    background-color: rgba(178, 7, 16, 0.9);
+}
+
+/* 🔘 General Button Styles */
 button {
     background-color: #E50914;
     color: #FFFFFF;
-    padding: 15px 25px;
+    padding: 15px 30px;
     border: none;
     border-radius: 30px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     width: 80%;
     max-width: 300px;
-    margin-top: 20px;
 }
 
 button:hover {
     background-color: #B20710;
+    transform: scale(1.05);
 }
 
-/* 🔲 Input Fields */
+/* 📝 Input Field Styling */
 input[type="text"] {
     width: 80%;
     padding: 15px;
-    margin: 20px 0;
-    border-radius: 30px;
+    margin-top: 10px;
+    border-radius: 25px;
     border: 1px solid #333;
     background-color: #1F1F1F;
     color: #FFFFFF;
@@ -55,6 +91,7 @@ input[type="text"] {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 999;
 }
 
 .progress-bar {
@@ -64,7 +101,7 @@ input[type="text"] {
     transition: width 0.4s ease;
 }
 
-/* 🟦 Checkbox Cards */
+/* 🗂️ Checkbox Styling */
 .checkbox-option {
     background-color: #1F1F1F;
     border: 2px solid #333;
@@ -84,45 +121,28 @@ input[type="text"] {
     background-color: #292929;
 }
 
-.checkbox-option input[type="checkbox"] {
-    display: none;
-}
-
-.checkbox-option .icon {
-    font-size: 24px;
-    margin-right: 15px;
-}
-
 .checkbox-option.checked {
     border-color: #E50914;
-    background-color: #292929;
-}
-
-.checkbox-option.checked .icon {
-    color: #E50914;
 }
 
 /* 🎥 Video Styling */
 video {
-    width: 90%;
-    max-width: 600px;
+    width: 100%;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
 }
 
-/* 🗂️ Card-style Containers */
-.card {
-    background-color: #1F1F1F;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    margin-bottom: 20px;
-    width: 90%;
-    max-width: 600px;
-}
+/* 📱 Responsive Design */
+@media (max-width: 600px) {
+    button {
+        width: 90%;
+    }
 
-/* 🔒 Hides inactive screens */
-.hidden {
-    display: none !important;
+    input[type="text"] {
+        width: 90%;
+    }
+
+    #intro-video-screen button {
+        width: 80%;
+    }
 }
