@@ -218,29 +218,3 @@ input[type="text"] {
     background-color: #fff;
     transition: width linear;
 }
-
-/* 🎵 Optional: Mute/Unmute Icon (for future use) */
-#mute-toggle {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-}
-
-/* 📱 Mobile Responsiveness */
-@media (max-width: 600px) {
-    .progress-bar {
-        height: 3px;
-    }
-}
