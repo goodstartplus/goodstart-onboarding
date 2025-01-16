@@ -13,6 +13,13 @@ body, html {
     display: none !important;
 }
 
+/* 🎯 Centered Titles */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
 /* 🎥 Full-Screen Video for Intro */
 #intro-video-screen {
     position: relative;
@@ -89,11 +96,6 @@ input[type="text"] {
     margin-right: auto;
 }
 
-/* 📊 Button Group Layout */
-.screen button + button {
-    margin-top: 15px;
-}
-
 /* 🎯 Progress Bar */
 .progress-container {
     width: 100%;
@@ -112,11 +114,11 @@ input[type="text"] {
     transition: width 0.4s ease;
 }
 
-/* 🗂️ Checkbox Styling */
+/* 🗂️ Stylish Checkbox Options */
 .checkbox-option {
     background-color: #1F1F1F;
     border: 2px solid #333;
-    padding: 15px;
+    padding: 15px 20px;
     margin: 10px auto;
     border-radius: 15px;
     display: flex;
@@ -141,8 +143,58 @@ input[type="text"] {
 
 /* 🖼️ Icon inside Checkbox */
 .checkbox-option .icon {
-    margin-right: 10px;
-    font-size: 20px;
+    margin-right: 15px;
+    font-size: 22px;
+}
+
+/* ✅ Remove Default Checkbox */
+.checkbox-option input[type="checkbox"] {
+    display: none;
+}
+
+/* 🎥 Web Stories Video Player */
+#video-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* 📹 Fullscreen Video */
+#story-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* ⏳ Progress Bar for Stories */
+#video-progress-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    z-index: 10;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 4px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #fff;
+    transition: width linear;
 }
 
 /* 🎥 Personalized Videos */
@@ -163,10 +215,6 @@ input[type="text"] {
 
     input[type="text"] {
         width: 90%;
-    }
-
-    #intro-video-screen button {
-        width: 80%;
     }
 
     .checkbox-option {
