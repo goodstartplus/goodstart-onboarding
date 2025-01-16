@@ -35,6 +35,37 @@ body, html {
     transition: width 0.4s ease;
 }
 
+/* 🎥 Full-Screen Video Styling */
+#intro-video-screen video, #celebration-video-screen video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+/* ⏯️ Button Over Video */
+#intro-video-screen button {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background-color: rgba(229, 9, 20, 0.9);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
+    z-index: 20;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#intro-video-screen button:hover {
+    background-color: rgba(178, 7, 16, 0.9);
+    transform: scale(1.1);
+}
+
 /* 📝 Input Field Styling */
 input[type="text"] {
     width: 80%;
@@ -64,6 +95,7 @@ input[type="text"] {
     max-width: 350px;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .checkbox-option:hover {
@@ -102,13 +134,6 @@ button {
 button:hover {
     background-color: #B20710;
     transform: scale(1.05);
-}
-
-/* 🎥 Full-Screen Video Styling */
-#intro-video-screen video, #celebration-video-screen video {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
 }
 
 /* 🚀 Video Progress Bar */
@@ -175,4 +200,13 @@ button:hover {
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
+}
+
+/* 🎥 Personalized Videos */
+#video-container video {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
