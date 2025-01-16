@@ -1,10 +1,20 @@
 let userResponses = {};
+let currentStep = 0;
+const totalSteps = 7; // Adjust based on the number of screens
 
-// ✅ Helper: Hide all screens and show the target screen
+// ✅ Navigate to the next screen and update the progress bar
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
-    window.scrollTo(0, 0); // Scroll to top for a better user experience
+    window.scrollTo(0, 0);
+    updateProgress();
+}
+
+// ✅ Update the progress bar
+function updateProgress() {
+    currentStep++;
+    const progress = (currentStep / totalSteps) * 100;
+    document.querySelector('.progress-bar').style.width = `${progress}%`;
 }
 
 // ✅ Validate and save the user's name
@@ -16,12 +26,12 @@ function saveName() {
         userResponses['Nome'] = name;
         nextScreen('age-screen');
     } else {
-        alert("Por favor, insira um nome válido com pelo menos 2 caracteres.");
+        alert("Por favor, insira um nome válido.");
         nameInput.focus();
     }
 }
 
-// ✅ Generic function to save single-choice answers (e.g., age, conversation goal)
+// ✅ Save single-choice answers (e.g., age)
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
@@ -37,10 +47,17 @@ function saveAnswer(question, answer) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Save multiple-choice (checkbox) answers and navigate accordingly
+// ✅ Toggle checkbox selection with visual feedback
+function toggleCheckbox(option) {
+    option.classList.toggle('checked');
+    const checkbox = option.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+}
+
+// ✅ Save checkbox answers (multi-choice)
 function saveCheckboxes(question) {
-    const checked = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    const values = Array.from(checked).map(cb => cb.value);
+    const selectedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option.checked input`);
+    const values = Array.from(selectedOptions).map(cb => cb.value);
 
     if (values.length === 0) {
         alert("Por favor, selecione pelo menos uma opção.");
@@ -49,20 +66,14 @@ function saveCheckboxes(question) {
 
     userResponses[question] = values;
 
-    const flow = {
-        'study-method': 'reason-screen',
-        'reason': 'challenges-screen',
-        'challenges': () => {
-            loadPersonalizedVideos();
-            return 'personalized-videos-screen';
-        }
-    };
-
-    const next = flow[question];
-    nextScreen(typeof next === 'function' ? next() : next);
+    if (question === 'challenges') {
+        loadPersonalizedVideos();
+    } else {
+        nextScreen('reason-screen');
+    }
 }
 
-// ✅ Show a personalized summary based on the user's answers
+// ✅ Display a personalized summary
 function showSummary() {
     const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
 
@@ -89,21 +100,22 @@ function loadPersonalizedVideos() {
     };
 
     const container = document.getElementById('videos-container');
-    container.innerHTML = "";  // Clear previous content
+    container.innerHTML = "";
 
     (userResponses['challenges'] || []).forEach(challenge => {
         if (videoMap[challenge]) {
             const videoElement = document.createElement('video');
             videoElement.src = videoMap[challenge];
             videoElement.controls = true;
-            videoElement.autoplay = false;  // Prevent autoplay overload
             videoElement.classList.add('personalized-video');
             container.appendChild(videoElement);
         }
     });
+
+    nextScreen('personalized-videos-screen');
 }
 
-// ✅ Finalize onboarding and redirect to the platform
+// ✅ Finalize onboarding and redirect
 function finishOnboarding() {
     alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
