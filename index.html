@@ -153,60 +153,77 @@
     }
     </script>
     <script>
-  let userResponses = {};
-  let videoIndex = 0;
-  let selectedVideos = [];
-  
-  function loadPersonalizedVideos() {
-      const videoMap = {
-          'Falta de prática': 'practice.mp4',
-          'Medo de falar': 'fear.mp4',
-          'Pronúncia': 'pronunciation.mp4',
-          'Ouvir e entender': 'listening.mp4',
-          'Falta de vocabulário': 'vocabulary.mp4'
-      };
-      selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
-      renderProgressBar();
-      playVideo(videoIndex);
-  }
-  
-  function renderProgressBar() {
-      const progressContainer = document.getElementById('video-progress-container');
-      progressContainer.innerHTML = '';
-      selectedVideos.forEach(() => {
-          const segment = document.createElement('div');
-          segment.className = 'progress-bar-segment';
-          progressContainer.appendChild(segment);
-      });
-  }
-  
-  function playVideo(index) {
-      if (index >= selectedVideos.length) {
-          nextScreen('summary-screen');
-          return;
-      }
-      const videoContainer = document.getElementById('video-container');
-      videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay muted></video>`;
-      updateProgressBar(index);
-      const video = document.getElementById('story-video');
-      video.onended = () => playVideo(++videoIndex);
-  }
-  
-  function updateProgressBar(index) {
-      const segments = document.querySelectorAll('.progress-bar-segment');
-      segments.forEach((seg, i) => {
-          seg.classList.toggle('completed', i < index);
-      });
-  }
-  
-  function handleVideoTap(event) {
-      const x = event.clientX || event.touches[0].clientX;
-      if (x > window.innerWidth / 2) {
-          playVideo(++videoIndex);
-      } else if (videoIndex > 0) {
-          playVideo(--videoIndex);
-      }
-  }
+ let userResponses = {};
+let videoIndex = 0;
+let selectedVideos = [];
+
+function saveCheckboxes(question) {
+    const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+    if (checkedOptions.length === 0) {
+        alert("Por favor, selecione pelo menos uma opção.");
+        return;
+    }
+    userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
+
+    if (question === 'challenges') {
+        loadPersonalizedVideos();
+        nextScreen('personalized-videos-screen');
+    } else {
+        const next = question === 'study-method' ? 'challenges-screen' : 'study-method-screen';
+        nextScreen(next);
+    }
+}
+
+function loadPersonalizedVideos() {
+    const videoMap = {
+        'Falta de prática': 'practice.mp4',
+        'Medo de falar': 'fear.mp4',
+        'Pronúncia': 'pronunciation.mp4',
+        'Ouvir e entender': 'listening.mp4',
+        'Falta de vocabulário': 'vocabulary.mp4'
+    };
+    selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
+    renderProgressBar();
+    playVideo(videoIndex);
+}
+
+function renderProgressBar() {
+    const progressContainer = document.getElementById('video-progress-container');
+    progressContainer.innerHTML = '';
+    selectedVideos.forEach(() => {
+        const segment = document.createElement('div');
+        segment.className = 'progress-bar-segment';
+        progressContainer.appendChild(segment);
+    });
+}
+
+function playVideo(index) {
+    if (index >= selectedVideos.length) {
+        nextScreen('summary-screen');
+        return;
+    }
+    const videoContainer = document.getElementById('video-container');
+    videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay muted></video>`;
+    updateProgressBar(index);
+    const video = document.getElementById('story-video');
+    video.onended = () => playVideo(++videoIndex);
+}
+
+function updateProgressBar(index) {
+    const segments = document.querySelectorAll('.progress-bar-segment');
+    segments.forEach((seg, i) => {
+        seg.classList.toggle('completed', i < index);
+    });
+}
+
+function handleVideoTap(event) {
+    const x = event.clientX || event.touches[0].clientX;
+    if (x > window.innerWidth / 2) {
+        playVideo(++videoIndex);
+    } else if (videoIndex > 0) {
+        playVideo(--videoIndex);
+    }
+}
   </script>
 </body>
 <style>
