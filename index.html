@@ -37,20 +37,22 @@
     </section>
 
     <!-- 4. Como você estudou inglês? -->
-    <section id="study-method-screen" class="screen hidden">
-        <h2>Como você estudou inglês?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🎒</span>
-            <label>Ensino Fundamental/Médio</label>
-            <input type="checkbox" value="Ensino Fundamental/Médio">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🎓</span>
-            <label>Escola de Idiomas</label>
-            <input type="checkbox" value="Escola de Idiomas">
-        </div>
-        <button onclick="saveCheckboxes('metodo-estudo')">Continuar</button>
-    </section>
+    
+<section id="metodo-estudo-screen" class="screen hidden">
+    <h2>Como você estudou inglês?</h2>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">🎒</span>
+        <label>Ensino Fundamental/Médio</label>
+        <input type="checkbox" value="Ensino Fundamental/Médio">
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">🎓</span>
+        <label>Escola de Idiomas</label>
+        <input type="checkbox" value="Escola de Idiomas">
+    </div>
+    <button onclick="saveCheckboxes('metodo-estudo')">Continuar</button>
+</section>
+
 
     <!-- 5. Por que você quer aprender inglês? -->
     <section id="reason-screen" class="screen hidden">
