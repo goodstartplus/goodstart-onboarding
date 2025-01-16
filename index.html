@@ -107,17 +107,49 @@
         currentStep++;
     }
 
-    // ✅ Restore Intro Button Behavior
-    window.onload = function() {
-        const introVideo = document.getElementById('intro-video');
-        const continueButton = document.getElementById('continue-intro');
-
-        introVideo.onended = showContinueButton;
-        setTimeout(showContinueButton, 5000);
-
-        function showContinueButton() {
-            continueButton.style.display = 'block';
+    function saveCheckboxes(question) {
+        const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+        if (checkedOptions.length === 0) {
+            alert("Por favor, selecione pelo menos uma opção.");
+            return;
         }
+        userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
+        if (question === 'challenges') {
+            loadVideoStories();
+            nextScreen('video-stories-screen');
+        } else {
+            nextScreen('challenges-screen');
+        }
+    }
+
+    function loadVideoStories() {
+        const videoMap = {
+            "Falta de prática": "assets/videos/practice.mp4",
+            "Medo de falar": "assets/videos/fear.mp4",
+            "Pronúncia": "assets/videos/pronunciation.mp4",
+            "Ouvir e entender": "assets/videos/listening.mp4",
+            "Vocabulário": "assets/videos/vocabulary.mp4"
+        };
+
+        const selectedVideos = userResponses['challenges'].map(challenge => videoMap[challenge]);
+        let currentVideoIndex = 0;
+        const videoElement = document.getElementById('story-video');
+
+        function playVideo(index) {
+            if (index >= selectedVideos.length) {
+                nextScreen('summary-screen');
+                return;
+            }
+            videoElement.src = selectedVideos[index];
+            videoElement.play();
+            videoElement.onclick = (e) => {
+                currentVideoIndex += (e.offsetX > videoElement.clientWidth / 2) ? 1 : -1;
+                currentVideoIndex = Math.max(0, currentVideoIndex);
+                playVideo(currentVideoIndex);
+            };
+            videoElement.onended = () => playVideo(++currentVideoIndex);
+        }
+        playVideo(currentVideoIndex);
     }
 
     function finishOnboarding() {
