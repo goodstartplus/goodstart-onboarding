@@ -52,10 +52,11 @@ h2 {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    display: none; /* Hidden until video ends */
+    display: block; /* ✅ Force the button to appear */
+    z-index: 20;    /* ✅ Make sure it's above the video */
     transition: background-color 0.3s ease, transform 0.3s ease;
-     z-index: 10; 
 }
+
 
 #intro-video-screen button:hover {
     background-color: rgba(178, 7, 16, 0.9);
