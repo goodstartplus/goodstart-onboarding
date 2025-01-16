@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <!-- 🚀 Progress Bar -->
     <div class="progress-container">
         <div class="progress-bar"></div>
@@ -15,8 +14,8 @@
 
     <!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
-        <video id="intro-video" src="assets/videos/pronunciation.mp4" autoplay muted></video>
-        <button id="continue-intro" onclick="nextScreen('name-screen')" style="display: none; position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); z-index: 10;">Continuar</button>
+        <video src="assets/videos/pronunciation.mp4" autoplay muted></video>
+        <button id="continue-intro" onclick="nextScreen('name-screen')">Continuar</button>
     </section>
 
     <!-- 2. Name Input -->
@@ -39,12 +38,10 @@
     <section id="study-method-screen" class="screen hidden">
         <h2>Como você estudou inglês?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Ensino Fundamental/Médio">
-            🎒 Ensino Fundamental/Médio
+            <input type="checkbox" value="Ensino Fundamental/Médio"> 🎒 Ensino Fundamental/Médio
         </div>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Escola de Idiomas">
-            🎓 Escola de Idiomas
+            <input type="checkbox" value="Escola de Idiomas"> 🎓 Escola de Idiomas
         </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
@@ -65,15 +62,14 @@
             <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
         </div>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
+            <input type="checkbox" value="Falta de vocabulário"> 📚 Falta de vocabulário
         </div>
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 6. Personalized Videos (Web Stories) -->
-    <section id="video-stories-screen" class="screen hidden">
-        <video id="story-video" autoplay muted></video>
-        <div id="video-progress-container"></div>
+    <!-- 6. Personalized Videos -->
+    <section id="personalized-videos-screen" class="screen hidden">
+        <div id="video-container"></div>
     </section>
 
     <!-- 7. Personalized Summary -->
@@ -91,64 +87,57 @@
 
     <script>
     let userResponses = {};
-    let currentStep = 0;
-    const totalSteps = 8;
+    let videoIndex = 0;
+    let selectedVideos = [];
+
+    function saveCheckboxes(question) {
+        const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+        if (checkedOptions.length === 0) {
+            alert("Por favor, selecione pelo menos uma opção.");
+            return;
+        }
+        userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
+        if (question === 'challenges') {
+            loadPersonalizedVideos();
+            nextScreen('personalized-videos-screen');
+        } else {
+            nextScreen('challenges-screen');
+        }
+    }
+
+    function loadPersonalizedVideos() {
+        const videoMap = {
+            'Falta de prática': 'practice.mp4',
+            'Medo de falar': 'fear.mp4',
+            'Pronúncia': 'pronunciation.mp4',
+            'Ouvir e entender': 'listening.mp4',
+            'Falta de vocabulário': 'vocabulary.mp4'
+        };
+        selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
+        playVideo(videoIndex);
+    }
+
+    function playVideo(index) {
+        if (index >= selectedVideos.length) {
+            nextScreen('summary-screen');
+            return;
+        }
+        const videoContainer = document.getElementById('video-container');
+        videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay></video>`;
+        const video = document.getElementById('story-video');
+        video.onended = () => playVideo(++videoIndex);
+        videoContainer.onclick = (e) => {
+            if (e.clientX > window.innerWidth / 2) {
+                playVideo(++videoIndex);
+            } else if (videoIndex > 0) {
+                playVideo(--videoIndex);
+            }
+        };
+    }
 
     function nextScreen(screenId) {
         document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
         document.getElementById(screenId).classList.remove('hidden');
-        updateProgress();
-        window.scrollTo(0, 0);
-    }
-
-    function updateProgress() {
-        const progress = ((currentStep + 1) / totalSteps) * 100;
-        document.querySelector('.progress-bar').style.width = `${progress}%`;
-        currentStep++;
-    }
-
-    // ✅ Show the "Continuar" Button after 5s or when the video ends
-    window.onload = function() {
-        const introVideo = document.getElementById('intro-video');
-        const continueButton = document.getElementById('continue-intro');
-
-        introVideo.onended = showContinueButton;
-        setTimeout(showContinueButton, 5000);
-
-        function showContinueButton() {
-            continueButton.style.display = 'block';
-        }
-    }
-
-    function loadVideoStories() {
-        const videoMap = {
-            "Falta de prática": "assets/videos/practice.mp4",
-            "Medo de falar": "assets/videos/fear.mp4",
-            "Pronúncia": "assets/videos/pronunciation.mp4",
-            "Ouvir e entender": "assets/videos/listening.mp4",
-            "Vocabulário": "assets/videos/vocabulary.mp4"
-        };
-
-        const selectedVideos = userResponses['challenges'].map(challenge => videoMap[challenge]);
-        let currentVideoIndex = 0;
-        const videoElement = document.getElementById('story-video');
-
-        function playVideo(index) {
-            if (index >= selectedVideos.length) {
-                nextScreen('summary-screen');
-                return;
-            }
-
-            videoElement.src = selectedVideos[index];
-            videoElement.play();
-            videoElement.onclick = (e) => {
-                currentVideoIndex += (e.offsetX > videoElement.clientWidth / 2) ? 1 : -1;
-                currentVideoIndex = Math.max(0, currentVideoIndex);
-                playVideo(currentVideoIndex);
-            };
-            videoElement.onended = () => playVideo(++currentVideoIndex);
-        }
-        playVideo(currentVideoIndex);
     }
 
     function finishOnboarding() {
