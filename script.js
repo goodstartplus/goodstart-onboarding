@@ -1,9 +1,9 @@
 // ✅ Global Variables
 let userResponses = {};
 let currentStep = 0;
-const totalSteps = 9;  // Total number of screens
+const totalSteps = 9;
 
-// ✅ Smooth Screen Navigation
+// ✅ Navigation Between Screens
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
@@ -48,14 +48,14 @@ function saveAnswer(question, answer) {
     nextScreen(flow[question]);
 }
 
-// ✅ Checkbox Toggle Function
+// ✅ Toggle Checkbox
 function toggleCheckbox(option) {
     const checkbox = option.querySelector('input[type="checkbox"]');
     checkbox.checked = !checkbox.checked;
     option.classList.toggle('checked', checkbox.checked);
 }
 
-// ✅ Save Checkbox Responses and Move to the Next Screen
+// ✅ Save Checkbox Responses
 function saveCheckboxes(question) {
     const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
     const values = Array.from(checkedOptions).map(cb => cb.value);
@@ -80,7 +80,7 @@ function saveCheckboxes(question) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Web Stories Style: Load and Play Personalized Videos
+// ✅ Load and Play Personalized Videos (Web Stories)
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -93,15 +93,8 @@ function loadPersonalizedVideos() {
     const selectedChallenges = userResponses['challenges'] || [];
     const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]);
 
-    if (selectedVideos.length === 0) {
-        alert("Nenhum vídeo disponível para os desafios selecionados.");
-        nextScreen('summary-screen');
-        return;
-    }
-
     let currentVideoIndex = 0;
     const videoElement = document.getElementById('story-video');
-    const progressContainer = document.getElementById('video-progress-container');
 
     function playVideo(index) {
         if (index >= selectedVideos.length) {
@@ -111,48 +104,24 @@ function loadPersonalizedVideos() {
 
         videoElement.src = selectedVideos[index];
         videoElement.load();
-        videoElement.play().catch(error => {
-            console.error("Erro ao carregar o vídeo:", error);
+        videoElement.play();
+
+        videoElement.onclick = (e) => {
+            if (e.offsetX > videoElement.clientWidth / 2) {
+                currentVideoIndex++;
+            } else {
+                currentVideoIndex = Math.max(0, currentVideoIndex - 1);
+            }
+            playVideo(currentVideoIndex);
+        };
+
+        videoElement.onended = () => {
             currentVideoIndex++;
             playVideo(currentVideoIndex);
-        });
-
-        updateVideoProgress(index, selectedVideos.length);
+        };
     }
-
-    // ✅ Web Stories Behavior: Click to Skip or Go Back
-    videoElement.onclick = (e) => {
-        const clickX = e.offsetX;
-        if (clickX > videoElement.clientWidth / 2) {
-            currentVideoIndex++;
-        } else {
-            currentVideoIndex = Math.max(0, currentVideoIndex - 1);
-        }
-        playVideo(currentVideoIndex);
-    };
-
-    // ✅ Auto-play next video
-    videoElement.onended = () => {
-        currentVideoIndex++;
-        playVideo(currentVideoIndex);
-    };
 
     playVideo(currentVideoIndex);
-}
-
-// ✅ Update Video Progress Bar
-function updateVideoProgress(currentIndex, totalVideos) {
-    const progressContainer = document.getElementById('video-progress-container');
-    progressContainer.innerHTML = "";
-
-    for (let i = 0; i < totalVideos; i++) {
-        const bar = document.createElement('div');
-        bar.classList.add('progress-bar-segment');
-        if (i < currentIndex) {
-            bar.classList.add('completed');
-        }
-        progressContainer.appendChild(bar);
-    }
 }
 
 // ✅ Show Personalized Summary
@@ -162,17 +131,16 @@ function showSummary() {
     const summaryText = `
         ${nome}, aqui está o seu resumo:
         - Idade: ${idade}
-        - Como estudou inglês: ${estudo ? estudo.join(', ') : 'Não informado'}
-        - Motivos: ${reason ? reason.join(', ') : 'Não informado'}
-        - Desafios: ${challenges ? challenges.join(', ') : 'Não informado'}
+        - Como estudou inglês: ${estudo.join(', ')}
+        - Motivos: ${reason.join(', ')}
+        - Desafios: ${challenges.join(', ')}
     `;
 
     document.getElementById('summary-content').innerText = summaryText;
     document.getElementById('summary-name').innerText = nome;
 }
 
-// ✅ Finish Onboarding and Redirect
+// ✅ Final Step: Redirect to Platform
 function finishOnboarding() {
-    alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
 }
