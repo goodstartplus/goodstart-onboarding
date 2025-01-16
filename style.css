@@ -258,3 +258,12 @@ h2 {
     text-align: center;
     margin-bottom: 20px;
 }
+
+#personalized-videos-screen {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
