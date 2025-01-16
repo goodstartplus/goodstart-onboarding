@@ -102,6 +102,11 @@
         }
     }
 
+    function saveAnswer(question, answer) {
+        userResponses[question] = answer;
+        nextScreen('study-method-screen');
+    }
+
     function toggleCheckbox(option) {
         const checkbox = option.querySelector('input[type="checkbox"]');
         checkbox.checked = !checkbox.checked;
