@@ -1,7 +1,11 @@
 /* 🌙 Global Styles */
-body, html {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
     font-family: 'Poppins', sans-serif;
     background-color: #121212;
     color: #FFFFFF;
@@ -13,32 +17,52 @@ body, html {
     display: none !important;
 }
 
-/* 🎯 Centered Titles */
-h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+/* ✅ Visually Hidden (for Accessibility) */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
-/* 🎥 Full-Screen Video for Intro */
+/* 🚀 Progress Bar */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #E50914;
+    transition: width 0.4s ease;
+}
+
 /* 🎥 Full-Screen Video for Intro */
 #intro-video-screen {
     position: relative;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    padding: 0;
-    margin: 0;
 }
 
 #intro-video-screen video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* ✅ Makes the video cover the entire screen */
+    object-fit: cover;
 }
 
-
-/* ⏯️ Button Over Video (Hidden by Default) */
+/* ⏯️ Button Over Video */
 #intro-video-screen button {
     position: absolute;
     bottom: 10%;
@@ -52,11 +76,10 @@ h2 {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    display: block; /* ✅ Force the button to appear */
-    z-index: 20;    /* ✅ Make sure it's above the video */
+    display: none;
+    z-index: 20;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 
 #intro-video-screen button:hover {
     background-color: rgba(178, 7, 16, 0.9);
@@ -102,25 +125,7 @@ input[type="text"] {
     margin-right: auto;
 }
 
-/* 🎯 Progress Bar */
-.progress-container {
-    width: 100%;
-    height: 6px;
-    background-color: #333;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background-color: #E50914;
-    transition: width 0.4s ease;
-}
-
-/* 🗂️ Stylish Checkbox Options */
+/* 📦 Checkbox Options */
 .checkbox-option {
     background-color: #1F1F1F;
     border: 2px solid #333;
@@ -158,62 +163,12 @@ input[type="text"] {
     font-size: 22px;
 }
 
-/* ✅ Remove Default Checkbox */
-.checkbox-option input[type="checkbox"] {
-    display: none;
+/* 🎯 Centered Titles */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
-
-
-/* ✅ Web Stories Video Player */
-#video-wrapper {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-/* ✅ Fullscreen Video */
-#story-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  /* ✅ Changed from 'contain' to 'cover' */
-    cursor: pointer;
-    background-color: #000;
-}
-
-
-/* ✅ Progress Bar at the Top */
-#video-progress-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    z-index: 10;
-}
-
-.progress-bar {
-    flex: 1;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.3);
-    margin: 0 4px;
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    width: 0%;
-    height: 100%;
-    background-color: #fff;
-    transition: width linear;
-}
-
 
 /* 🎥 Personalized Videos */
 #videos-container video {
@@ -222,6 +177,34 @@ input[type="text"] {
     margin-bottom: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ✅ Screen Layout */
+.screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #121212;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 🟢 Summary Section */
+#summary-content {
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: left;
+    max-width: 500px;
+    margin: 20px auto;
+    background-color: #1F1F1F;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* 📱 Responsive Design */
@@ -240,36 +223,10 @@ input[type="text"] {
     }
 }
 
-/* ✅ Fix for Hidden Screens */
-.screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    height: 100vh;
-    background-color: #121212; /* Dark background for contrast */
-    color: #FFFFFF; /* White text for visibility */
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
+/* ✅ Celebration Video */
+#celebration-video-screen video {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
-
-.hidden {
-    display: none !important;
-}
-
-/* ✅ Ensure h2 titles are centered */
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#personalized-videos-screen {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #000;
-}
-
