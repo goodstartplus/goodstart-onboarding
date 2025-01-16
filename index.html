@@ -22,7 +22,6 @@
     <!-- 2. Qual é o seu nome? -->
     <section id="name-screen" class="screen hidden">
         <h2>Qual é o seu nome?</h2>
-        <label for="user-name" class="visually-hidden">Digite seu nome</label>
         <input type="text" id="user-name" placeholder="Digite seu nome" aria-label="Digite seu nome">
         <button onclick="saveName()">Continuar</button>
     </section>
@@ -37,38 +36,53 @@
     </section>
 
     <!-- 4. Como você estudou inglês? -->
-    
-<section id="metodo-estudo-screen" class="screen hidden">
-    <h2>Como você estudou inglês?</h2>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <span class="icon">🎒</span>
-        <label>Ensino Fundamental/Médio</label>
-        <input type="checkbox" value="Ensino Fundamental/Médio">
-    </div>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <span class="icon">🎓</span>
-        <label>Escola de Idiomas</label>
-        <input type="checkbox" value="Escola de Idiomas">
-    </div>
-    <button onclick="saveCheckboxes('metodo-estudo')">Continuar</button>
-</section>
-
-
-    <!-- 5. Por que você quer aprender inglês? -->
-    <section id="reason-screen" class="screen hidden">
-        <h2>Por que você quer aprender inglês?</h2>
+    <section id="study-method-screen" class="screen hidden">
+        <h2>Como você estudou inglês?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">✈️</span>
-            <label>Férias no exterior</label>
-            <input type="checkbox" value="Férias no exterior">
+            <span class="icon">🎒</span>
+            <label>Ensino Fundamental/Médio</label>
+            <input type="checkbox" value="Ensino Fundamental/Médio">
         </div>
-        <button onclick="saveCheckboxes('motivo')">Continuar</button>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <span class="icon">🎓</span>
+            <label>Escola de Idiomas</label>
+            <input type="checkbox" value="Escola de Idiomas">
+        </div>
+        <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 6. Resumo Personalizado -->
+    <!-- 5. Quais são suas maiores dificuldades? -->
+    <section id="challenges-screen" class="screen hidden">
+        <h2>Quais são suas maiores dificuldades?</h2>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <span class="icon">🗣️</span>
+            <label>Falta de prática</label>
+            <input type="checkbox" value="Falta de prática">
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <span class="icon">😰</span>
+            <label>Medo de falar</label>
+            <input type="checkbox" value="Medo de falar">
+        </div>
+        <button onclick="saveCheckboxes('challenges')">Continuar</button>
+    </section>
+
+    <!-- 6. Vídeos Personalizados -->
+    <section id="personalized-videos-screen" class="screen hidden">
+        <h2>Dicas Personalizadas</h2>
+        <div id="videos-container"></div>
+    </section>
+
+    <!-- 7. Resumo Personalizado -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <p id="summary-content"></p>
+        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+    </section>
+
+    <!-- 8. 🎉 Vídeo de Celebração -->
+    <section id="celebration-video-screen" class="screen hidden">
+        <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
     </section>
 
