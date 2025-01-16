@@ -90,17 +90,28 @@
     </section>
 
     <script>
-   let userResponses = {};
+  let userResponses = {};
 let videoIndex = 0;
 let selectedVideos = [];
 let currentStep = 0;
 const totalSteps = 7;
 
 function nextScreen(screenId) {
+    stopVideoPlayback();  // 🛑 Stop any playing video before switching screens
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
     updateProgress();
     window.scrollTo(0, 0);
+}
+
+function stopVideoPlayback() {
+    const video = document.getElementById('story-video');
+    if (video) {
+        video.pause();
+        video.currentTime = 0;
+        video.src = '';
+        video.remove();
+    }
 }
 
 function updateProgress() {
@@ -180,7 +191,7 @@ function playVideo(index) {
     videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay></video>`;
     updateProgressBar(index);
     const video = document.getElementById('story-video');
-    video.muted = false;  // 🔊 Unmute videos
+    video.muted = false;
     video.onended = () => playVideo(++videoIndex);
 }
 
