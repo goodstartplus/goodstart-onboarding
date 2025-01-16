@@ -48,41 +48,10 @@
             <label>Escola de Idiomas</label>
             <input type="checkbox" value="Escola de Idiomas">
         </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">👨‍🏫</span>
-            <label>Professor Particular</label>
-            <input type="checkbox" value="Professor Particular">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">📱</span>
-            <label>Aplicativos</label>
-            <input type="checkbox" value="Aplicativos">
-        </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 5. Por que você quer aprender inglês? -->
-    <section id="reason-screen" class="screen hidden">
-        <h2>Por que você quer aprender inglês?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">✈️</span>
-            <label>Férias no exterior</label>
-            <input type="checkbox" value="Férias no exterior">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">💼</span>
-            <label>Trabalho</label>
-            <input type="checkbox" value="Trabalho">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🏠</span>
-            <label>Morar no exterior</label>
-            <input type="checkbox" value="Morar no exterior">
-        </div>
-        <button onclick="saveCheckboxes('reason')">Continuar</button>
-    </section>
-
-    <!-- 6. Quais são suas maiores dificuldades? -->
+    <!-- 5. Quais são suas maiores dificuldades? -->
     <section id="challenges-screen" class="screen hidden">
         <h2>Quais são suas maiores dificuldades?</h2>
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
@@ -100,24 +69,35 @@
             <label>Pronúncia</label>
             <input type="checkbox" value="Pronúncia">
         </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <span class="icon">🎧</span>
+            <label>Ouvir e entender</label>
+            <input type="checkbox" value="Ouvir e entender">
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <span class="icon">📚</span>
+            <label>Falta de vocabulário</label>
+            <input type="checkbox" value="Falta de vocabulário">
+        </div>
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 7. Vídeos Personalizados -->
+    <!-- 6. Web Stories-like Video Player -->
     <section id="personalized-videos-screen" class="screen hidden">
-        <h2>Dicas Personalizadas para Você</h2>
-        <div id="videos-container"></div>
-        <button onclick="nextScreen('summary-screen')">Continuar</button>
+        <div id="video-wrapper">
+            <div id="video-progress-container"></div>
+            <video id="story-video" autoplay muted playsinline></video>
+        </div>
     </section>
 
-    <!-- 8. Resumo Personalizado -->
+    <!-- 7. Resumo Personalizado -->
     <section id="summary-screen" class="screen hidden">
         <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
         <p id="summary-content"></p>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 9. 🎉 Vídeo de Celebração -->
+    <!-- 8. 🎉 Vídeo de Celebração -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
