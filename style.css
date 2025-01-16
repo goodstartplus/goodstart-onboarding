@@ -5,11 +5,88 @@ body, html {
     font-family: 'Poppins', sans-serif;
     background-color: #121212;
     color: #FFFFFF;
+    overflow-x: hidden;
 }
 
-/* Center all h2 titles */
-h2 {
+/* 🔒 Hide inactive screens */
+.hidden {
+    display: none !important;
+}
+
+/* 🎥 Full-Screen Video for Intro */
+#intro-video-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#intro-video-screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ⏯️ Button Over Video (Hidden by Default) */
+#intro-video-screen button {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background-color: rgba(229, 9, 20, 0.9);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none; /* Hidden until video ends */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#intro-video-screen button:hover {
+    background-color: rgba(178, 7, 16, 0.9);
+    transform: scale(1.1);
+}
+
+/* 🔘 General Button Styles */
+button {
+    background-color: #E50914;
+    color: #FFFFFF;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 300px;
+    display: block;
     text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #B20710;
+    transform: scale(1.05);
+}
+
+/* 📝 Input Field Styling */
+input[type="text"] {
+    width: 80%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 25px;
+    border: 1px solid #333;
+    background-color: #1F1F1F;
+    color: #FFFFFF;
+    font-size: 16px;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* 🗂️ Checkbox Styling */
@@ -25,6 +102,12 @@ h2 {
     max-width: 350px;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.checkbox-option:hover {
+    border-color: #E50914;
+    background-color: #292929;
 }
 
 .checkbox-option.checked {
@@ -49,4 +132,51 @@ h2 {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    cursor: pointer;
+}
+
+/* 📊 Progress Bar */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #E50914;
+    transition: width 0.4s ease;
+}
+
+/* 📊 Progress Bar for Videos */
+#video-progress-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    z-index: 10;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 4px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #fff;
+    transition: width linear;
 }
