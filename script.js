@@ -70,11 +70,11 @@ function saveCheckboxes(question) {
 
 function loadPersonalizedVideos() {
     const videoMap = {
-        'Falta de prática': 'practice.mp4',
-        'Medo de falar': 'fear.mp4',
-        'Pronúncia': 'pronunciation.mp4',
-        'Ouvir e entender': 'listening.mp4',
-        'Vocabulário': 'vocabulary.mp4'
+        'Falta de prática': 'practice1.mp4',
+        'Medo de falar': 'fear1.mp4',
+        'Pronúncia': 'pronunciation1.mp4',
+        'Ouvir e entender': 'listening1.mp4',
+        'Vocabulário': 'vocabulary1.mp4'
     };
     selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
     renderProgressBar();
