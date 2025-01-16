@@ -58,6 +58,15 @@
         <div class="checkbox-option" onclick="toggleCheckbox(this)">
             <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
         </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
+        </div>
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
@@ -111,6 +120,7 @@
         const checkbox = option.querySelector('input[type="checkbox"]');
         checkbox.checked = !checkbox.checked;
         option.classList.toggle('checked', checkbox.checked);
+        option.offsetHeight;  // Force reflow for immediate visual feedback
     }
 
     function saveCheckboxes(question) {
@@ -120,7 +130,8 @@
             return;
         }
         userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
-        nextScreen('summary-screen');
+        const next = (question === 'study-method') ? 'challenges-screen' : 'summary-screen';
+        nextScreen(next);
     }
 
     introVideo = document.querySelector('#intro-video-screen video');
