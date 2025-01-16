@@ -1,6 +1,6 @@
 let userResponses = {};
 let currentStep = 0;
-const totalSteps = 9;  // Number of screens
+const totalSteps = 9;
 
 // ✅ Navigate to the next screen and update progress
 function nextScreen(screenId) {
@@ -22,9 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const introVideo = document.querySelector('#intro-video-screen video');
     const continueButton = document.querySelector('#intro-video-screen button');
 
-    if (introVideo) {
+    if (introVideo && continueButton) {
+        continueButton.style.display = 'none';  // Hide the button initially
+
         introVideo.onended = () => {
-            continueButton.style.display = 'block';
+            continueButton.style.display = 'block';  // Show when the video ends
         };
     }
 });
@@ -34,13 +36,13 @@ function saveName() {
     const nameInput = document.getElementById('user-name').value.trim();
     if (nameInput.length >= 2) {
         userResponses['Nome'] = nameInput;
-        nextScreen('age-screen');  // ✅ Move to the age screen
+        nextScreen('age-screen');
     } else {
         alert("Por favor, insira um nome válido.");
     }
 }
 
-// ✅ Save single-choice answers (e.g., Age)
+// ✅ Save single-choice answers
 function saveAnswer(question, answer) {
     userResponses[question] = answer;
 
@@ -86,59 +88,6 @@ function saveCheckboxes(question) {
 
     const next = flow[question];
     nextScreen(typeof next === 'function' ? next() : next);
-}
-
-// ✅ Load personalized videos
-function loadPersonalizedVideos() {
-    const videoMap = {
-        "Falta de prática": "assets/videos/practice.mp4",
-        "Medo de falar": "assets/videos/fear.mp4",
-        "Pronúncia": "assets/videos/pronunciation.mp4",
-        "Ouvir e entender": "assets/videos/listening.mp4",
-        "Falta de vocabulário": "assets/videos/vocabulary.mp4"
-    };
-
-    const selectedChallenges = userResponses['challenges'] || [];
-    const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]);
-
-    if (selectedVideos.length === 0) {
-        alert("Nenhum vídeo disponível.");
-        nextScreen('summary-screen');
-        return;
-    }
-
-    let currentVideoIndex = 0;
-    const videoElement = document.getElementById('story-video');
-
-    function playVideo(index) {
-        if (index >= selectedVideos.length) {
-            nextScreen('summary-screen');
-            return;
-        }
-        videoElement.src = selectedVideos[index];
-        videoElement.muted = false;
-        videoElement.play();
-    }
-
-    videoElement.onclick = (event) => {
-        const clickX = event.clientX;
-        const screenWidth = window.innerWidth;
-
-        if (clickX > screenWidth / 2) {
-            currentVideoIndex++;
-            playVideo(currentVideoIndex);
-        } else if (currentVideoIndex > 0) {
-            currentVideoIndex--;
-            playVideo(currentVideoIndex);
-        }
-    };
-
-    videoElement.onended = () => {
-        currentVideoIndex++;
-        playVideo(currentVideoIndex);
-    };
-
-    playVideo(currentVideoIndex);
 }
 
 // ✅ Show personalized summary
