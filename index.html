@@ -84,11 +84,11 @@
 </section>
 
     <!-- 7. Personalized Summary -->
-    <section id="summary-screen" class="screen hidden">
-        <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
-        <div id="summary-content"></div>
-        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
-    </section>
+<section id="summary-screen" class="screen hidden">
+    <h2 id="summary-heading"></h2>
+    <div id="summary-content"></div>
+    <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+</section>
 
     <!-- 8. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
@@ -258,6 +258,38 @@ function saveCheckboxes(question) {
 
         
   </script>
+
+    <script>
+function generateSummary() {
+    const name = userResponses['nome'] || 'Vamos construir um plano para você';
+    const idade = userResponses['idade'] || 'Não informado';
+    const estudo = userResponses['study-method'] ? userResponses['study-method'].join('; ') : 'Não informado';
+    const dificuldades = userResponses['challenges'] ? userResponses['challenges'].join('; ') : 'Não informado';
+
+    document.getElementById('summary-heading').innerText = `${name}, Vamos construir um plano para você!`;
+
+    const summaryHTML = `
+        <p>👉 <strong>Idade:</strong> ${idade}</p>
+        <p>👉 <strong>Estudou:</strong> ${estudo}</p>
+        <p>👉 <strong>Maiores dificuldades:</strong> ${dificuldades}</p>
+    `;
+
+    document.getElementById('summary-content').innerHTML = summaryHTML;
+}
+
+function nextScreen(screenId) {
+    if (screenId === 'summary-screen') {
+        generateSummary();
+    }
+    if (screenId !== 'personalized-videos-screen') {
+        stopVideoPlayback();
+    }
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
+    updateProgress();
+    window.scrollTo(0, 0);
+}
+</script>
 </body>
 <style>
     /* 🟥 Story-like Progress Bar */
