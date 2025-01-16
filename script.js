@@ -178,6 +178,7 @@ function loadPersonalizedVideos() {
     playVideo(currentVideoIndex);
 }
 
+
 // ✅ Finalize onboarding and redirect
 function finishOnboarding() {
     alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
