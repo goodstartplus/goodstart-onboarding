@@ -121,3 +121,8 @@ video {
     width: 90%;
     max-width: 600px;
 }
+
+/* 🔒 Hides inactive screens */
+.hidden {
+    display: none !important;
+}
