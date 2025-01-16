@@ -83,16 +83,20 @@ function toggleCheckbox(option) {
 
 // ✅ Save checkbox responses and move to the next screen
 function saveCheckboxes(question) {
-    const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+    // Correctly target the screen using the passed 'question' parameter
+    const checkedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option input[type="checkbox"]:checked`);
     const values = Array.from(checkedOptions).map(cb => cb.value);
 
+    // Check if at least one option is selected
     if (values.length === 0) {
         alert("Por favor, selecione pelo menos uma opção.");
         return;
     }
 
+    // Save the user's responses
     userResponses[question] = values;
 
+    // Define the flow to the next screen
     const flow = {
         'metodo-estudo': 'reason-screen',
         'motivo': () => {
@@ -104,6 +108,8 @@ function saveCheckboxes(question) {
     const next = flow[question];
     nextScreen(typeof next === 'function' ? next() : next);
 }
+
+
 
 // ✅ Load and play personalized videos based on user selections
 function loadPersonalizedVideos() {
