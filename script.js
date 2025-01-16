@@ -2,7 +2,7 @@ let userResponses = {};
 let currentStep = 0;
 const totalSteps = 9;
 
-// ✅ Navigate to the next screen
+// ✅ Navigate to the next screen and update progress
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
@@ -29,6 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ✅ Validate and save the user's name
+function saveName() {
+    const nameInput = document.getElementById('user-name').value.trim();
+    if (nameInput.length >= 2) {
+        userResponses['Nome'] = nameInput;
+        nextScreen('age-screen');  // ✅ FIXED: Moves to the age screen
+    } else {
+        alert("Por favor, insira um nome válido.");
+    }
+}
+
 // ✅ Toggle checkbox selection
 function toggleCheckbox(option) {
     option.classList.toggle('checked');
@@ -49,7 +60,8 @@ function saveCheckboxes(question) {
     userResponses[question] = values;
 
     const flow = {
-        'study-method': 'challenges-screen',
+        'study-method': 'reason-screen',
+        'reason': 'challenges-screen',
         'challenges': () => {
             loadPersonalizedVideos();
             return 'personalized-videos-screen';
@@ -73,12 +85,48 @@ function loadPersonalizedVideos() {
     const selectedChallenges = userResponses['challenges'] || [];
     const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]);
 
-    let videoElement = document.getElementById('story-video');
-    videoElement.src = selectedVideos[0];
-    videoElement.play();
+    if (selectedVideos.length === 0) {
+        alert("Nenhum vídeo disponível.");
+        nextScreen('summary-screen');
+        return;
+    }
+
+    let currentVideoIndex = 0;
+    const videoElement = document.getElementById('story-video');
+
+    function playVideo(index) {
+        if (index >= selectedVideos.length) {
+            nextScreen('summary-screen');
+            return;
+        }
+        videoElement.src = selectedVideos[index];
+        videoElement.muted = false;
+        videoElement.play();
+    }
+
+    videoElement.onclick = (event) => {
+        const clickX = event.clientX;
+        const screenWidth = window.innerWidth;
+
+        if (clickX > screenWidth / 2) {
+            currentVideoIndex++;
+            playVideo(currentVideoIndex);
+        } else if (currentVideoIndex > 0) {
+            currentVideoIndex--;
+            playVideo(currentVideoIndex);
+        }
+    };
+
+    videoElement.onended = () => {
+        currentVideoIndex++;
+        playVideo(currentVideoIndex);
+    };
+
+    playVideo(currentVideoIndex);
 }
 
 // ✅ Finish onboarding
 function finishOnboarding() {
+    alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
 }
