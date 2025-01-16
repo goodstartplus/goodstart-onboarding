@@ -87,7 +87,45 @@
 <section id="summary-screen" class="screen hidden">
     <h2 id="summary-heading"></h2>
     <div id="summary-content"></div>
-    <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+    <button onclick="nextScreen('expectation-screen')">Continuar</button>
+</section>
+
+<!-- 8. O que você pode esperar -->
+<section id="expectation-screen" class="screen hidden">
+    <h2>O que você pode esperar</h2>
+    <div class="carousel">
+        <div class="carousel-slide active">
+            <h3>Semana 1</h3>
+            <p><strong>105</strong> novas palavras</p>
+            <img src="assets/images/week1.png" alt="Semana 1">
+            <p><em>Aprenda a conhecer novas pessoas</em></p>
+        </div>
+        <div class="carousel-slide">
+            <h3>Semana 4</h3>
+            <p><strong>144</strong> novas frases</p>
+            <img src="assets/images/week4.png" alt="Semana 4">
+            <p><em>Aprenda a pedir em um restaurante</em></p>
+        </div>
+        <div class="carousel-slide">
+            <h3>Semana 12</h3>
+            <p><strong>1080</strong> minutos de fala</p>
+            <img src="assets/images/week12.png" alt="Semana 12">
+            <p><em>Aprenda a falar com um amigo</em></p>
+        </div>
+        <div class="carousel-slide">
+            <h3>Mês 12</h3>
+            <p><strong>Fale com confiança</strong></p>
+            <img src="assets/images/month12.png" alt="Mês 12">
+            <p><em>Fale em diferentes situações</em></p>
+        </div>
+    </div>
+    <div class="carousel-indicators">
+        <span class="dot active" onclick="moveCarousel(0)"></span>
+        <span class="dot" onclick="moveCarousel(1)"></span>
+        <span class="dot" onclick="moveCarousel(2)"></span>
+        <span class="dot" onclick="moveCarousel(3)"></span>
+    </div>
+    <button onclick="nextCarouselSlide()">Próximo</button>
 </section>
 
     <!-- 8. Celebration -->
@@ -322,5 +360,80 @@ function nextScreen(screenId) {
     cursor: pointer;
 }
 </style>
+
+<script>
+let currentSlide = 0;
+
+function moveCarousel(index) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+    currentSlide = index;
+}
+
+function nextCarouselSlide() {
+    currentSlide = (currentSlide + 1) % 4;
+    moveCarousel(currentSlide);
+}
+</script>
+
+<style>
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-slide {
+    display: none;
+    text-align: center;
+}
+
+.carousel-slide.active {
+    display: block;
+}
+
+.carousel-slide img {
+    width: 60%;
+    border-radius: 10px;
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #E50914;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #E50914;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+</style>
+
 
 </html>
