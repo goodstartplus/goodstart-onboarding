@@ -1,16 +1,13 @@
-// ✅ Global Variables
 let userResponses = {};
 let currentStep = 0;
 const totalSteps = 9;
 
 // ✅ Navigate to the next screen and update progress bar
 function nextScreen(screenId) {
-    // Hide all screens
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
     });
 
-    // Show the desired screen
     const nextScreen = document.getElementById(screenId);
     if (nextScreen) {
         nextScreen.classList.remove('hidden');
@@ -21,7 +18,6 @@ function nextScreen(screenId) {
     window.scrollTo(0, 0);
     updateProgress();
 }
-
 
 // ✅ Update the progress bar
 function updateProgress() {
@@ -72,24 +68,13 @@ function saveAnswer(question, answer) {
 // ✅ Toggle checkbox state with visual feedback
 function toggleCheckbox(option) {
     const checkbox = option.querySelector('input[type="checkbox"]');
-
-    // ✅ Toggle the checkbox and apply smooth visual feedback
-    if (checkbox.checked) {
-        checkbox.checked = false;
-        option.classList.remove('checked');
-    } else {
-        checkbox.checked = true;
-        option.classList.add('checked');
-    }
+    checkbox.checked = !checkbox.checked;
+    option.classList.toggle('checked', checkbox.checked);
 }
 
-
-
+// ✅ Save checkbox selections and navigate correctly
 function saveCheckboxes(question) {
-    // ✅ Select all checked checkboxes in the current screen
     const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    
-    // ✅ Map selected values
     const values = Array.from(checkedOptions).map(cb => cb.value);
 
     if (values.length === 0) {
@@ -97,10 +82,8 @@ function saveCheckboxes(question) {
         return;
     }
 
-    // ✅ Save user responses
     userResponses[question] = values;
 
-    // ✅ Screen flow logic
     const flow = {
         'study-method': 'reason-screen',
         'reason': 'challenges-screen',
@@ -111,34 +94,7 @@ function saveCheckboxes(question) {
     };
 
     const next = flow[question];
-
-    // ✅ Move to the next screen
-    if (typeof next === 'function') {
-        nextScreen(next());
-    } else if (next) {
-        nextScreen(next);
-    } else {
-        console.error(`No flow defined for question: ${question}`);
-    }
-}
-
-
-
-// ✅ Show a personalized summary
-function showSummary() {
-    const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
-
-    const summaryText = `
-        ${Nome}, vamos construir seu plano com base nas suas respostas:
-        - Idade: ${age}
-        - Como estudou inglês: ${study ? study.join(', ') : 'Não informado'}
-        - Motivo: ${reason ? reason.join(', ') : 'Não informado'}
-        - Desafios: ${challenges ? challenges.join(', ') : 'Não informado'}
-        - Objetivo de prática: ${goal}
-    `;
-
-    document.getElementById('summary-content').innerText = summaryText;
-    document.getElementById('summary-name').innerText = Nome;
+    nextScreen(typeof next === 'function' ? next() : next);
 }
 
 // ✅ Load personalized videos in Web Stories style
@@ -151,7 +107,7 @@ function loadPersonalizedVideos() {
         "Falta de vocabulário": "assets/videos/vocabulary.mp4"
     };
 
-    const selectedChallenges = userResponses['reason'] || [];  // ✅ Corrected from 'challenges' to 'reason'
+    const selectedChallenges = userResponses['challenges'] || [];
     const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]).filter(Boolean);
 
     if (selectedVideos.length === 0) {
@@ -164,7 +120,6 @@ function loadPersonalizedVideos() {
     const videoElement = document.getElementById('story-video');
     const progressContainer = document.getElementById('video-progress-container');
 
-    // ✅ Create progress bars for each video
     progressContainer.innerHTML = "";
     selectedVideos.forEach(() => {
         const bar = document.createElement('div');
@@ -175,7 +130,6 @@ function loadPersonalizedVideos() {
         progressContainer.appendChild(bar);
     });
 
-    // ✅ Play videos with progress bar animation
     function playVideo(index) {
         if (index >= selectedVideos.length) {
             stopVideo();
@@ -231,7 +185,6 @@ function loadPersonalizedVideos() {
     nextScreen('personalized-videos-screen');
     playVideo(currentVideoIndex);
 }
-
 
 // ✅ Finalize onboarding and redirect
 function finishOnboarding() {
