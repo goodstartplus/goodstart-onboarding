@@ -130,61 +130,41 @@ function loadPersonalizedVideos() {
         progressContainer.appendChild(bar);
     });
 
-    function playVideo(index) {
-        if (index >= selectedVideos.length) {
-            stopVideo();
-            nextScreen('summary-screen');
-            return;
-        }
-
-        videoElement.src = selectedVideos[index];
-        videoElement.load();
-        videoElement.play().catch(error => {
-            console.error("Erro ao carregar o vídeo:", error);
-        });
-
-        const allProgressBars = document.querySelectorAll('.progress-bar-fill');
-        allProgressBars.forEach((bar, i) => {
-            bar.style.width = i < index ? '100%' : '0%';
-        });
-
-        const currentBar = allProgressBars[index];
-        currentBar.style.transition = `width ${videoElement.duration}s linear`;
-        currentBar.style.width = '100%';
+   // ✅ Play next video or move to the summary screen
+function playVideo(index) {
+    if (index >= selectedVideos.length) {
+        stopVideo();
+        nextScreen('summary-screen');  // ✅ Move to the next screen
+        return;
     }
 
-    videoElement.onended = () => {
-        currentVideoIndex++;
-        playVideo(currentVideoIndex);
-    };
-
-    videoElement.onclick = (event) => {
-        const clickX = event.clientX;
-        const screenWidth = window.innerWidth;
-
-        if (clickX > screenWidth / 2) {
-            currentVideoIndex++;
-        } else {
-            currentVideoIndex = Math.max(currentVideoIndex - 1, 0);
-        }
-        playVideo(currentVideoIndex);
-    };
-
-    function stopVideo() {
-        videoElement.pause();
-        videoElement.currentTime = 0;
-        videoElement.src = "";
-    }
-
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            stopVideo();
-        }
+    videoElement.src = selectedVideos[index];
+    videoElement.load();
+    videoElement.play().catch(error => {
+        console.error("Erro ao carregar o vídeo:", error);
     });
 
-    nextScreen('personalized-videos-screen');
-    playVideo(currentVideoIndex);
+    const allProgressBars = document.querySelectorAll('.progress-bar-fill');
+    allProgressBars.forEach((bar, i) => {
+        bar.style.width = i < index ? '100%' : '0%';
+    });
+
+    const currentBar = allProgressBars[index];
+    currentBar.style.transition = `width ${videoElement.duration}s linear`;
+    currentBar.style.width = '100%';
 }
+
+// ✅ Completely hide the video player and progress bar
+function stopVideo() {
+    videoElement.pause();
+    videoElement.currentTime = 0;
+    videoElement.src = "";
+
+    // ✅ Hide video wrapper and progress bar after videos end
+    document.getElementById('video-wrapper').style.display = 'none';
+    document.getElementById('video-progress-container').style.display = 'none';
+}
+
 
 
 // ✅ Finalize onboarding and redirect
