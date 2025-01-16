@@ -54,6 +54,7 @@ h2 {
     cursor: pointer;
     display: none; /* Hidden until video ends */
     transition: background-color 0.3s ease, transform 0.3s ease;
+     z-index: 10; 
 }
 
 #intro-video-screen button:hover {
