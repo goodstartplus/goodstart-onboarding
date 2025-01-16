@@ -120,3 +120,10 @@ function finishOnboarding() {
     alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
 }
+
+// ✅ Navigate to the next screen and hide others
+function nextScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
+    window.scrollTo(0, 0); // Scroll to the top for better UX
+}
