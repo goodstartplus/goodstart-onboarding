@@ -15,7 +15,7 @@
 
     <!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
-        <video src="assets/videos/pronunciation.mp4" controls autoplay></video>
+        <video src="assets/videos/pronunciation.mp4" controls autoplay muted></video>
         <button id="continue-intro">Continuar</button>
     </section>
 
@@ -38,49 +38,40 @@
     <!-- 4. Study Method -->
     <section id="study-method-screen" class="screen hidden">
         <h2>Como você estudou inglês?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🎒</span>
-            <label>Ensino Fundamental/Médio</label>
-            <input type="checkbox" value="Ensino Fundamental/Médio">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🎓</span>
-            <label>Escola de Idiomas</label>
-            <input type="checkbox" value="Escola de Idiomas">
-        </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 5. Challenges -->
+    <!-- 5. Reason for Learning -->
+    <section id="reason-screen" class="screen hidden">
+        <h2>Por que você quer aprender inglês?</h2>
+        <button onclick="saveCheckboxes('reason')">Continuar</button>
+    </section>
+
+    <!-- 6. Challenges -->
     <section id="challenges-screen" class="screen hidden">
         <h2>Quais são suas maiores dificuldades?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🗣️</span>
-            <label>Falta de prática</label>
-            <input type="checkbox" value="Falta de prática">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">😰</span>
-            <label>Medo de falar</label>
-            <input type="checkbox" value="Medo de falar">
-        </div>
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 6. Personalized Videos -->
+    <!-- 7. Personalized Videos -->
     <section id="personalized-videos-screen" class="screen hidden">
-        <div id="video-progress-container"></div>
         <video id="story-video"></video>
+        <button id="next-video-btn">Próximo</button>
     </section>
 
-    <!-- 7. Summary -->
-    <section id="summary-screen" class="screen hidden">
-        <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
-        <p id="summary-content"></p>
+    <!-- 8. Expectations -->
+    <section id="expectation-screen" class="screen hidden">
+        <h2>O que você pode esperar</h2>
+        <ul>
+            <li>Semana 1: 105 novas palavras</li>
+            <li>Semana 4: 144 novas frases</li>
+            <li>Semana 12: 1080 minutos de fala</li>
+            <li>Mês 12: Fale com confiança!</li>
+        </ul>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 8. Celebration Video -->
+    <!-- 9. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" controls autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
