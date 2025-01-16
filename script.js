@@ -105,7 +105,7 @@ function showSummary() {
     document.getElementById('summary-name').innerText = Nome;
 }
 
-// ✅ Load personalized videos based on selected challenges
+// ✅ Load videos in Web Stories style
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -114,20 +114,68 @@ function loadPersonalizedVideos() {
         "Vocabulário": "assets/videos/vocabulary.mp4"
     };
 
-    const container = document.getElementById('videos-container');
-    container.innerHTML = "";
+    const selectedChallenges = userResponses['challenges'] || [];
+    const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]).filter(Boolean);
 
-    (userResponses['challenges'] || []).forEach(challenge => {
-        if (videoMap[challenge]) {
-            const videoElement = document.createElement('video');
-            videoElement.src = videoMap[challenge];
-            videoElement.controls = true;
-            videoElement.classList.add('personalized-video');
-            container.appendChild(videoElement);
-        }
+    if (selectedVideos.length === 0) {
+        alert("Nenhum vídeo disponível para as dificuldades selecionadas.");
+        nextScreen('summary-screen');
+        return;
+    }
+
+    let currentVideoIndex = 0;
+    const videoElement = document.getElementById('story-video');
+    const progressContainer = document.getElementById('video-progress-container');
+
+    // ✅ Create progress bars for each video
+    progressContainer.innerHTML = "";
+    selectedVideos.forEach(() => {
+        const bar = document.createElement('div');
+        bar.classList.add('progress-bar');
+        const fill = document.createElement('div');
+        fill.classList.add('progress-bar-fill');
+        bar.appendChild(fill);
+        progressContainer.appendChild(bar);
     });
 
+    // ✅ Play video with progress bar animation
+    function playVideo(index) {
+        if (index >= selectedVideos.length) {
+            nextScreen('summary-screen');
+            return;
+        }
+
+        videoElement.src = selectedVideos[index];
+        videoElement.play();
+
+        // Reset progress bars
+        const allProgressBars = document.querySelectorAll('.progress-bar-fill');
+        allProgressBars.forEach((bar, i) => {
+            bar.style.width = i < index ? '100%' : '0%';
+        });
+
+        // Animate current progress bar
+        const currentBar = allProgressBars[index];
+        currentBar.style.transition = `width ${videoElement.duration}s linear`;
+        currentBar.style.width = '100%';
+    }
+
+    // ✅ Move to the next video after one ends
+    videoElement.onended = () => {
+        currentVideoIndex++;
+        playVideo(currentVideoIndex);
+    };
+
+    // ✅ Tap to skip to the next video
+    videoElement.onclick = () => {
+        videoElement.pause();
+        currentVideoIndex++;
+        playVideo(currentVideoIndex);
+    };
+
+    // ✅ Start the video sequence
     nextScreen('personalized-videos-screen');
+    playVideo(currentVideoIndex);
 }
 
 // ✅ Finalize onboarding and redirect
