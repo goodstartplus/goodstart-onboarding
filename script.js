@@ -85,13 +85,13 @@ function saveCheckboxes(question) {
     userResponses[question] = values;
 
     const flow = {
-        'study-method': 'reason-screen',
-        'reason': 'challenges-screen',
-        'challenges': () => {
-            loadPersonalizedVideos();
-            return 'personalized-videos-screen';
-        }
-    };
+    'study-method': 'reason-screen',
+    'reason': () => {
+        loadPersonalizedVideos();
+        return 'personalized-videos-screen';
+    }
+};
+
 
     const next = flow[question];
     nextScreen(typeof next === 'function' ? next() : next);
@@ -108,7 +108,8 @@ function loadPersonalizedVideos() {
         "Falta de vocabulário": "assets/videos/vocabulary.mp4"
     };
 
-    const selectedChallenges = userResponses['challenges'] || [];
+    const selectedChallenges = userResponses['reason'] || [];
+
     const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]).filter(Boolean);
 
     if (selectedVideos.length === 0) {
@@ -135,31 +136,31 @@ function loadPersonalizedVideos() {
     });
 
     // ✅ Play video with progress animation
-    function playVideo(index) {
-        if (index >= selectedVideos.length) {
-            stopVideo();
-            nextScreen('summary-screen');
-            return;
-        }
-
-        videoElement.src = selectedVideos[index];
-        videoElement.load();  // ✅ Force reload
-        videoElement.muted = false;
-        videoElement.currentTime = 0;
-        videoElement.play().catch(error => {
-            console.error("Erro ao carregar o vídeo:", error);
-        });
-
-        // ✅ Animate progress bar
-        const allProgressBars = document.querySelectorAll('.progress-bar-fill');
-        allProgressBars.forEach((bar, i) => {
-            bar.style.width = i < index ? '100%' : '0%';
-        });
-
-        const currentBar = allProgressBars[index];
-        currentBar.style.transition = `width ${videoElement.duration}s linear`;
-        currentBar.style.width = '100%';
+   function playVideo(index) {
+    if (index >= selectedVideos.length) {
+        stopVideo();
+        nextScreen('summary-screen');
+        return;
     }
+
+    const videoElement = document.getElementById('story-video');
+    videoElement.src = selectedVideos[index];
+    videoElement.load();  // ✅ Ensure the video is fully loaded
+
+    videoElement.play().catch(error => {
+        console.error("Erro ao carregar o vídeo:", error);
+    });
+
+    // ✅ Animate progress bar
+    const allProgressBars = document.querySelectorAll('.progress-bar-fill');
+    allProgressBars.forEach((bar, i) => {
+        bar.style.width = i < index ? '100%' : '0%';
+    });
+
+    const currentBar = allProgressBars[index];
+    currentBar.style.transition = `width ${videoElement.duration}s linear`;
+    currentBar.style.width = '100%';
+}
 
     // ✅ Move to the next video when one ends
     videoElement.onended = () => {
