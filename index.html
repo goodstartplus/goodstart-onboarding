@@ -103,12 +103,16 @@
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 7. Vídeos Personalizados -->
-    <section id="personalized-videos-screen" class="screen hidden">
-        <h2>Dicas Personalizadas para Você</h2>
-        <div id="videos-container"></div>
-        <button onclick="nextScreen('summary-screen')">Continuar</button>
-    </section>
+    
+   <!-- 7. 📹 Web Stories Style - Personalized Videos -->
+<section id="personalized-videos-screen" class="screen hidden">
+    <div id="video-wrapper">
+        <div id="video-progress-container"></div> <!-- Progress bar for each video -->
+        <button id="close-videos" onclick="nextScreen('summary-screen')">✕</button>
+        <video id="story-video" autoplay muted playsinline></video>
+    </div>
+</section>
+
 
     <!-- 8. Resumo Personalizado -->
     <section id="summary-screen" class="screen hidden">
