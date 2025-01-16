@@ -151,7 +151,7 @@ function loadPersonalizedVideos() {
         "Falta de vocabulário": "assets/videos/vocabulary.mp4"
     };
 
-    const selectedChallenges = userResponses['challenges'] || [];
+    const selectedChallenges = userResponses['reason'] || [];  // ✅ Corrected from 'challenges' to 'reason'
     const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]).filter(Boolean);
 
     if (selectedVideos.length === 0) {
@@ -175,7 +175,7 @@ function loadPersonalizedVideos() {
         progressContainer.appendChild(bar);
     });
 
-    // ✅ Play the video with progress bar animation
+    // ✅ Play videos with progress bar animation
     function playVideo(index) {
         if (index >= selectedVideos.length) {
             stopVideo();
@@ -198,13 +198,11 @@ function loadPersonalizedVideos() {
         currentBar.style.width = '100%';
     }
 
-    // ✅ Move to the next video after one ends
     videoElement.onended = () => {
         currentVideoIndex++;
         playVideo(currentVideoIndex);
     };
 
-    // ✅ Tap to skip or go back
     videoElement.onclick = (event) => {
         const clickX = event.clientX;
         const screenWidth = window.innerWidth;
@@ -218,14 +216,12 @@ function loadPersonalizedVideos() {
         }
     };
 
-    // ✅ Stop the video when exiting the screen
     function stopVideo() {
         videoElement.pause();
         videoElement.currentTime = 0;
         videoElement.src = "";
     }
 
-    // ✅ Stop video if user switches tabs
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             stopVideo();
@@ -235,6 +231,7 @@ function loadPersonalizedVideos() {
     nextScreen('personalized-videos-screen');
     playVideo(currentVideoIndex);
 }
+
 
 // ✅ Finalize onboarding and redirect
 function finishOnboarding() {
