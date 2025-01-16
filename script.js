@@ -1,8 +1,8 @@
 let userResponses = {};
 let currentStep = 0;
-const totalSteps = 9; // Total steps
+const totalSteps = 9;
 
-// ✅ Navigate to the next screen and update progress bar
+// ✅ Navigate to the next screen
 function nextScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
@@ -10,59 +10,33 @@ function nextScreen(screenId) {
     updateProgress();
 }
 
-// ✅ Update the progress bar
+// ✅ Update progress bar
 function updateProgress() {
     const progress = ((currentStep + 1) / totalSteps) * 100;
     document.querySelector('.progress-bar').style.width = `${progress}%`;
     currentStep++;
 }
 
-// ✅ Show "Continuar" button after video ends
+// ✅ Show "Continuar" button after intro video ends
 document.addEventListener('DOMContentLoaded', () => {
     const introVideo = document.querySelector('#intro-video-screen video');
     const continueButton = document.querySelector('#intro-video-screen button');
 
     if (introVideo) {
         introVideo.onended = () => {
-            continueButton.style.display = 'block'; // Show the button after the video finishes
+            continueButton.style.display = 'block';
         };
     }
 });
 
-// ✅ Validate and save the user's name
-function saveName() {
-    const nameInput = document.getElementById('user-name').value.trim();
-    if (nameInput.length >= 2) {
-        userResponses['Nome'] = nameInput;
-        nextScreen('age-screen');
-    } else {
-        alert("Por favor, insira um nome válido.");
-    }
-}
-
-// ✅ Save single-choice answers
-function saveAnswer(question, answer) {
-    userResponses[question] = answer;
-
-    const flow = {
-        'age': 'study-method-screen',
-        'conversation-goal': () => {
-            showSummary();
-            return 'summary-screen';
-        }
-    };
-
-    const next = flow[question];
-    nextScreen(typeof next === 'function' ? next() : next);
-}
-
-// ✅ Toggle checkbox state
+// ✅ Toggle checkbox selection
 function toggleCheckbox(option) {
     option.classList.toggle('checked');
-    option.querySelector('input').checked = !option.querySelector('input').checked;
+    const checkbox = option.querySelector('input');
+    checkbox.checked = !checkbox.checked;
 }
 
-// ✅ Save multiple-choice (checkbox) answers
+// ✅ Save checkbox responses
 function saveCheckboxes(question) {
     const selectedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option.checked input`);
     const values = Array.from(selectedOptions).map(cb => cb.value);
@@ -74,10 +48,8 @@ function saveCheckboxes(question) {
 
     userResponses[question] = values;
 
-    // Flow control for checkboxes
     const flow = {
-        'study-method': 'reason-screen',
-        'reason': 'challenges-screen',
+        'study-method': 'challenges-screen',
         'challenges': () => {
             loadPersonalizedVideos();
             return 'personalized-videos-screen';
@@ -88,125 +60,25 @@ function saveCheckboxes(question) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Show a personalized summary
-function showSummary() {
-    const { Nome, age, 'study-method': study, reason, challenges, 'conversation-goal': goal } = userResponses;
-
-    const summaryText = `
-        ${Nome}, vamos construir seu plano com base nas suas respostas:
-        - Idade: ${age}
-        - Como estudou inglês: ${study ? study.join(', ') : 'Não informado'}
-        - Motivo: ${reason ? reason.join(', ') : 'Não informado'}
-        - Desafios: ${challenges ? challenges.join(', ') : 'Não informado'}
-        - Objetivo de prática: ${goal}
-    `;
-
-    document.getElementById('summary-content').innerText = summaryText;
-    document.getElementById('summary-name').innerText = Nome;
-}
-
-// ✅ Load videos in Web Stories style with sound and proper stop
+// ✅ Load personalized videos
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
         "Medo de falar": "assets/videos/fear.mp4",
         "Pronúncia": "assets/videos/pronunciation.mp4",
-        "Vocabulário": "assets/videos/vocabulary.mp4"
+        "Ouvir e entender": "assets/videos/listening.mp4",
+        "Falta de vocabulário": "assets/videos/vocabulary.mp4"
     };
 
     const selectedChallenges = userResponses['challenges'] || [];
-    const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]).filter(Boolean);
+    const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]);
 
-    if (selectedVideos.length === 0) {
-        alert("Nenhum vídeo disponível para as dificuldades selecionadas.");
-        nextScreen('summary-screen');
-        return;
-    }
-
-    let currentVideoIndex = 0;
-    const videoElement = document.getElementById('story-video');
-    const progressContainer = document.getElementById('video-progress-container');
-
-    // ✅ Create progress bars for each video
-    progressContainer.innerHTML = "";
-    selectedVideos.forEach(() => {
-        const bar = document.createElement('div');
-        bar.classList.add('progress-bar');
-        const fill = document.createElement('div');
-        fill.classList.add('progress-bar-fill');
-        bar.appendChild(fill);
-        progressContainer.appendChild(bar);
-    });
-
-    // ✅ Play video with progress bar animation
-    function playVideo(index) {
-        if (index >= selectedVideos.length) {
-            stopVideo();  // ✅ Stop video before moving on
-            nextScreen('summary-screen');
-            return;
-        }
-
-        videoElement.src = selectedVideos[index];
-        videoElement.muted = false; // ✅ Enable sound
-        videoElement.currentTime = 0;
-        videoElement.play();
-
-        // Reset progress bars
-        const allProgressBars = document.querySelectorAll('.progress-bar-fill');
-        allProgressBars.forEach((bar, i) => {
-            bar.style.width = i < index ? '100%' : '0%';
-        });
-
-        // Animate current progress bar
-        const currentBar = allProgressBars[index];
-        currentBar.style.transition = `width ${videoElement.duration}s linear`;
-        currentBar.style.width = '100%';
-    }
-
-    // ✅ Move to the next video after one ends
-    videoElement.onended = () => {
-        currentVideoIndex++;
-        playVideo(currentVideoIndex);
-    };
-
-    // ✅ Tap right to skip, left to go back
-    videoElement.onclick = (event) => {
-        const clickX = event.clientX;
-        const screenWidth = window.innerWidth;
-
-        if (clickX > screenWidth / 2) {
-            // 👉 Tap on the right to skip
-            currentVideoIndex++;
-            playVideo(currentVideoIndex);
-        } else {
-            // 👈 Tap on the left to go back
-            currentVideoIndex = currentVideoIndex > 0 ? currentVideoIndex - 1 : 0;
-            playVideo(currentVideoIndex);
-        }
-    };
-
-    // ✅ Stop the video when exiting the screen
-    function stopVideo() {
-        videoElement.pause();
-        videoElement.currentTime = 0;
-        videoElement.src = "";  // Clear the video source to stop audio
-    }
-
-    // ✅ Stop video if the user moves to another screen
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            stopVideo();
-        }
-    });
-
-    nextScreen('personalized-videos-screen');
-    playVideo(currentVideoIndex);
+    let videoElement = document.getElementById('story-video');
+    videoElement.src = selectedVideos[0];
+    videoElement.play();
 }
 
-
-
-// ✅ Finalize onboarding and redirect
+// ✅ Finish onboarding
 function finishOnboarding() {
-    alert("Parabéns! Você concluiu o onboarding. Redirecionando...");
     window.location.href = "https://goodstart.com.br";
 }
