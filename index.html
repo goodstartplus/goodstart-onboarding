@@ -90,14 +90,16 @@
     </section>
 
     <script>
-  let userResponses = {};
+let userResponses = {};
 let videoIndex = 0;
 let selectedVideos = [];
 let currentStep = 0;
 const totalSteps = 7;
 
 function nextScreen(screenId) {
-    stopVideoPlayback();  // 🛑 Stop any playing video before switching screens
+    if (screenId !== 'personalized-videos-screen') {
+        stopVideoPlayback();  // 🛑 Stop video only when leaving video screen
+    }
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
     updateProgress();
@@ -109,8 +111,6 @@ function stopVideoPlayback() {
     if (video) {
         video.pause();
         video.currentTime = 0;
-        video.src = '';
-        video.remove();
     }
 }
 
