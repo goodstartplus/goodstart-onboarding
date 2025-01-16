@@ -97,8 +97,6 @@ function saveCheckboxes(question) {
     nextScreen(typeof next === 'function' ? next() : next);
 }
 
-// ✅ Load personalized videos in Web Stories style
-// ✅ Load personalized videos in Web Stories style
 function loadPersonalizedVideos() {
     const videoMap = {
         "Falta de prática": "assets/videos/practice.mp4",
@@ -108,8 +106,7 @@ function loadPersonalizedVideos() {
         "Falta de vocabulário": "assets/videos/vocabulary.mp4"
     };
 
-    const selectedChallenges = userResponses['reason'] || [];
-
+    const selectedChallenges = userResponses['reason'] || [];  // ✅ Corrected key
     const selectedVideos = selectedChallenges.map(challenge => videoMap[challenge]).filter(Boolean);
 
     if (selectedVideos.length === 0) {
@@ -122,10 +119,8 @@ function loadPersonalizedVideos() {
     const videoElement = document.getElementById('story-video');
     const progressContainer = document.getElementById('video-progress-container');
 
-    // ✅ Clear previous progress bars
     progressContainer.innerHTML = "";
 
-    // ✅ Create progress bars for each video
     selectedVideos.forEach(() => {
         const bar = document.createElement('div');
         bar.classList.add('progress-bar');
@@ -135,61 +130,52 @@ function loadPersonalizedVideos() {
         progressContainer.appendChild(bar);
     });
 
-    // ✅ Play video with progress animation
-   function playVideo(index) {
-    if (index >= selectedVideos.length) {
-        stopVideo();
-        nextScreen('summary-screen');
-        return;
+    function playVideo(index) {
+        if (index >= selectedVideos.length) {
+            stopVideo();
+            nextScreen('summary-screen');
+            return;
+        }
+
+        videoElement.src = selectedVideos[index];
+        videoElement.load();
+        videoElement.play().catch(error => {
+            console.error("Erro ao carregar o vídeo:", error);
+        });
+
+        const allProgressBars = document.querySelectorAll('.progress-bar-fill');
+        allProgressBars.forEach((bar, i) => {
+            bar.style.width = i < index ? '100%' : '0%';
+        });
+
+        const currentBar = allProgressBars[index];
+        currentBar.style.transition = `width ${videoElement.duration}s linear`;
+        currentBar.style.width = '100%';
     }
 
-    const videoElement = document.getElementById('story-video');
-    videoElement.src = selectedVideos[index];
-    videoElement.load();  // ✅ Ensure the video is fully loaded
-
-    videoElement.play().catch(error => {
-        console.error("Erro ao carregar o vídeo:", error);
-    });
-
-    // ✅ Animate progress bar
-    const allProgressBars = document.querySelectorAll('.progress-bar-fill');
-    allProgressBars.forEach((bar, i) => {
-        bar.style.width = i < index ? '100%' : '0%';
-    });
-
-    const currentBar = allProgressBars[index];
-    currentBar.style.transition = `width ${videoElement.duration}s linear`;
-    currentBar.style.width = '100%';
-}
-
-    // ✅ Move to the next video when one ends
     videoElement.onended = () => {
         currentVideoIndex++;
         playVideo(currentVideoIndex);
     };
 
-    // ✅ Tap to skip or go back
     videoElement.onclick = (event) => {
         const clickX = event.clientX;
         const screenWidth = window.innerWidth;
 
         if (clickX > screenWidth / 2) {
             currentVideoIndex++;
-            playVideo(currentVideoIndex);
         } else {
-            currentVideoIndex = currentVideoIndex > 0 ? currentVideoIndex - 1 : 0;
-            playVideo(currentVideoIndex);
+            currentVideoIndex = Math.max(currentVideoIndex - 1, 0);
         }
+        playVideo(currentVideoIndex);
     };
 
-    // ✅ Stop video playback
     function stopVideo() {
         videoElement.pause();
         videoElement.currentTime = 0;
         videoElement.src = "";
     }
 
-    // ✅ Stop video when switching tabs
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             stopVideo();
