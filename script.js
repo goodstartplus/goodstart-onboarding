@@ -72,17 +72,17 @@ function saveAnswer(question, answer) {
 // ✅ Toggle checkbox state with visual feedback
 function toggleCheckbox(option) {
     const checkbox = option.querySelector('input[type="checkbox"]');
-    
-    // ✅ Toggle the checkbox state
-    checkbox.checked = !checkbox.checked;
 
-    // ✅ Apply or remove the 'checked' style
+    // ✅ Toggle the checkbox and apply smooth visual feedback
     if (checkbox.checked) {
-        option.classList.add('checked');
-    } else {
+        checkbox.checked = false;
         option.classList.remove('checked');
+    } else {
+        checkbox.checked = true;
+        option.classList.add('checked');
     }
 }
+
 
 
 function saveCheckboxes(question) {
