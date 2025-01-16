@@ -90,7 +90,7 @@
     </section>
 
     <script>
-    let userResponses = {};
+   let userResponses = {};
 let videoIndex = 0;
 let selectedVideos = [];
 let currentStep = 0;
@@ -154,7 +154,7 @@ function loadPersonalizedVideos() {
         'Medo de falar': 'fear.mp4',
         'Pronúncia': 'pronunciation.mp4',
         'Ouvir e entender': 'listening.mp4',
-        'Vocabulário': 'vocabulary.mp4'  // Fixed mapping
+        'Vocabulário': 'vocabulary.mp4'
     };
     selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
     renderProgressBar();
@@ -177,9 +177,10 @@ function playVideo(index) {
         return;
     }
     const videoContainer = document.getElementById('video-container');
-    videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay muted></video>`;
+    videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay></video>`;
     updateProgressBar(index);
     const video = document.getElementById('story-video');
+    video.muted = false;  // 🔊 Unmute videos
     video.onended = () => playVideo(++videoIndex);
 }
 
