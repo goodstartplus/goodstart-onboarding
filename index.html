@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onboarding Goodstart+</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- 🚀 Progress Bar -->
-    <div class="progress-container">
-        <div class="progress-bar"></div>
-    </div>
-
-    <!-- 1. Intro Video -->
+<!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
         <video src="assets/videos/pronunciation.mp4" autoplay muted></video>
         <button id="continue-intro" onclick="nextScreen('name-screen')">Continuar</button>
@@ -32,7 +17,9 @@
         <button onclick="saveAnswer('idade', '<18')">Menos de 18</button>
         <button onclick="saveAnswer('idade', '18-25')">18-25</button>
         <button onclick="saveAnswer('idade', '26-35')">26-35</button>
-        <button onclick="saveAnswer('idade', '36+')">36+</button>
+        <button onclick="saveAnswer('idade', '36-45')">36-45</button>
+        <button onclick="saveAnswer('idade', '46-60')">46-60</button>
+        <button onclick="saveAnswer('idade', '60+')">60+</button>
     </section>
 
     <!-- 4. Study Method -->
@@ -46,444 +33,69 @@
             <input type="checkbox" value="Escola de Idiomas">
             🎓 Escola de Idiomas
         </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Professor Particular">
+            👨‍🏫 Professor Particular
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Aplicativos">
+            📱 Aplicativos
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Intercâmbio">
+            🌍 Intercâmbio
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Autodidata">
+            📖 Autodidata
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Nunca estudou antes">
+            ❌ Nunca estudou antes
+        </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 4.5. Você está em boas mãos -->
-<section id="trust-screen" class="screen hidden">
-    <img src="assets/images/trust-banner.jpg" alt="Você está em boas mãos" style="width:100vw; height:100vh; object-fit:cover;">
-    <button onclick="nextScreen('challenges-screen')" style="position:absolute; bottom:10%; left:50%; transform:translateX(-50%); padding:15px 30px; background-color:#E50914; color:#fff; border:none; border-radius:25px; font-size:16px; font-weight:bold; cursor:pointer;">Continuar</button>
-</section>
-
-<!-- 5. Challenges -->
-<section id="challenges-screen" class="screen hidden">
-    <h2>Quais são suas maiores dificuldades?</h2>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
-    </div>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
-    </div>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
-    </div>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
-    </div>
-    <div class="checkbox-option" onclick="toggleCheckbox(this)">
-        <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
-    </div>
-    <button onclick="saveCheckboxes('challenges')">Continuar</button>
-</section>
-
-
-    <!-- 6. Personalized Videos with Web Stories Effect -->
-<section id="personalized-videos-screen" class="screen hidden">
-    <div id="video-progress-container"></div>
-    <div id="video-container" onclick="handleVideoTap(event)"></div>
-</section>
-
-    <!-- 7. Personalized Summary -->
-<section id="summary-screen" class="screen hidden">
-    <h2 id="summary-heading"></h2>
-    <div id="summary-content"></div>
-    <button onclick="nextScreen('expectation-screen')">Continuar</button>
-</section>
-
-<!-- 7. Personalized Summary -->
-<section id="summary-screen" class="screen hidden">
-    <h2 id="summary-heading"></h2>
-    <div id="summary-content"></div>
-    <button onclick="nextScreen('expectation-screen')">Continuar</button>
-</section>
-
-<!-- 8. O que você pode esperar -->
-<section id="expectation-screen" class="screen hidden">
-    <h2>O que você pode esperar</h2>
-    <div class="carousel">
-        <div class="carousel-slide active">
-            <h3>Semana 1</h3>
-            <p><strong>105</strong> novas palavras</p>
-            <img src="assets/images/week1.png" alt="Semana 1">
-            <p><em>Aprenda a conhecer novas pessoas</em></p>
+    <!-- 5. Challenges -->
+    <section id="challenges-screen" class="screen hidden">
+        <h2>Quais são suas maiores dificuldades?</h2>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
         </div>
-        <div class="carousel-slide">
-            <h3>Semana 4</h3>
-            <p><strong>144</strong> novas frases</p>
-            <img src="assets/images/week1.png" alt="Semana 4">
-            <p><em>Aprenda a pedir em um restaurante</em></p>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
         </div>
-        <div class="carousel-slide">
-            <h3>Semana 12</h3>
-            <p><strong>1080</strong> minutos de fala</p>
-            <img src="assets/images/week1.png" alt="Semana 12">
-            <p><em>Aprenda a falar com um amigo</em></p>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
         </div>
-        <div class="carousel-slide">
-            <h3>Mês 12</h3>
-            <p><strong>Fale com confiança</strong></p>
-            <img src="assets/images/week1.png" alt="Mês 12">
-            <p><em>Fale em diferentes situações</em></p>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
         </div>
-    </div>
-    <div class="carousel-indicators">
-        <span class="dot active" onclick="moveCarousel(0)"></span>
-        <span class="dot" onclick="moveCarousel(1)"></span>
-        <span class="dot" onclick="moveCarousel(2)"></span>
-        <span class="dot" onclick="moveCarousel(3)"></span>
-    </div>
-    <button id="carousel-button" onclick="nextCarouselSlide()">Próximo</button>
-</section>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
+        </div>
+        <button onclick="saveCheckboxes('challenges')">Continuar</button>
+    </section>
 
-    <!-- 8. Celebration -->
+    <!-- 6. Personalized Videos -->
+    <section id="personalized-videos-screen" class="screen hidden">
+        <div id="video-progress-container"></div>
+        <div id="video-container"></div>
+    </section>
+
+    <!-- 7. Summary -->
+    <section id="summary-screen" class="screen hidden">
+        <h2 id="summary-heading"></h2>
+        <div id="summary-content"></div>
+        <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
+    </section>
+
+    <!-- 8. Celebration Video -->
     <section id="celebration-video-screen" class="screen hidden">
         <video src="assets/videos/celebration.mp4" autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
     </section>
 
-    <script>
-let userResponses = {};
-let videoIndex = 0;
-let selectedVideos = [];
-let currentStep = 0;
-const totalSteps = 7;
-
-function nextScreen(screenId) {
-    if (screenId !== 'personalized-videos-screen') {
-        stopVideoPlayback();  // 🛑 Stop video only when leaving video screen
-    }
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-    updateProgress();
-    window.scrollTo(0, 0);
-}
-
-function stopVideoPlayback() {
-    const video = document.getElementById('story-video');
-    if (video) {
-        video.pause();
-        video.currentTime = 0;
-    }
-}
-
-function updateProgress() {
-    const progress = ((currentStep + 1) / totalSteps) * 100;
-    document.querySelector('.progress-bar').style.width = `${progress}%`;
-    currentStep++;
-}
-
-function saveName() {
-    const nameInput = document.getElementById('user-name').value.trim();
-    if (nameInput.length >= 2) {
-        userResponses['nome'] = nameInput;
-        nextScreen('age-screen');
-    } else {
-        alert("Por favor, insira um nome válido.");
-    }
-}
-
-function saveAnswer(question, answer) {
-    userResponses[question] = answer;
-    nextScreen('study-method-screen');
-}
-
-function toggleCheckbox(option) {
-    const checkbox = option.querySelector('input[type="checkbox"]');
-    checkbox.checked = !checkbox.checked;
-    option.classList.toggle('checked', checkbox.checked);
-    option.offsetHeight;
-}
-
-function saveCheckboxes(question) {
-    const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    if (checkedOptions.length === 0) {
-        alert("Por favor, selecione pelo menos uma opção.");
-        return;
-    }
-    userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
-
-    if (question === 'challenges') {
-        loadPersonalizedVideos();
-        nextScreen('personalized-videos-screen');
-    } else {
-        const next = question === 'study-method' ? 'challenges-screen' : 'summary-screen';
-        nextScreen(next);
-    }
-}
-
-function loadPersonalizedVideos() {
-    const videoMap = {
-        'Falta de prática': 'practice.mp4',
-        'Medo de falar': 'fear.mp4',
-        'Pronúncia': 'pronunciation.mp4',
-        'Ouvir e entender': 'listening.mp4',
-        'Vocabulário': 'vocabulary.mp4'
-    };
-    selectedVideos = userResponses['challenges'].map(challenge => `assets/videos/${videoMap[challenge]}`);
-    renderProgressBar();
-    playVideo(videoIndex);
-}
-
-function renderProgressBar() {
-    const progressContainer = document.getElementById('video-progress-container');
-    progressContainer.innerHTML = '';
-    selectedVideos.forEach(() => {
-        const segment = document.createElement('div');
-        segment.className = 'progress-bar-segment';
-        progressContainer.appendChild(segment);
-    });
-}
-
-function playVideo(index) {
-    if (index >= selectedVideos.length) {
-        nextScreen('summary-screen');
-        return;
-    }
-    const videoContainer = document.getElementById('video-container');
-    videoContainer.innerHTML = `<video id="story-video" src="${selectedVideos[index]}" autoplay></video>`;
-    updateProgressBar(index);
-    const video = document.getElementById('story-video');
-    video.muted = false;
-    video.onended = () => playVideo(++videoIndex);
-}
-
-function updateProgressBar(index) {
-    const segments = document.querySelectorAll('.progress-bar-segment');
-    segments.forEach((seg, i) => {
-        seg.classList.toggle('completed', i < index);
-    });
-}
-
-function handleVideoTap(event) {
-    const x = event.clientX || event.touches[0].clientX;
-    if (x > window.innerWidth / 2) {
-        playVideo(++videoIndex);
-    } else if (videoIndex > 0) {
-        playVideo(--videoIndex);
-    }
-}
-
-window.onload = function() {
-    const introVideo = document.querySelector('#intro-video-screen video');
-    if (introVideo) {
-        introVideo.onended = showContinueButton;
-        setTimeout(showContinueButton, 5000);
-    }
-};
-
-function showContinueButton() {
-    const continueButton = document.getElementById('continue-intro');
-    if (continueButton) {
-        continueButton.style.display = 'block';
-    }
-}
-
-function finishOnboarding() {
-    window.location.href = "https://goodstart.com.br";
-}
-
-
-function saveCheckboxes(question) {
-    const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
-    if (checkedOptions.length === 0) {
-        alert("Por favor, selecione pelo menos uma opção.");
-        return;
-    }
-    userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
-
-    if (question === 'study-method') {
-        nextScreen('trust-screen');  // 👈 Redirect to new trust screen
-    } else if (question === 'challenges') {
-        loadPersonalizedVideos();
-        nextScreen('personalized-videos-screen');
-    }
-}
-
-
-
-        
-  </script>
-
-    <script>
-function generateSummary() {
-    const name = userResponses['nome'] || 'Vamos construir um plano para você';
-    const idade = userResponses['idade'] || 'Não informado';
-    const estudo = userResponses['study-method'] ? userResponses['study-method'].join('; ') : 'Não informado';
-    const dificuldades = userResponses['challenges'] ? userResponses['challenges'].join('; ') : 'Não informado';
-
-    document.getElementById('summary-heading').innerText = `${name}, Vamos construir um plano para você!`;
-
-    const summaryHTML = `
-        <p>👉 <strong>Idade:</strong> ${idade}</p>
-        <p>👉 <strong>Estudou:</strong> ${estudo}</p>
-        <p>👉 <strong>Maiores dificuldades:</strong> ${dificuldades}</p>
-    `;
-
-    document.getElementById('summary-content').innerHTML = summaryHTML;
-}
-
-function nextScreen(screenId) {
-    if (screenId === 'summary-screen') {
-        generateSummary();
-    }
-    if (screenId !== 'personalized-videos-screen') {
-        stopVideoPlayback();
-    }
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-    updateProgress();
-    window.scrollTo(0, 0);
-}
-</script>
+    <script src="script.js"></script>
 </body>
-<style>
-    /* 🟥 Story-like Progress Bar */
-#video-progress-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    display: flex;
-    gap: 5px;
-}
-
-.progress-bar-segment {
-    flex: 1;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-    transition: background-color 0.4s;
-}
-
-.progress-bar-segment.completed {
-    background-color: #E50914;
-}
-
-/* 📱 Full-Screen Video Styling */
-#video-container video {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    cursor: pointer;
-}
-</style>
-
-
-<script>
-let currentSlide = 0;
-let totalSlides = 4;
-
-function moveCarousel(index) {
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots = document.querySelectorAll('.dot');
-    slides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
-    slides[index].classList.add('active');
-    dots[index].classList.add('active');
-    currentSlide = index;
-
-    const button = document.getElementById('carousel-button');
-    button.innerText = (currentSlide === totalSlides - 1) ? 'Pronto(a) para esta jornada?' : 'Próximo';
-    if (currentSlide === totalSlides - 1) {
-        button.onclick = () => nextScreen('celebration-video-screen');
-    } else {
-        button.onclick = nextCarouselSlide;
-    }
-}
-
-function nextCarouselSlide() {
-    if (currentSlide < totalSlides - 1) {
-        moveCarousel(currentSlide + 1);
-    }
-}
-
-let startX = 0;
-let endX = 0;
-
-document.querySelector('.carousel').addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-});
-
-document.querySelector('.carousel').addEventListener('touchend', (e) => {
-    endX = e.changedTouches[0].clientX;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    if (startX - endX > 50) {
-        nextCarouselSlide();
-    } else if (endX - startX > 50 && currentSlide > 0) {
-        moveCarousel(currentSlide - 1);
-    }
-}
-</script>
-
-
-<style>
-.carousel {
-    position: relative;
-    width: 100%;
-    height: 70vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.carousel-slide {
-    display: none;
-    text-align: center;
-    background-color: #1F1F1F;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    width: 80%;
-}
-
-.carousel-slide.active {
-    display: block;
-}
-
-.carousel-slide img {
-    width: 60%;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background-color: #ccc;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dot.active {
-    background-color: #E50914;
-}
-
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #E50914;
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #B20710;
-}
-</style>
-
-
 </html>
