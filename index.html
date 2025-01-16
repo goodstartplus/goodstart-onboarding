@@ -52,35 +52,42 @@
     </section>
 
     <!-- 5. Quais são suas maiores dificuldades? -->
-    <section id="reason-screen" class="screen hidden">
-        <h2>Quais são suas maiores dificuldades?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🗣️</span>
-            <label>Falta de prática</label>
-            <input type="checkbox" value="Falta de prática">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">😰</span>
-            <label>Medo de falar</label>
-            <input type="checkbox" value="Medo de falar">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">📢</span>
-            <label>Pronúncia</label>
-            <input type="checkbox" value="Pronúncia">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">🎧</span>
-            <label>Ouvir e entender</label>
-            <input type="checkbox" value="Ouvir e entender">
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <span class="icon">📚</span>
-            <label>Falta de vocabulário</label>
-            <input type="checkbox" value="Falta de vocabulário">
-        </div>
-        <button onclick="saveCheckboxes('challenges')">Continuar</button>
-    </section>
+<section id="reason-screen" class="screen hidden">
+    <h2>Quais são suas maiores dificuldades?</h2>
+
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">🗣️</span>
+        <label>Falta de prática</label>
+        <input type="checkbox" value="Falta de prática">
+    </div>
+
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">😰</span>
+        <label>Medo de falar</label>
+        <input type="checkbox" value="Medo de falar">
+    </div>
+
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">📢</span>
+        <label>Pronúncia</label>
+        <input type="checkbox" value="Pronúncia">
+    </div>
+
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">🎧</span>
+        <label>Ouvir e entender</label>
+        <input type="checkbox" value="Ouvir e entender">
+    </div>
+
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <span class="icon">📚</span>
+        <label>Falta de vocabulário</label>
+        <input type="checkbox" value="Falta de vocabulário">
+    </div>
+
+    <button onclick="saveCheckboxes('reason')">Continuar</button>
+</section>
+
 
     <!-- 6. Web Stories-like Video Player -->
     <section id="personalized-videos-screen" class="screen hidden">
