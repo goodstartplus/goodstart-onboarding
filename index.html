@@ -49,26 +49,33 @@
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 5. Challenges -->
-    <section id="challenges-screen" class="screen hidden">
-        <h2>Quais são suas maiores dificuldades?</h2>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
-        </div>
-        <div class="checkbox-option" onclick="toggleCheckbox(this)">
-            <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
-        </div>
-        <button onclick="saveCheckboxes('challenges')">Continuar</button>
-    </section>
+    <!-- 4.5. Você está em boas mãos -->
+<section id="trust-screen" class="screen hidden">
+    <img src="assets/images/trust-banner.jpg" alt="Você está em boas mãos" style="width:100vw; height:100vh; object-fit:cover;">
+    <button onclick="nextScreen('challenges-screen')" style="position:absolute; bottom:10%; left:50%; transform:translateX(-50%); padding:15px 30px; background-color:#E50914; color:#fff; border:none; border-radius:25px; font-size:16px; font-weight:bold; cursor:pointer;">Continuar</button>
+</section>
+
+<!-- 5. Challenges -->
+<section id="challenges-screen" class="screen hidden">
+    <h2>Quais são suas maiores dificuldades?</h2>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Pronúncia"> 📢 Pronúncia
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Ouvir e entender"> 🎧 Ouvir e entender
+    </div>
+    <div class="checkbox-option" onclick="toggleCheckbox(this)">
+        <input type="checkbox" value="Vocabulário"> 📚 Vocabulário
+    </div>
+    <button onclick="saveCheckboxes('challenges')">Continuar</button>
+</section>
+
 
     <!-- 6. Personalized Videos with Web Stories Effect -->
 <section id="personalized-videos-screen" class="screen hidden">
@@ -229,6 +236,27 @@ function showContinueButton() {
 function finishOnboarding() {
     window.location.href = "https://goodstart.com.br";
 }
+
+
+function saveCheckboxes(question) {
+    const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+    if (checkedOptions.length === 0) {
+        alert("Por favor, selecione pelo menos uma opção.");
+        return;
+    }
+    userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
+
+    if (question === 'study-method') {
+        nextScreen('trust-screen');  // 👈 Redirect to new trust screen
+    } else if (question === 'challenges') {
+        loadPersonalizedVideos();
+        nextScreen('personalized-videos-screen');
+    }
+}
+
+
+
+        
   </script>
 </body>
 <style>
