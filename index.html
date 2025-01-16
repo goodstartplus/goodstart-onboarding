@@ -15,7 +15,7 @@
 
     <!-- 1. Intro Video -->
     <section id="intro-video-screen" class="screen">
-        <video src="assets/videos/pronunciation.mp4" controls autoplay muted></video>
+        <video src="assets/videos/pronunciation.mp4" autoplay muted></video>
         <button id="continue-intro">Continuar</button>
     </section>
 
@@ -38,45 +38,103 @@
     <!-- 4. Study Method -->
     <section id="study-method-screen" class="screen hidden">
         <h2>Como você estudou inglês?</h2>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Ensino Fundamental/Médio">
+            🎒 Ensino Fundamental/Médio
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Escola de Idiomas">
+            🎓 Escola de Idiomas
+        </div>
         <button onclick="saveCheckboxes('study-method')">Continuar</button>
     </section>
 
-    <!-- 5. Reason for Learning -->
-    <section id="reason-screen" class="screen hidden">
-        <h2>Por que você quer aprender inglês?</h2>
-        <button onclick="saveCheckboxes('reason')">Continuar</button>
-    </section>
-
-    <!-- 6. Challenges -->
+    <!-- 5. Challenges -->
     <section id="challenges-screen" class="screen hidden">
         <h2>Quais são suas maiores dificuldades?</h2>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Falta de prática"> 🗣️ Falta de prática
+        </div>
+        <div class="checkbox-option" onclick="toggleCheckbox(this)">
+            <input type="checkbox" value="Medo de falar"> 😰 Medo de falar
+        </div>
         <button onclick="saveCheckboxes('challenges')">Continuar</button>
     </section>
 
-    <!-- 7. Personalized Videos -->
-    <section id="personalized-videos-screen" class="screen hidden">
-        <video id="story-video"></video>
-        <button id="next-video-btn">Próximo</button>
-    </section>
-
-    <!-- 8. Expectations -->
-    <section id="expectation-screen" class="screen hidden">
-        <h2>O que você pode esperar</h2>
-        <ul>
-            <li>Semana 1: 105 novas palavras</li>
-            <li>Semana 4: 144 novas frases</li>
-            <li>Semana 12: 1080 minutos de fala</li>
-            <li>Mês 12: Fale com confiança!</li>
-        </ul>
+    <!-- 6. Personalized Summary -->
+    <section id="summary-screen" class="screen hidden">
+        <h2>Vamos construir seu plano, <span id="summary-name"></span>!</h2>
+        <div id="summary-content"></div>
         <button onclick="nextScreen('celebration-video-screen')">Continuar</button>
     </section>
 
-    <!-- 9. Celebration -->
+    <!-- 7. Celebration -->
     <section id="celebration-video-screen" class="screen hidden">
-        <video src="assets/videos/celebration.mp4" controls autoplay></video>
+        <video src="assets/videos/celebration.mp4" autoplay></video>
         <button onclick="finishOnboarding()">Acessar Plataforma</button>
     </section>
 
-    <script src="script.js"></script>
+    <script>
+    let userResponses = {};
+    let currentStep = 0;
+    const totalSteps = 7;
+
+    function nextScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+        document.getElementById(screenId).classList.remove('hidden');
+        updateProgress();
+        window.scrollTo(0, 0);
+    }
+
+    function updateProgress() {
+        const progress = ((currentStep + 1) / totalSteps) * 100;
+        document.querySelector('.progress-bar').style.width = `${progress}%`;
+        currentStep++;
+    }
+
+    function saveName() {
+        const nameInput = document.getElementById('user-name').value.trim();
+        if (nameInput.length >= 2) {
+            userResponses['nome'] = nameInput;
+            nextScreen('age-screen');
+        } else {
+            alert("Por favor, insira um nome válido.");
+        }
+    }
+
+    function toggleCheckbox(option) {
+        const checkbox = option.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        option.classList.toggle('checked', checkbox.checked);
+    }
+
+    function saveCheckboxes(question) {
+        const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+        if (checkedOptions.length === 0) {
+            alert("Por favor, selecione pelo menos uma opção.");
+            return;
+        }
+        userResponses[question] = Array.from(checkedOptions).map(cb => cb.value);
+        nextScreen('summary-screen');
+    }
+
+    document.getElementById('continue-intro').style.display = 'none';
+    const introVideo = document.querySelector('#intro-video-screen video');
+    introVideo.onended = showContinueButton;
+    setTimeout(showContinueButton, 5000);
+
+    function showContinueButton() {
+        document.getElementById('continue-intro').style.display = 'block';
+    }
+
+    function finishOnboarding() {
+        window.location.href = "https://goodstart.com.br";
+    }
+
+    // ✅ Basic Unit Tests
+    console.assert(document.getElementById('user-name') !== null, 'Name input field missing');
+    console.assert(document.getElementById('continue-intro') !== null, 'Intro button missing');
+    console.assert(document.querySelectorAll('.checkbox-option').length > 0, 'Checkbox options missing');
+    </script>
 </body>
 </html>
