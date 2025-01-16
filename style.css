@@ -167,14 +167,28 @@ input[type="text"] {
 }
 
 /* 📹 Fullscreen Video */
+/* ✅ Web Stories Video Player */
+#video-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ✅ Fullscreen Video */
 #story-video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     cursor: pointer;
+    background-color: #000;
 }
 
-/* ⏳ Progress Bar for Stories */
+/* ✅ Progress Bar at the Top */
 #video-progress-container {
     position: absolute;
     top: 0;
@@ -201,6 +215,7 @@ input[type="text"] {
     background-color: #fff;
     transition: width linear;
 }
+
 
 /* 🎥 Personalized Videos */
 #videos-container video {
