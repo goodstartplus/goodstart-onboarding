@@ -71,24 +71,38 @@ function saveAnswer(question, answer) {
 
 // ✅ Toggle checkbox state with visual feedback
 function toggleCheckbox(option) {
-    option.classList.toggle('checked');
     const checkbox = option.querySelector('input[type="checkbox"]');
+    
+    // ✅ Toggle the checkbox state
     checkbox.checked = !checkbox.checked;
+
+    // ✅ Apply or remove the 'checked' style
+    if (checkbox.checked) {
+        option.classList.add('checked');
+    } else {
+        option.classList.remove('checked');
+    }
 }
 
+
 function saveCheckboxes(question) {
-    const selectedOptions = document.querySelectorAll(`#${question}-screen .checkbox-option.checked input`);
-    const values = Array.from(selectedOptions).map(cb => cb.value);
+    // ✅ Select all checked checkboxes in the current screen
+    const checkedOptions = document.querySelectorAll(`#${question}-screen input[type="checkbox"]:checked`);
+    
+    // ✅ Map selected values
+    const values = Array.from(checkedOptions).map(cb => cb.value);
 
     if (values.length === 0) {
         alert("Por favor, selecione pelo menos uma opção.");
         return;
     }
 
+    // ✅ Save user responses
     userResponses[question] = values;
 
+    // ✅ Screen flow logic
     const flow = {
-        'study-method': 'reason-screen',      // ✅ Correct flow
+        'study-method': 'reason-screen',
         'reason': 'challenges-screen',
         'challenges': () => {
             loadPersonalizedVideos();
@@ -97,14 +111,17 @@ function saveCheckboxes(question) {
     };
 
     const next = flow[question];
+
+    // ✅ Move to the next screen
     if (typeof next === 'function') {
         nextScreen(next());
     } else if (next) {
-        nextScreen(next);  // ✅ Properly moves to the next screen
+        nextScreen(next);
     } else {
         console.error(`No flow defined for question: ${question}`);
     }
 }
+
 
 
 // ✅ Show a personalized summary
