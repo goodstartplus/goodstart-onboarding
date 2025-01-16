@@ -230,3 +230,26 @@ h2 {
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
+
+/* 🔴 Video Progress Bar */
+#video-progress-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    padding: 10px;
+}
+
+.progress-bar-segment {
+    flex: 1;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 4px;
+    border-radius: 2px;
+}
+
+.progress-bar-segment.completed {
+    background-color: #E50914;
+}
+
