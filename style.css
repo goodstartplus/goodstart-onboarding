@@ -10,7 +10,8 @@ body, html {
     font-family: 'Poppins', sans-serif;
     background-color: #121212;
     color: #FFFFFF;
-    overflow-x: hidden;
+    overflow: hidden !important;  /* Bloqueia scroll horizontal e vertical */
+    height: 100vh;
 }
 
 /* 🌄 Tela Inicial */
@@ -238,6 +239,7 @@ button:hover {
     justify-content: center;
     width: 100vw;
     height: 100vh;
+    overflow: hidden;  /* 🔒 Impede rolagem interna */
     background-color: #121212;
     color: #FFFFFF;
     text-align: center;
