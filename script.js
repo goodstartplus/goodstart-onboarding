@@ -141,6 +141,9 @@ function handleVideoTap(event) {
 }
 
 window.onload = function() {
+    // 🔒 Bloqueia o scroll ao abrir a página
+    document.body.classList.add('no-scroll');
+
     const introVideo = document.querySelector('#intro-video-screen video');
     if (introVideo) {
         introVideo.onended = showContinueButton;
