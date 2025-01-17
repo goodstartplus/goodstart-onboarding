@@ -199,18 +199,16 @@
   }
 </script>
 
-    <script>
+   <script>
     //⚓WEBHOOK PARA APP.GOODSTART.COM.BR
     function sendUserDataToUncannyAutomator() {
         const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
 
         const userData = {
-            data: {  // ✅ Adicionada a chave "data"
-                nome: userResponses['nome'] || 'Não informado',
-                idade: userResponses['idade'] || 'Não informado',
-                estudo: userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado',
-                dificuldades: userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'
-            }
+            nome: userResponses['nome'] || 'Não informado',
+            idade: userResponses['idade'] || 'Não informado',
+            estudo: userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado',
+            dificuldades: userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'
         };
 
         fetch(webhookURL, {
@@ -218,7 +216,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData)  // ✅ Enviando com "data"
+            body: JSON.stringify(userData)  // 🔄 Envio DIRETO sem a chave "data"
         })
         .then(response => {
             if (!response.ok) {
@@ -235,17 +233,16 @@
     }
 </script>
 
-    <script>
+
+  <script>
     function sendTestWebhook() {
         const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
 
         const testData = {
-            data: {  // ✅ Adicionada a chave "data"
-                nome: "Teste Nome",
-                idade: "25-30",
-                estudo: "Escola de Idiomas, Aplicativos",
-                dificuldades: "Pronúncia, Ouvir e entender"
-            }
+            nome: "Teste Nome",
+            idade: "25-30",
+            estudo: "Escola de Idiomas, Aplicativos",
+            dificuldades: "Pronúncia, Ouvir e entender"
         };
 
         fetch(webhookURL, {
@@ -253,7 +250,7 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(testData)  // ✅ Enviando com "data"
+            body: JSON.stringify(testData)  // 🔄 Envio DIRETO sem a chave "data"
         })
         .then(response => {
             if (!response.ok) {
@@ -271,6 +268,7 @@
         });
     }
 </script>
+
 
 
 </body>
