@@ -29,7 +29,7 @@ body, html {
 #trust-banner {
     width: 80%;
     max-width: 600px;
-    border-radius: 15px;
+    border-radius: 6px;
     margin-bottom: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -39,7 +39,7 @@ body, html {
     background-color: #E50914;
     color: #FFFFFF;
     border: none;
-    border-radius: 30px;
+    border-radius: 6px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -96,7 +96,7 @@ body, html {
     background-color: rgba(229, 9, 20, 0.9);
     color: #FFFFFF;
     border: none;
-    border-radius: 25px;
+    border-radius: 6px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -115,7 +115,7 @@ input[type="text"] {
     width: 80%;
     padding: 15px;
     margin-top: 10px;
-    border-radius: 25px;
+    border-radius: 6px;
     border: 1px solid #333;
     background-color: #1F1F1F;
     color: #FFFFFF;
@@ -132,7 +132,7 @@ input[type="text"] {
     border: 2px solid #333;
     padding: 15px 20px;
     margin: 10px auto;
-    border-radius: 15px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     width: 80%;
@@ -163,7 +163,7 @@ button {
     color: #FFFFFF;
     padding: 15px 30px;
     border: none;
-    border-radius: 30px;
+    border-radius: 6px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -227,7 +227,7 @@ button:hover {
     margin: 20px auto;
     background-color: #1F1F1F;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 6px;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -311,7 +311,7 @@ button {
     background-color: #E50914;
     color: #fff;
     border: none;
-    border-radius: 25px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -364,7 +364,7 @@ button:hover {
     background-color: rgba(229, 9, 20, 0.9);
     color: #FFFFFF;
     border: none;
-    border-radius: 25px;
+    border-radius: 6px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
