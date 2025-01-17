@@ -13,6 +13,7 @@ function startOnboarding() {
     nextScreen('intro-video-screen');
 
     // Reproduz o vídeo com som após a interação
+    introVideo.currentTime = 0;
     introVideo.muted = false;
     introVideo.play();
 
@@ -26,14 +27,24 @@ function startOnboarding() {
 
 
 function nextScreen(screenId) {
-    if (screenId !== 'personalized-videos-screen') {
-        stopVideoPlayback();  // 🛑 Stop video only when leaving video screen
+    if (screenId === 'intro-video-screen') {
+        const introVideo = document.getElementById('intro-video');
+        introVideo.pause();
+        introVideo.currentTime = 0;  // 🔄 Reinicia o vídeo
+        introVideo.muted = false;
+        introVideo.play();
     }
+
+    if (screenId !== 'personalized-videos-screen') {
+        stopVideoPlayback();  // 🛑 Para vídeos de outras telas
+    }
+
     document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
     document.getElementById(screenId).classList.remove('hidden');
     updateProgress();
     window.scrollTo(0, 0);
 }
+
 
 function stopVideoPlayback() {
     const video = document.getElementById('story-video');
@@ -144,19 +155,22 @@ window.onload = function() {
     // 🔒 Bloqueia o scroll ao abrir a página
     document.body.classList.add('no-scroll');
 
-    const introVideo = document.querySelector('#intro-video-screen video');
+     const introVideo = document.getElementById('intro-video');
     if (introVideo) {
-        introVideo.onended = showContinueButton;
-        setTimeout(showContinueButton, 27000);
+        introVideo.onended = showContinueButton;  // Mostra o botão só ao fim do vídeo
     }
 };
 
 function showContinueButton() {
     const continueButton = document.getElementById('continue-intro');
-    if (continueButton) {
+    const introVideoScreen = document.getElementById('intro-video-screen');
+
+    // Verifica se a tela de vídeo está visível antes de mostrar o botão
+    if (continueButton && !introVideoScreen.classList.contains('hidden')) {
         continueButton.style.display = 'block';
     }
 }
+
 
 function finishOnboarding() {
     window.location.href = "https://goodstart.com.br";
