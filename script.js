@@ -15,6 +15,9 @@ function startOnboarding() {
     // Reproduz o vídeo com som após a interação
     introVideo.muted = false;
     introVideo.play();
+
+    // 🔓 Libera o scroll após clicar em "Iniciar"
+    document.body.classList.remove('no-scroll');
 }
 
 
