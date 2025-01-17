@@ -239,7 +239,7 @@ function handleSwipe() {
 
 window.onload = function() {
     const introVideo = document.querySelector('#intro-video-screen video');
-    const continueButton = document.getElementById('continue-intro');
+    
 
     continueButton.addEventListener('click', () => {
         introVideo.muted = false;
