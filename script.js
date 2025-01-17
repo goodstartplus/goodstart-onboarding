@@ -31,10 +31,42 @@ function nextScreen(screenId) {
     if (screenId === 'intro-video-screen') {
         const introVideo = document.getElementById('intro-video');
         introVideo.pause();
-        introVideo.currentTime = 0;  // 🔄 Reinicia o vídeo
+        introVideo.currentTime = 0;
         introVideo.muted = false;
-        introVideo.play();
+        introVideo.play().catch(error => {
+            console.log('Erro ao reproduzir o vídeo de introdução:', error);
+        });
     }
+
+    // 🎉 Se for a tela de celebração, toca o vídeo com som
+    if (screenId === 'celebration-video-screen') {
+        const celebrationVideo = document.getElementById('celebration-video');
+        if (celebrationVideo) {
+            celebrationVideo.pause();         // 🛑 Garante que o vídeo reinicie
+            celebrationVideo.currentTime = 0;
+            celebrationVideo.muted = false;
+            celebrationVideo.play().catch(error => {
+                console.log('Erro ao reproduzir o vídeo de celebração:', error);
+            });
+        }
+    }
+
+    // 📊 Se for a tela de resumo, gera o conteúdo personalizado
+    if (screenId === 'summary-screen') {
+        generateSummary();
+    }
+
+    // 🛑 Para outros vídeos ao trocar de tela
+    if (screenId !== 'personalized-videos-screen') {
+        stopVideoPlayback();
+    }
+
+    // 🔄 Troca de tela
+    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+    document.getElementById(screenId).classList.remove('hidden');
+    updateProgress();
+    window.scrollTo(0, 0);
+}
 
     // 🎉 Se for a tela de celebração, toca o vídeo com som
     if (screenId === 'celebration-video-screen') {
@@ -226,18 +258,6 @@ function generateSummary() {
     document.getElementById('summary-content').innerHTML = summaryHTML;
 }
 
-function nextScreen(screenId) {
-    if (screenId === 'summary-screen') {
-        generateSummary();
-    }
-    if (screenId !== 'personalized-videos-screen') {
-        stopVideoPlayback();
-    }
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-    updateProgress();
-    window.scrollTo(0, 0);
-}
 
 let currentSlide = 0;
 let totalSlides = 4;
