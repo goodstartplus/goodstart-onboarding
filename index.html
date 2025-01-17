@@ -231,9 +231,42 @@
 }
 </script>
 
+    
+
+    <script>
+        function sendTestWebhook() {
+    const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56905-56906';
+
+    const testData = {
+        nome: "Teste Nome",
+        idade: "25-30",
+        estudo: "Escola de Idiomas, Aplicativos",
+        dificuldades: "Pronúncia, Ouvir e entender"
+    };
+
+    fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(testData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erro na resposta: ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('✅ Teste enviado com sucesso:', data);
+        alert('🚀 Dados de teste enviados para o Uncanny Automator!');
+    })
+    .catch(error => {
+        console.error('❌ Erro ao enviar dados de teste:', error);
+        alert('⚠️ Erro ao enviar o teste. Verifique o console.');
+    });
+}
+
+    </script>
 </body>
-
-
-
-
 </html>
