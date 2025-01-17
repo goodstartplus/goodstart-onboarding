@@ -17,8 +17,6 @@
     <!-- 0. Tela Inicial -->
 <section id="start-screen" class="screen">
     <img src="assets/images/trust-banner.png" alt="Bem-vindo" id="trust-banner">
-    <button onclick="sendTestWebhook()">Enviar Teste</button>
-
     <button id="start-button" onclick="startOnboarding()">Iniciar</button>
 </section>
 
@@ -194,13 +192,23 @@
 <script src="script.js"></script>
    
 <script>
-  function finalizarOnboarding() {
-    window.parent.postMessage('closeOnboarding', 'https://cursos.goodstart.com.br');
-  }
+    function finalizarOnboarding() {
+        // 📤 Envia os dados reais para o Uncanny Automator
+        sendUserDataToUncannyAutomator();
+
+        // 📢 Continua avisando o outro sistema que o onboarding terminou
+        window.parent.postMessage('closeOnboarding', 'https://cursos.goodstart.com.br');
+
+        // 🚀 Redireciona o usuário após o envio
+        setTimeout(() => {
+            window.location.href = "https://cursos.goodstart.com.br";
+        }, 1000); // Aguarda 1 segundo para garantir o envio
+    }
 </script>
 
-   <script>
-    //⚓WEBHOOK PARA APP.GOODSTART.COM.BR
+
+ <script>
+    //⚓ Envia dados reais para o Uncanny Automator
     function sendUserDataToUncannyAutomator() {
         const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
 
@@ -216,60 +224,19 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData)  // 🔄 Envio DIRETO sem a chave "data"
+            body: JSON.stringify(userData)
         })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro na resposta: ${response.statusText}`);
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log('✅ Dados enviados com sucesso para o Uncanny Automator:', data);
+            console.log('✅ Dados reais enviados com sucesso:', userData);
         })
         .catch(error => {
-            console.error('❌ Erro ao enviar dados para o Uncanny Automator:', error);
+            console.error('❌ Erro ao enviar dados reais:', error);
         });
     }
 </script>
-
-
-  <script>
-    function sendTestWebhook() {
-        const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
-
-        const testData = {
-            nome: "Teste Nome",
-            idade: "25-30",
-            estudo: "Escola de Idiomas, Aplicativos",
-            dificuldades: "Pronúncia, Ouvir e entender"
-        };
-
-        fetch(webhookURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(testData)  // 🔄 Envio DIRETO sem a chave "data"
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro na resposta: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('✅ Teste enviado com sucesso:', data);
-            alert('🚀 Dados de teste enviados para o Uncanny Automator!');
-        })
-        .catch(error => {
-            console.error('❌ Erro ao enviar dados de teste:', error);
-            alert('⚠️ Erro ao enviar o teste. Verifique o console.');
-        });
-    }
-</script>
-
-
 
 </body>
 </html>
