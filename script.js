@@ -141,7 +141,7 @@ window.onload = function() {
     const introVideo = document.querySelector('#intro-video-screen video');
     if (introVideo) {
         introVideo.onended = showContinueButton;
-        setTimeout(showContinueButton, 25000);
+        setTimeout(showContinueButton, 27000);
     }
 };
 
@@ -254,16 +254,6 @@ function handleSwipe() {
 
 
 
-//📺cóidgo para fazer o intro video tocar com som. Precisa mexer mais
-window.addEventListener('load', function() {
-    const introVideo = document.getElementById('intro-video');
-
-    // Toca o vídeo com som quando o usuário clica em qualquer lugar da tela
-    document.body.addEventListener('click', function() {
-        introVideo.muted = false;
-        introVideo.play();
-    }, { once: true });
-});
 
 
 
