@@ -235,6 +235,9 @@ function generateSummary() {
     `;
 
     document.getElementById('summary-content').innerHTML = summaryHTML;
+      
+    // 🚀 Envia os dados para o Uncanny Automator
+    sendUserDataToUncannyAutomator();
 }
 
 
