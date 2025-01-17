@@ -178,7 +178,12 @@
 
     <!-- 9. Celebration -->
 <section id="celebration-video-screen" class="screen hidden">
-    <video id="celebration-video" src="assets/videos/celebration.webm" playsinline></video>
+    <video id="celebration-video" playsinline>
+    <source src="assets/videos/celebration.webm" type="video/webm">
+    <source src="assets/videos/celebration.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos.
+</video>
+
     <button id="celebration-button" onclick="finishOnboarding()">Acessar Plataforma</button>
 </section>
 
