@@ -5,6 +5,23 @@ let selectedVideos = [];
 let currentStep = 0;
 const totalSteps = 7;
 
+//🌅 função para tela 0 start-onboarding
+function startOnboarding() {
+    const introVideo = document.getElementById('intro-video');
+    
+    // Vai para o vídeo de introdução
+    nextScreen('intro-video-screen');
+
+    // Reproduz o vídeo com som após a interação
+    introVideo.muted = false;
+    introVideo.play();
+}
+
+
+
+
+
+
 function nextScreen(screenId) {
     if (screenId !== 'personalized-videos-screen') {
         stopVideoPlayback();  // 🛑 Stop video only when leaving video screen
