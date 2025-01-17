@@ -30,19 +30,21 @@ function nextScreen(screenId) {
     // 🎥 Se for a tela de introdução, reinicia e toca o vídeo com som
     if (screenId === 'intro-video-screen') {
         const introVideo = document.getElementById('intro-video');
-        introVideo.pause();
-        introVideo.currentTime = 0;
-        introVideo.muted = false;
-        introVideo.play().catch(error => {
-            console.log('Erro ao reproduzir o vídeo de introdução:', error);
-        });
+        if (introVideo) {
+            introVideo.pause();
+            introVideo.currentTime = 0;
+            introVideo.muted = false;
+            introVideo.play().catch(error => {
+                console.log('Erro ao reproduzir o vídeo de introdução:', error);
+            });
+        }
     }
 
     // 🎉 Se for a tela de celebração, toca o vídeo com som
     if (screenId === 'celebration-video-screen') {
         const celebrationVideo = document.getElementById('celebration-video');
         if (celebrationVideo) {
-            celebrationVideo.pause();         // 🛑 Garante que o vídeo reinicie
+            celebrationVideo.pause();
             celebrationVideo.currentTime = 0;
             celebrationVideo.muted = false;
             celebrationVideo.play().catch(error => {
@@ -67,29 +69,6 @@ function nextScreen(screenId) {
     updateProgress();
     window.scrollTo(0, 0);
 }
-
-    // 🎉 Se for a tela de celebração, toca o vídeo com som
-    if (screenId === 'celebration-video-screen') {
-        const celebrationVideo = document.getElementById('celebration-video');
-        celebrationVideo.muted = false;  // 🔊 Ativa o som
-        celebrationVideo.currentTime = 0;  // 🔄 Reinicia o vídeo
-        celebrationVideo.play().catch(error => {
-            console.log('Erro ao reproduzir o vídeo de celebração:', error);
-        });
-    }
-
-    // 🛑 Para outros vídeos ao trocar de tela
-    if (screenId !== 'personalized-videos-screen') {
-        stopVideoPlayback();
-    }
-
-    // 🔄 Troca de tela
-    document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
-    document.getElementById(screenId).classList.remove('hidden');
-    updateProgress();
-    window.scrollTo(0, 0);
-}
-
 
 
 function stopVideoPlayback() {
