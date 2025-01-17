@@ -238,42 +238,14 @@ function handleSwipe() {
 
 
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('load', function() {
     const introVideo = document.getElementById('intro-video');
-    
-    if (introVideo) {
-        const playButton = document.createElement('button');
 
-        playButton.id = 'play-intro-video';
-        playButton.innerText = '▶️';
-        playButton.style.position = 'absolute';
-        playButton.style.top = '50%';
-        playButton.style.left = '50%';
-        playButton.style.transform = 'translate(-50%, -50%)';
-        playButton.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
-        playButton.style.color = '#fff';
-        playButton.style.border = 'none';
-        playButton.style.borderRadius = '50%';
-        playButton.style.width = '60px';
-        playButton.style.height = '60px';
-        playButton.style.fontSize = '24px';
-        playButton.style.cursor = 'pointer';
-        playButton.style.zIndex = '10';
-
-        document.getElementById('intro-video-screen').appendChild(playButton);
-
-        playButton.addEventListener('click', function() {
-            introVideo.muted = false;
-            introVideo.play();
-            playButton.style.display = 'none';
-        });
-
-        introVideo.addEventListener('play', function() {
-            playButton.style.display = 'none';
-        });
-    } else {
-        console.error('❌ Vídeo não encontrado!');
-    }
+    // Toca o vídeo com som quando o usuário clica em qualquer lugar da tela
+    document.body.addEventListener('click', function() {
+        introVideo.muted = false;
+        introVideo.play();
+    }, { once: true });
 });
 
 
