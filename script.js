@@ -237,7 +237,7 @@ function handleSwipe() {
 
 
 
-
+//📺cóidgo para fazer o intro video tocar com som. Precisa mexer mais
 window.addEventListener('load', function() {
     const introVideo = document.getElementById('intro-video');
 
