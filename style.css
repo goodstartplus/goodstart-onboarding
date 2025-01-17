@@ -52,8 +52,10 @@ body, html {
 
 /* 🔒 Impede o scroll enquanto estiver na tela inicial */
 body.no-scroll {
-    overflow: hidden;
+    overflow: hidden !important;
+    height: 100vh;
 }
+
 
 
 
