@@ -141,7 +141,7 @@ window.onload = function() {
     const introVideo = document.querySelector('#intro-video-screen video');
     if (introVideo) {
         introVideo.onended = showContinueButton;
-        setTimeout(showContinueButton, 5000);
+        setTimeout(showContinueButton, 25000);
     }
 };
 
