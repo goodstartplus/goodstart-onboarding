@@ -1,4 +1,5 @@
 /* 🌙 Global Styles */
+
 * {
     margin: 0;
     padding: 0;
@@ -11,6 +12,47 @@ body, html {
     color: #FFFFFF;
     overflow-x: hidden;
 }
+
+/* 🌄 Tela Inicial */
+#start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #121212;
+    color: #FFFFFF;
+}
+
+#trust-banner {
+    width: 80%;
+    max-width: 600px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+#start-button {
+    padding: 15px 30px;
+    background-color: #E50914;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#start-button:hover {
+    background-color: #B20710;
+    transform: scale(1.05);
+}
+
+
+
+
 
 /* 🔒 Hide inactive screens */
 .hidden {
