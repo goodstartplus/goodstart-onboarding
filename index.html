@@ -184,11 +184,20 @@
     Seu navegador não suporta vídeos.
 </video>
 
-    <button id="celebration-button" onclick="finishOnboarding()">Acessar Plataforma</button>
+    
+    <button onclick="finalizarOnboarding()">Começar minha jornada</button>
 </section>
 
 
 <script src="script.js"></script>
+    <button onclick="finalizarOnboarding()">Concluir</button>
+
+<script>
+  function finalizarOnboarding() {
+    window.parent.postMessage('closeOnboarding', 'https://seusite.memberkit.com');
+  }
+</script>
+
 </body>
 
 
