@@ -50,11 +50,6 @@ body, html {
     transform: scale(1.05);
 }
 
-/* 🔒 Impede o scroll enquanto estiver na tela inicial */
-body.no-scroll {
-    overflow: hidden !important;
-    height: 100vh;
-}
 
 
 
