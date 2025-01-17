@@ -237,15 +237,7 @@ function handleSwipe() {
 
 
 
-window.onload = function() {
-    const introVideo = document.querySelector('#intro-video-screen video');
-    
 
-    continueButton.addEventListener('click', () => {
-        introVideo.muted = false;
-        introVideo.play();
-    });
-};
 
 
 
