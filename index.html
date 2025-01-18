@@ -213,86 +213,96 @@
 
 
 <script>
- // ⚡ Enviar dados para a OpenAI e depois para o Uncanny Automator
-async function sendUserDataToUncannyAutomator() {
     const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
     const openAIURL = 'https://api.openai.com/v1/chat/completions';
-    const openAIKey = 'Bearer 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';  // Substitua pela sua chave da OpenAI
+    let openAIKey = '';
 
-    // 🎯 Validação de dados
-    if (!userResponses['nome'] || !userResponses['idade']) {
-        alert('⚠️ Por favor, preencha todas as informações antes de continuar.');
-        return;
+    // 🔑 Busca a chave da OpenAI de forma segura
+    async function fetchOpenAIKey() {
+        try {
+            const response = await fetch('/get-openai-key.php');
+            const data = await response.json();
+            openAIKey = `Bearer ${data.key}`;
+        } catch (error) {
+            console.error('Erro ao carregar a chave da OpenAI:', error);
+            alert('Erro ao carregar a configuração. Tente novamente mais tarde.');
+        }
     }
 
-    const userData = {
-        nome: userResponses['nome'],
-        idade: userResponses['idade'],
-        estudo: userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado',
-        dificuldades: userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'
-    };
-
-    try {
-        // 📤 Exibe carregamento
-        document.body.style.cursor = 'wait';
-
-        // 🔥 Envia os dados para a OpenAI para gerar o e-mail personalizado
-        const aiResponse = await fetch(openAIURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': openAIKey
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'Você é um assistente que escreve e-mails personalizados para alunos de inglês.'
-                    },
-                    {
-                        role: 'user',
-                        content: `Nome: ${userData.nome}, Idade: ${userData.idade}, Estudo: ${userData.estudo}, Dificuldades: ${userData.dificuldades}. Escreva um e-mail com dicas de como melhorar o inglês.`
-                    }
-                ],
-                max_tokens: 500
-            })
-        });
-
-        if (!aiResponse.ok) {
-            throw new Error(`Erro na resposta da OpenAI: ${aiResponse.statusText}`);
+    // 🚀 Envia os dados do usuário para a OpenAI e Uncanny Automator
+    async function sendUserDataToUncannyAutomator() {
+        if (!openAIKey) {
+            alert('A chave da OpenAI não foi carregada. Tente novamente.');
+            return;
         }
 
-        const aiData = await aiResponse.json();
-        const respostaOpenAI = aiData.choices[0].message.content;
+        if (!userResponses['nome'] || !userResponses['idade']) {
+            alert('⚠️ Por favor, preencha todas as informações antes de continuar.');
+            return;
+        }
 
-        // 🔄 Envia a resposta gerada pela OpenAI para o Webhook do Uncanny Automator
-        await fetch(webhookURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nome: userData.nome,
-                idade: userData.idade,
-                estudo: userData.estudo,
-                dificuldades: userData.dificuldades,
-                resposta: respostaOpenAI  // Incluindo a resposta da OpenAI
-            })
-        });
+        const userData = {
+            nome: userResponses['nome'],
+            idade: userResponses['idade'],
+            estudo: userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado',
+            dificuldades: userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'
+        };
 
-        // ✅ Feedback de sucesso
-        alert('✅ E-mail personalizado enviado com sucesso!');
-    } catch (error) {
-        console.error('❌ Erro ao enviar dados:', error);
-        alert('❌ Ocorreu um erro ao enviar os dados. Tente novamente mais tarde.');
-    } finally {
-        // 🔄 Restaura o cursor
-        document.body.style.cursor = 'default';
+        try {
+            document.body.style.cursor = 'wait';
+
+            // 🧠 Envia os dados para a OpenAI
+            const aiResponse = await fetch(openAIURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': openAIKey
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        { role: 'system', content: 'Você é um assistente que escreve e-mails personalizados para alunos de inglês.' },
+                        { role: 'user', content: `Nome: ${userData.nome}, Idade: ${userData.idade}, Estudo: ${userData.estudo}, Dificuldades: ${userData.dificuldades}. Escreva um e-mail com dicas de como melhorar o inglês.` }
+                    ],
+                    max_tokens: 500
+                })
+            });
+
+            if (!aiResponse.ok) {
+                throw new Error(`Erro na resposta da OpenAI: ${aiResponse.statusText}`);
+            }
+
+            const aiData = await aiResponse.json();
+            const respostaOpenAI = aiData.choices[0].message.content;
+
+            // 📤 Envia a resposta da OpenAI para o Webhook
+            await fetch(webhookURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: userData.nome,
+                    idade: userData.idade,
+                    estudo: userData.estudo,
+                    dificuldades: userData.dificuldades,
+                    resposta: respostaOpenAI
+                })
+            });
+
+            alert('✅ E-mail personalizado enviado com sucesso!');
+        } catch (error) {
+            console.error('❌ Erro ao enviar dados:', error);
+            alert('❌ Ocorreu um erro ao enviar os dados. Tente novamente mais tarde.');
+        } finally {
+            document.body.style.cursor = 'default';
+        }
     }
-}
 
+    // ⚡ Carregar a chave da OpenAI assim que a página abrir
+    window.onload = fetchOpenAIKey;
 </script>
+
+
+
 
 
 </body>
