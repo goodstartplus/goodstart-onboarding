@@ -220,7 +220,7 @@
     // 🔑 Busca a chave da OpenAI de forma segura
     async function fetchOpenAIKey() {
         try {
-            const response = await fetch('/get-openai-key.php');
+            const response = await fetch('https://goodstart.com.br/get-openai-key.php');
             const data = await response.json();
             openAIKey = `Bearer ${data.key}`;
         } catch (error) {
