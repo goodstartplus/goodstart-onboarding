@@ -207,36 +207,93 @@
 </script>
 
 
- <script>
-    //⚓ Envia dados reais para o Uncanny Automator
-    function sendUserDataToUncannyAutomator() {
-        const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
 
-        const userData = {
-            nome: userResponses['nome'] || 'Não informado',
-            idade: userResponses['idade'] || 'Não informado',
-            estudo: userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado',
-            dificuldades: userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'
-        };
 
-        fetch(webhookURL, {
+
+
+
+<script>
+ // ⚡ Enviar dados para a OpenAI e depois para o Uncanny Automator
+async function sendUserDataToUncannyAutomator() {
+    const webhookURL = 'https://app.goodstart.com.br/wp-json/uap/v2/uap-56907-56908';
+    const openAIURL = 'https://api.openai.com/v1/chat/completions';
+    const openAIKey = 'Bearer SUA_CHAVE_OPENAI';  // Substitua pela sua chave da OpenAI
+
+    // 🎯 Validação de dados
+    if (!userResponses['nome'] || !userResponses['idade']) {
+        alert('⚠️ Por favor, preencha todas as informações antes de continuar.');
+        return;
+    }
+
+    const userData = {
+        nome: userResponses['nome'],
+        idade: userResponses['idade'],
+        estudo: userResponses['study-method'] ? userResponses['study-method'].join(', ') : 'Não informado',
+        dificuldades: userResponses['challenges'] ? userResponses['challenges'].join(', ') : 'Não informado'
+    };
+
+    try {
+        // 📤 Exibe carregamento
+        document.body.style.cursor = 'wait';
+
+        // 🔥 Envia os dados para a OpenAI para gerar o e-mail personalizado
+        const aiResponse = await fetch(openAIURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': openAIKey
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'Você é um assistente que escreve e-mails personalizados para alunos de inglês.'
+                    },
+                    {
+                        role: 'user',
+                        content: `Nome: ${userData.nome}, Idade: ${userData.idade}, Estudo: ${userData.estudo}, Dificuldades: ${userData.dificuldades}. Escreva um e-mail com dicas de como melhorar o inglês.`
+                    }
+                ],
+                max_tokens: 500
+            })
+        });
+
+        if (!aiResponse.ok) {
+            throw new Error(`Erro na resposta da OpenAI: ${aiResponse.statusText}`);
+        }
+
+        const aiData = await aiResponse.json();
+        const respostaOpenAI = aiData.choices[0].message.content;
+
+        // 🔄 Envia a resposta gerada pela OpenAI para o Webhook do Uncanny Automator
+        await fetch(webhookURL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro na resposta: ${response.statusText}`);
-            }
-            console.log('✅ Dados reais enviados com sucesso:', userData);
-        })
-        .catch(error => {
-            console.error('❌ Erro ao enviar dados reais:', error);
+            body: JSON.stringify({
+                nome: userData.nome,
+                idade: userData.idade,
+                estudo: userData.estudo,
+                dificuldades: userData.dificuldades,
+                resposta: respostaOpenAI  // Incluindo a resposta da OpenAI
+            })
         });
+
+        // ✅ Feedback de sucesso
+        alert('✅ E-mail personalizado enviado com sucesso!');
+    } catch (error) {
+        console.error('❌ Erro ao enviar dados:', error);
+        alert('❌ Ocorreu um erro ao enviar os dados. Tente novamente mais tarde.');
+    } finally {
+        // 🔄 Restaura o cursor
+        document.body.style.cursor = 'default';
     }
+}
+
 </script>
+
 
 </body>
 </html>
